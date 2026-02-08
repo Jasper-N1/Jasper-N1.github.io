@@ -908,7 +908,7 @@
   </div>
   <div class="hero-badge">Internal Proposal</div>
   <h1>Engineering Operations Proposal</h1>
-  <p>Moving from disconnected tooling and low visibility to integrated, GitHub-native project management with clear accountability.</p>
+  <p>Moving from disconnected tooling and low visibility to an integrated custom dashboard built on GitHub data, with clear accountability.</p>
 </div>
 
 <div class="container">
@@ -928,7 +928,7 @@
       <div class="compare-col compare-before">
         <h3>Current State</h3>
         <ul>
-          <li><span class="icon">&#10005;</span> ClickUp disconnected from GitHub</li>
+          <li><span class="icon">&#10005;</span> ClickUp disconnected from where work happens</li>
           <li><span class="icon">&#10005;</span> Sprint points don't reflect real effort</li>
           <li><span class="icon">&#10005;</span> Manual sprint setup every 2 weeks</li>
           <li><span class="icon">&#10005;</span> No visibility into daily output</li>
@@ -968,7 +968,7 @@
             <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           </div>
           <h4>Work Where the Code Lives</h4>
-          <p>Project management lives in GitHub. No context switching. No syncing between tools. One source of truth.</p>
+          <p>Project management lives alongside the code. A custom dashboard pulls from GitHub automatically. No context switching, no syncing between tools.</p>
         </div>
         <div class="principle">
           <div class="p-icon">
@@ -1013,8 +1013,8 @@
         <div class="summary-num">1</div>
         <div class="summary-content">
           <span class="summary-category cat-tooling">Tooling</span>
-          <h4>ClickUp is replaced by GitHub Projects</h4>
-          <p>All sprint planning, feature tracking, and issue management moves into GitHub Projects. ClickUp is no longer used for engineering work. One tool, one source of truth.</p>
+          <h4>ClickUp is replaced by a custom dashboard</h4>
+          <p>Sprint planning, feature tracking, and issue management moves into a custom-built dashboard that pulls directly from GitHub. It works alongside our AI tooling and core engineering work. One integrated view, one source of truth.</p>
         </div>
       </div>
       <div class="summary-item">
@@ -1069,12 +1069,20 @@
         <div class="summary-num">8</div>
         <div class="summary-content">
           <span class="summary-category cat-culture">Culture</span>
+          <h4>Prototyping and showcases drive progress</h4>
+          <p>Features are prototyped early, demoed frequently, and validated with real users. The Work Showcase isn't a formality &mdash; it's where progress is measured. If you can't show it, it's not done.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">9</div>
+        <div class="summary-content">
+          <span class="summary-category cat-culture">Culture</span>
           <h4>Issue identification becomes a valued contribution</h4>
           <p>Finding and reporting bugs is tracked as output, not busywork. The dashboard shows "Issues Identified" alongside "Issues Solved" and "Features Shipped" as equal metrics.</p>
         </div>
       </div>
       <div class="summary-item">
-        <div class="summary-num">9</div>
+        <div class="summary-num">10</div>
         <div class="summary-content">
           <span class="summary-category cat-tracking">Tracking</span>
           <h4>A live dashboard replaces status update meetings</h4>
@@ -1082,7 +1090,7 @@
         </div>
       </div>
       <div class="summary-item">
-        <div class="summary-num">10</div>
+        <div class="summary-num">11</div>
         <div class="summary-content">
           <span class="summary-category cat-tracking">Tracking</span>
           <h4>Individual contributions are recognised automatically</h4>
@@ -1090,7 +1098,7 @@
         </div>
       </div>
       <div class="summary-item">
-        <div class="summary-num">11</div>
+        <div class="summary-num">12</div>
         <div class="summary-content">
           <span class="summary-category cat-process">Process</span>
           <h4>Meetings are reduced to four per sprint</h4>
@@ -1098,11 +1106,11 @@
         </div>
       </div>
       <div class="summary-item">
-        <div class="summary-num">12</div>
+        <div class="summary-num">13</div>
         <div class="summary-content">
           <span class="summary-category cat-culture">Culture</span>
-          <h4>Teams own their repos end-to-end</h4>
-          <p>Each team is responsible for the health of their repositories &mdash; open issue count, PR review turnaround, and code quality. Repo health is a team metric, not just an individual one.</p>
+          <h4>Feature developers own the feature end-to-end</h4>
+          <p>The pair assigned to a feature is responsible for building it out completely &mdash; from prototype through deployment and demo. No partial handoffs, no "someone else will finish it." You build it, you ship it, you show it.</p>
         </div>
       </div>
     </div>
@@ -1111,7 +1119,7 @@
   <!-- Proposed Dashboard Design -->
   <section>
     <div class="section-title">Proposed Dashboard Design</div>
-    <p class="section-subtitle">A single live view for everyone. No digging through ClickUp, no asking "what did you work on?" &mdash; auto-generated from GitHub activity. Four views, one source of truth.</p>
+    <p class="section-subtitle">A single live view for everyone. No digging through ClickUp, no asking "what did you work on?" &mdash; auto-generated from GitHub activity. Six views, one source of truth.</p>
 
     <div class="dash-chrome">
       <div class="dash-topbar">
@@ -1503,7 +1511,7 @@
       <div class="rhythm-card">
         <div class="day">Thursday &middot; End of Sprint</div>
         <h3>Work Showcase</h3>
-        <p>Live demo of completed features. Pairs present what they built and how it works from a user perspective. Celebrate shipped work.</p>
+        <p>The most important meeting of the sprint. Pairs demo prototypes and finished features live. If you can't show it working, it's not done. This is where progress is measured.</p>
         <span class="cadence">Every 2 weeks</span>
       </div>
       <div class="rhythm-card">
