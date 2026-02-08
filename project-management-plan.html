@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N1 Healthcare - Engineering Operations Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1B6971;
+    --primary-hover: #196067;
+    --primary-light: #E8F0F1;
+    --primary-50: #E6F4F4;
+    --primary-100: #B3DEDE;
+
+    --bg: #F8FAFC;
+    --surface: #ffffff;
+    --surface-raised: #F1F5F9;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
+
+    --text: #1E293B;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+    --text-faint: #94A3B8;
+
+    --green: #16A34A;
+    --green-light: #DCFCE7;
+    --green-50: #F0FDF4;
+    --red: #DC2626;
+    --red-light: #FEE2E2;
+    --red-50: #FEF2F2;
+    --amber: #CA8A04;
+    --amber-light: #FEF9C3;
+    --amber-50: #FEFCE8;
+    --blue: #2563EB;
+    --blue-light: #DBEAFE;
+    --blue-50: #EFF6FF;
+    --purple: #9333EA;
+    --purple-light: #F3E8FF;
+    --orange: #EA580C;
+    --orange-light: #FFEDD5;
+
+    --radius: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Hero --- */
+  .hero {
+    padding: 64px 40px 56px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--primary-50) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .hero-logo svg { height: 44px; width: auto; }
+  .hero-logo span {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.3px;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    background: var(--primary-light);
+    border: 1px solid var(--primary-100);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .hero p {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* --- Layout --- */
+  .container {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  section {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 36px;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+
+  /* --- Team Cards --- */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+  }
+  .team-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .team-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+  }
+  .team-card .team-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+  .team-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
+  .team-card .team-lead { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+  .team-card .team-scope {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    line-height: 1.7;
+  }
+  .icon-leadership { background: var(--primary-light); color: var(--primary); }
+  .icon-platform { background: var(--green-light); color: var(--green); }
+  .icon-medical { background: var(--blue-light); color: var(--blue); }
+  .icon-infra { background: var(--amber-light); color: var(--amber); }
+
+  /* --- Meeting Rhythm --- */
+  .rhythm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .rhythm-grid { grid-template-columns: 1fr; } }
+
+  .rhythm-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .rhythm-card .day {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 5px;
+  }
+  .rhythm-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .rhythm-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .rhythm-card .cadence {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 3px 10px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* --- Problems --- */
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .problem-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: start;
+    box-shadow: var(--shadow-sm);
+  }
+  .problem-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--red-50);
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .problem-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
+  .problem-content p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .problem-tag {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tag-process { background: var(--amber-light); color: var(--amber); }
+  .tag-visibility { background: var(--blue-light); color: var(--blue); }
+  .tag-leadership { background: var(--red-light); color: var(--red); }
+  .tag-tooling { background: var(--purple-light); color: var(--purple); }
+
+  /* --- Solution --- */
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .solution-grid { grid-template-columns: 1fr; } }
+
+  .solution-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .solution-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), #22C55E);
+  }
+  .solution-card .sol-num {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--surface-raised);
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    line-height: 1;
+  }
+  .solution-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .solution-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+  .solution-card ul { list-style: none; }
+  .solution-card li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 5px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .solution-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 8px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+
+  /* --- Dashboard Chrome --- */
+  .dash-chrome {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-top: 36px;
+  }
+  .dash-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .dash-topbar .dash-brand {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .dash-topbar .dash-sprint {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .dash-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .dash-tab {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .dash-tab:hover { color: var(--text); }
+  .dash-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: 600;
+  }
+  .dash-panel {
+    display: none;
+    padding: 28px;
+    background: var(--bg);
+    min-height: 420px;
+  }
+  .dash-panel.active { display: block; }
+  .dash-panel h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .dash-panel .dash-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* Sprint view */
+  .sprint-goal {
+    border-left: 3px solid var(--primary);
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    background: var(--primary-50);
+    border-radius: 0 6px 6px 0;
+  }
+  .sprint-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 14px;
+  }
+  .sprint-tables {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .sprint-tables { grid-template-columns: 1fr; } }
+  .sprint-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .sprint-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sprint-table-header span:first-child {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .sprint-table-header span:last-child {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .sprint-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--surface-raised);
+    font-size: 13px;
+  }
+  .sprint-row:last-child { border-bottom: none; }
+  .sprint-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-done { background: var(--green); }
+  .dot-active { background: var(--primary); }
+  .sprint-row .sr-name {
+    flex: 1;
+    color: var(--text);
+  }
+  .sprint-row .sr-name.done {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+  .sprint-row .sr-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .sprint-row .sr-repo {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--text-faint);
+    display: block;
+    margin-top: 1px;
+  }
+
+  /* Future features */
+  .ff-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .ff-filters .ff-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+  .ff-pill {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+  }
+  .ff-pill.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .ff-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .ff-table-header {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .ff-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--surface-raised);
+    align-items: center;
+  }
+  .ff-row:last-child { border-bottom: none; }
+  .ff-row .ff-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .ff-row .ff-sub { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+  .ff-priority {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .ff-priority.high { color: var(--red); }
+  .ff-priority.medium { color: var(--orange); }
+  .ff-priority.low { color: var(--text-faint); }
+  .ff-target {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  /* Team dashboard */
+  .td-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .td-grid { grid-template-columns: 1fr; } }
+  .td-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+  }
+  .td-card .td-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .td-card .td-value {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text);
+    display: inline;
+  }
+  .td-card .td-delta {
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+  .td-delta.positive { color: var(--green); }
+  .td-delta.negative { color: var(--red); }
+  .td-chart {
+    margin-top: 14px;
+    height: 80px;
+    position: relative;
+  }
+  .td-chart svg { width: 100%; height: 100%; }
+  .td-chart-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-top: 4px;
+  }
+
+  /* Individual dashboard */
+  .id-people {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .id-pill {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+  }
+  .id-pill.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .id-pill .id-team {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+  .id-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 700px) { .id-main { grid-template-columns: 1fr; } }
+  .id-features-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+  }
+  .id-features-card .td-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .id-features-card .td-value { font-size: 28px; font-weight: 800; color: var(--text); }
+  .id-shipped {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .id-shipped-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .id-shipped-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 18px;
+    border-bottom: 1px solid var(--surface-raised);
+    font-size: 13px;
+  }
+  .id-shipped-row:last-child { border-bottom: none; }
+  .id-shipped-row span:first-child { color: var(--text); }
+  .id-shipped-row span:last-child { color: var(--text-faint); font-size: 12px; }
+  .id-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .id-bottom { grid-template-columns: 1fr; } }
+
+  /* --- Comparison --- */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: 36px;
+    box-shadow: var(--shadow-sm);
+  }
+  @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  .compare-col {
+    padding: 28px;
+  }
+  .compare-before {
+    background: var(--red-50);
+    border-right: 1px solid var(--border);
+  }
+  .compare-after {
+    background: var(--green-50);
+  }
+  .compare-col h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .compare-before h3 { color: var(--red); }
+  .compare-after h3 { color: var(--green); }
+  .compare-col ul { list-style: none; }
+  .compare-col li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    gap: 10px;
+    align-items: start;
+  }
+  .compare-col li:last-child { border-bottom: none; }
+  .compare-col li .icon { flex-shrink: 0; font-size: 13px; margin-top: 2px; }
+  .compare-before li .icon { color: var(--red); }
+  .compare-after li .icon { color: var(--green); }
+
+  /* --- Sprint Cycle --- */
+  .sprint-timeline {
+    display: flex;
+    gap: 0;
+    margin-top: 28px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  @media (max-width: 700px) {
+    .sprint-timeline { flex-direction: column; }
+  }
+  .sprint-week {
+    flex: 1;
+    padding: 24px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+  }
+  .sprint-week:last-child { border-right: none; }
+  .sprint-week h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .week-1 h4 { color: var(--primary); }
+  .week-2 h4 { color: var(--green); }
+  .sprint-week ul { list-style: none; }
+  .sprint-week li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .sprint-week li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+  }
+  .week-1 li::before { border-color: var(--primary); }
+  .week-2 li::before { border-color: var(--green); }
+
+  /* --- Principles --- */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .principles-grid { grid-template-columns: 1fr; } }
+
+  .principle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s;
+  }
+  .principle:hover { border-color: var(--primary); }
+  .principle .p-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius);
+    background: var(--primary-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .principle .p-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--primary);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .principle h4 { font-size: 14px; font-weight: 700; margin-bottom: 5px; color: var(--text); }
+  .principle p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* --- Footer --- */
+  footer {
+    padding: 36px 40px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  footer .footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  footer .footer-logo svg { height: 20px; width: auto; }
+  footer .footer-logo span { font-size: 13px; font-weight: 600; color: var(--primary); }
+  footer p { margin-top: 4px; }
+
+  /* --- Summary Checklist --- */
+  .summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .summary-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-item:last-child { border-bottom: none; }
+  .summary-item:nth-child(even) { background: var(--surface-raised); }
+  .summary-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    border-right: 1px solid var(--border);
+    background: var(--primary-50);
+  }
+  .summary-content {
+    padding: 18px 22px;
+  }
+  .summary-content h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .summary-content p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .summary-category {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .cat-tooling { background: var(--purple-light); color: var(--purple); }
+  .cat-process { background: var(--amber-light); color: var(--amber); }
+  .cat-culture { background: var(--blue-light); color: var(--blue); }
+  .cat-tracking { background: var(--green-light); color: var(--green); }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-logo">
+    <svg viewBox="0 0 88 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.08994 95.9974C6.08994 64.6049 6.08994 33.2124 6.10519 1.81992C6.10519 1.25514 5.75442 0.355668 6.33395 0.170022C7.12444 -0.0809925 8.0827 -0.109755 8.86811 0.470716C9.03586 0.596223 9.16804 0.774025 9.32054 0.923065C12.8841 4.40589 16.407 7.93316 20.024 11.3585C22.7411 13.9287 25.4253 16.533 28.117 19.1295C30.8418 21.7546 33.5717 24.372 36.2965 26.9972C38.8967 29.5021 41.5097 31.9966 44.115 34.5015C46.8423 37.124 49.6052 39.7048 52.2843 42.3797C54.5388 44.6283 56.8747 46.7933 59.2005 48.9636C59.7393 49.4656 59.963 49.9807 59.9605 50.7468C59.9325 59.3885 59.9452 68.0276 59.93 76.6693C59.93 77.017 60.1841 77.5295 59.7241 77.6995C59.3784 77.825 59.1878 77.3543 58.9565 77.1295C55.6547 73.929 52.4037 70.6763 49.0588 67.5256C46.4941 65.1069 43.9523 62.6621 41.4105 60.2174C38.9018 57.8014 36.3524 55.4298 33.8665 52.985C31.3908 50.5481 28.8262 48.2079 26.1548 45.6873V96H6.08994V95.9974Z" fill="#1B6971"/>
+      <path d="M63.9843 96C63.9843 70.2426 63.9767 44.4852 64.0122 18.7252C64.0122 17.5329 63.7182 17.2453 62.5779 17.2609C57.771 17.3289 52.959 17.2897 48 17.2897C48.8692 14.2828 49.7231 11.3726 50.5466 8.45464C51.2435 5.99421 51.9327 3.53378 52.5662 1.05504C52.7588 0.299393 53.0806 7.00232e-05 53.8433 7.00232e-05C63.551 0.0288317 73.2586 0.0575934 82.9663 7.00232e-05C84.1319 -0.00777407 83.9951 0.644533 83.9951 1.39234C83.99 32.9282 83.99 64.4615 83.99 95.9974H63.9843V96Z" fill="#1B6971"/>
+    </svg>
+    <span>N1 Healthcare</span>
+  </div>
+  <div class="hero-badge">Internal Proposal</div>
+  <h1>Engineering Operations Proposal</h1>
+  <p>Moving from disconnected tooling and low visibility to integrated, GitHub-native project management with clear accountability.</p>
+</div>
+
+<div class="container">
+
+  <!-- The Proposal -->
+  <section>
+    <div class="section-title">Where We Stand</div>
+    <p class="section-subtitle">A unified approach to how we plan, track, and ship work &mdash; replacing disconnected tools with a single system built around where the work already happens.</p>
+
+    <div style="margin-bottom: 36px;">
+      <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.85; max-width: 780px;">
+        <p>Project management lives in ClickUp, disconnected from GitHub where the work actually happens. There is no real-time visibility into output, and work is reconstructed from memory at the end of each sprint. The result is duplicated effort in tracking and a growing gap between planned work and what's actually happening in the codebase.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="margin-top: 0; margin-bottom: 40px;">
+      <div class="compare-col compare-before">
+        <h3>Current State</h3>
+        <ul>
+          <li><span class="icon">&#10005;</span> ClickUp disconnected from GitHub</li>
+          <li><span class="icon">&#10005;</span> Sprint points don't reflect real effort</li>
+          <li><span class="icon">&#10005;</span> Manual sprint setup every 2 weeks</li>
+          <li><span class="icon">&#10005;</span> No visibility into daily output</li>
+          <li><span class="icon">&#10005;</span> Bugs age without owners</li>
+          <li><span class="icon">&#10005;</span> Features "done" but not user-validated</li>
+          <li><span class="icon">&#10005;</span> Work reconstructed from memory</li>
+        </ul>
+      </div>
+      <div class="compare-col compare-after">
+        <h3>Proposed State</h3>
+        <ul>
+          <li><span class="icon">&#10003;</span> GitHub is the single source of truth</li>
+          <li><span class="icon">&#10003;</span> Shipped features are the metric</li>
+          <li><span class="icon">&#10003;</span> Sprints are cumulative and auto-tracked</li>
+          <li><span class="icon">&#10003;</span> Dashboard shows real-time activity</li>
+          <li><span class="icon">&#10003;</span> Issues triaged weekly with clear owners</li>
+          <li><span class="icon">&#10003;</span> Pairs demo user-facing results</li>
+          <li><span class="icon">&#10003;</span> Work is visible as it happens</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Key Principles -->
+    <div style="margin-bottom: 40px;">
+      <h3 style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px;">Key Principles for Improvement</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">The beliefs behind the changes. If we agree on these, the specific tools and processes are just details.</p>
+      <div class="principles-grid">
+        <div class="principle">
+          <div class="p-icon">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h4>Transparency by Default</h4>
+          <p>All work is visible in one place. No hidden effort, no invisible contributions. If it happened, it shows up.</p>
+        </div>
+        <div class="principle">
+          <div class="p-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </div>
+          <h4>Work Where the Code Lives</h4>
+          <p>Project management lives in GitHub. No context switching. No syncing between tools. One source of truth.</p>
+        </div>
+        <div class="principle">
+          <div class="p-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4>Ship to Users, Not to Boards</h4>
+          <p>A feature isn't done when the ticket moves. It's done when a user can see it and it works.</p>
+        </div>
+        <div class="principle">
+          <div class="p-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h4>Clean Repos, Fast Teams</h4>
+          <p>Bugs and issues are first-class citizens. A clean codebase is the foundation for shipping fast.</p>
+        </div>
+        <div class="principle">
+          <div class="p-icon">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h4>Measure Output, Not Estimates</h4>
+          <p>Sprint points are gone. What you merge, demo, and resolve is what counts. Show your work.</p>
+        </div>
+        <div class="principle">
+          <div class="p-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4>Pairs Over Individuals</h4>
+          <p>Two people own every feature. Knowledge sharing, accountability, and better code are built into the process.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- What Actually Changes -->
+  <section>
+    <div class="section-title">What Actually Changes</div>
+    <p class="section-subtitle">A point-by-point summary of every concrete change. This is what happens when we start.</p>
+
+    <div class="summary-list">
+      <div class="summary-item">
+        <div class="summary-num">1</div>
+        <div class="summary-content">
+          <span class="summary-category cat-tooling">Tooling</span>
+          <h4>ClickUp is replaced by GitHub Projects</h4>
+          <p>All sprint planning, feature tracking, and issue management moves into GitHub Projects. ClickUp is no longer used for engineering work. One tool, one source of truth.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">2</div>
+        <div class="summary-content">
+          <span class="summary-category cat-tooling">Tooling</span>
+          <h4>All work is tracked in GitHub</h4>
+          <p>Bugs and improvements are tracked as GitHub Issues in the relevant repo. Features are tracked on a separate sprint board (tool to be determined). PRs link directly to the work they deliver. No separate task lists.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">3</div>
+        <div class="summary-content">
+          <span class="summary-category cat-process">Process</span>
+          <h4>Sprint points are removed entirely</h4>
+          <p>What you merge, demo, and resolve is what counts. The dashboard tracks real output automatically from GitHub activity.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">4</div>
+        <div class="summary-content">
+          <span class="summary-category cat-process">Process</span>
+          <h4>Every feature is assigned to a pair</h4>
+          <p>At sprint planning, each feature gets two owners. They share responsibility from design through deployment. No handoffs, no single points of failure. Both names show on the board.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">5</div>
+        <div class="summary-content">
+          <span class="summary-category cat-process">Process</span>
+          <h4>Issues are triaged before features at every sprint start</h4>
+          <p>Monday sprint planning begins with issue review. Open bugs are assigned owners. Stale issues are closed or re-prioritised. Only after issue triage do we assign feature work.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">6</div>
+        <div class="summary-content">
+          <span class="summary-category cat-process">Process</span>
+          <h4>Sprints are cumulative &mdash; no reset every 2 weeks</h4>
+          <p>Unfinished work carries over automatically. No manual re-creation of tickets. The backlog is a living list that grows and shrinks based on what gets done.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">7</div>
+        <div class="summary-content">
+          <span class="summary-category cat-culture">Culture</span>
+          <h4>"Done" means a user can see it, not that a ticket moved</h4>
+          <p>A feature is complete when it's merged, deployed, and demonstrable. The Work Showcase on Thursday is where pairs show what they built from a user's perspective.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">8</div>
+        <div class="summary-content">
+          <span class="summary-category cat-culture">Culture</span>
+          <h4>Issue identification becomes a valued contribution</h4>
+          <p>Finding and reporting bugs is tracked as output, not busywork. The dashboard shows "Issues Identified" alongside "Issues Solved" and "Features Shipped" as equal metrics.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">9</div>
+        <div class="summary-content">
+          <span class="summary-category cat-tracking">Tracking</span>
+          <h4>A live dashboard replaces status update meetings</h4>
+          <p>Sprint progress, team metrics, and individual output are all auto-generated from GitHub data. No one needs to manually update a board. No one needs to ask "what are you working on?"</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">10</div>
+        <div class="summary-content">
+          <span class="summary-category cat-tracking">Tracking</span>
+          <h4>Individual contributions are recognised automatically</h4>
+          <p>The Individual Dashboard highlights features shipped, PRs merged, and issues resolved per person over time. No more invisible effort &mdash; everyone's work shows up.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">11</div>
+        <div class="summary-content">
+          <span class="summary-category cat-process">Process</span>
+          <h4>Meetings are reduced to four per sprint</h4>
+          <p>Sprint Planning (Monday, Week 1), Progress Check (Monday, Week 2), Work Showcase (Thursday, end of sprint), plus one weekly team meeting per team. Everything else is optional.</p>
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-num">12</div>
+        <div class="summary-content">
+          <span class="summary-category cat-culture">Culture</span>
+          <h4>Teams own their repos end-to-end</h4>
+          <p>Each team is responsible for the health of their repositories &mdash; open issue count, PR review turnaround, and code quality. Repo health is a team metric, not just an individual one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proposed Dashboard Design -->
+  <section>
+    <div class="section-title">Proposed Dashboard Design</div>
+    <p class="section-subtitle">A single live view for everyone. No digging through ClickUp, no asking "what did you work on?" &mdash; auto-generated from GitHub activity. Four views, one source of truth.</p>
+
+    <div class="dash-chrome">
+      <div class="dash-topbar">
+        <span class="dash-brand">N1 Healthcare</span>
+        <span class="dash-sprint">Sprint 22 &middot; 02/03 &ndash; 02/14</span>
+      </div>
+      <div class="dash-tabs">
+        <button class="dash-tab active" onclick="switchTab(0)">Sprint</button>
+        <button class="dash-tab" onclick="switchTab(1)">Future Features</button>
+        <button class="dash-tab" onclick="switchTab(2)">Team Dashboard</button>
+        <button class="dash-tab" onclick="switchTab(3)">Individual Dashboard</button>
+      </div>
+
+      <!-- Tab 1: Sprint -->
+      <div class="dash-panel active" id="tab-0">
+        <h3>Sprint 22: React Launch & CHR v2</h3>
+        <div class="dash-desc">2026-02-03 &rarr; 2026-02-14</div>
+        <div class="sprint-goal">Ship React frontend to production, launch CHR v2 pipeline</div>
+        <div class="sprint-section-label">Application</div>
+        <div class="sprint-tables">
+          <div class="sprint-table">
+            <div class="sprint-table-header">
+              <span>Features</span>
+              <span>5/7</span>
+            </div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><span class="sr-name done">Billing page with Stripe top-up</span><span class="sr-meta">Darpan, Yousuf</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-active"></span><span class="sr-name">Patient creation & association flow</span><span class="sr-meta">Yousuf, Darpan</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><span class="sr-name done">Settings page (profile, password, sessions)</span><span class="sr-meta">Yousuf, Mei</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><span class="sr-name done">Record upload with progress tracking</span><span class="sr-meta">Darpan, Mei</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-active"></span><span class="sr-name">OAuth login (Google & Microsoft)</span><span class="sr-meta">Mei, Darpan</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><span class="sr-name done">Diagnosis & procedure pages</span><span class="sr-meta">Mei, Yousuf</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><span class="sr-name done">Biomarker detail view with trends</span><span class="sr-meta">Darpan, Jasper</span></div>
+          </div>
+          <div class="sprint-table">
+            <div class="sprint-table-header">
+              <span>Issues</span>
+              <span>3/5</span>
+            </div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><div style="flex:1"><span class="sr-name done">Login 500 on expired refresh token</span><span class="sr-repo">api-backend</span></div><span class="sr-meta">Darpan</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-active"></span><div style="flex:1"><span class="sr-name">Patient list pagination breaks at 100+</span><span class="sr-repo">react-frontend</span></div><span class="sr-meta">Yousuf</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><div style="flex:1"><span class="sr-name done">Upload modal stuck on Creating state</span><span class="sr-repo">react-frontend</span></div><span class="sr-meta">Darpan</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-active"></span><div style="flex:1"><span class="sr-name">Sidebar balance shows stale data</span><span class="sr-repo">react-frontend</span></div><span class="sr-meta">Mei</span></div>
+            <div class="sprint-row"><span class="sprint-dot dot-done"></span><div style="flex:1"><span class="sr-name done">JWT refresh race condition on parallel requests</span><span class="sr-repo">api-backend</span></div><span class="sr-meta">Darpan</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Future Features -->
+      <div class="dash-panel" id="tab-1">
+        <h3>Future Features</h3>
+        <div class="dash-desc">Planned work beyond the current sprint</div>
+        <div class="ff-filters">
+          <span class="ff-label">Team</span>
+          <span class="ff-pill active">All</span>
+          <span class="ff-pill">Application</span>
+          <span class="ff-pill">Medical Insights</span>
+          <span class="ff-pill">Infra</span>
+          <span style="width: 16px"></span>
+          <span class="ff-label">Priority</span>
+          <span class="ff-pill active">All</span>
+          <span class="ff-pill">high</span>
+          <span class="ff-pill">medium</span>
+          <span class="ff-pill">low</span>
+        </div>
+        <div class="sprint-section-label">Application</div>
+        <div class="ff-table">
+          <div class="ff-table-header">
+            <span>Feature</span>
+            <span style="text-align:center">Priority</span>
+            <span style="text-align:center">Target</span>
+          </div>
+          <div class="ff-row"><div><div class="ff-name">Report generation & viewer</div><div class="ff-sub">Generate CHR reports from patient data, PDF viewer with annotations</div></div><div class="ff-priority high">high</div><div class="ff-target">Q1 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Real-time WebSocket progress updates</div><div class="ff-sub">Live parsing progress via WebSocket instead of polling</div></div><div class="ff-priority high">high</div><div class="ff-target">Q1 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Cost estimation before report generation</div><div class="ff-sub">Show credit cost estimate before generating a report</div></div><div class="ff-priority medium">medium</div><div class="ff-target">Q1 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Auto top-up (recurring billing)</div><div class="ff-sub">Stripe subscription for automatic credit replenishment</div></div><div class="ff-priority medium">medium</div><div class="ff-target">Q2 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Invoice generation & download</div><div class="ff-sub">PDF invoices for all transactions</div></div><div class="ff-priority medium">medium</div><div class="ff-target">Q2 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Multi-language support (i18n)</div><div class="ff-sub">Dutch, German, French translations</div></div><div class="ff-priority low">low</div><div class="ff-target">Q2+ 2026</div></div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Team Dashboard -->
+      <div class="dash-panel" id="tab-2">
+        <h3>Team Dashboard</h3>
+        <div class="dash-desc">Weekly metrics across all teams</div>
+        <div class="td-grid">
+          <div class="td-card">
+            <div class="td-label">Issues Remaining</div>
+            <span class="td-value">22</span>
+            <span class="td-delta negative">-5</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#DC2626" stop-opacity="0.15"/><stop offset="100%" stop-color="#DC2626" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,8 L50,12 L100,16 L150,18 L200,20 L250,22 L300,42" fill="none" stroke="#DC2626" stroke-width="2"/>
+                <path d="M0,8 L50,12 L100,16 L150,18 L200,20 L250,22 L300,42 L300,80 L0,80Z" fill="url(#gRed)"/>
+                <circle cx="0" cy="8" r="3" fill="#DC2626"/><circle cx="50" cy="12" r="3" fill="#DC2626"/><circle cx="100" cy="16" r="3" fill="#DC2626"/><circle cx="150" cy="18" r="3" fill="#DC2626"/><circle cx="200" cy="20" r="3" fill="#DC2626"/><circle cx="250" cy="22" r="3" fill="#DC2626"/><circle cx="300" cy="42" r="3" fill="#DC2626"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-label">Issues Solved</div>
+            <span class="td-value">13</span>
+            <span class="td-delta positive">+2</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16A34A" stop-opacity="0.15"/><stop offset="100%" stop-color="#16A34A" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,52 L50,48 L100,44 L150,50 L200,36 L250,24 L300,18" fill="none" stroke="#16A34A" stroke-width="2"/>
+                <path d="M0,52 L50,48 L100,44 L150,50 L200,36 L250,24 L300,18 L300,80 L0,80Z" fill="url(#gGreen)"/>
+                <circle cx="0" cy="52" r="3" fill="#16A34A"/><circle cx="50" cy="48" r="3" fill="#16A34A"/><circle cx="100" cy="44" r="3" fill="#16A34A"/><circle cx="150" cy="50" r="3" fill="#16A34A"/><circle cx="200" cy="36" r="3" fill="#16A34A"/><circle cx="250" cy="24" r="3" fill="#16A34A"/><circle cx="300" cy="18" r="3" fill="#16A34A"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-label">Features Complete</div>
+            <span class="td-value">4</span>
+            <span class="td-delta positive">+1</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1B6971" stop-opacity="0.15"/><stop offset="100%" stop-color="#1B6971" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,64 L50,52 L100,48 L150,56 L200,40 L250,28 L300,20" fill="none" stroke="#1B6971" stroke-width="2"/>
+                <path d="M0,64 L50,52 L100,48 L150,56 L200,40 L250,28 L300,20 L300,80 L0,80Z" fill="url(#gTeal)"/>
+                <circle cx="0" cy="64" r="3" fill="#1B6971"/><circle cx="50" cy="52" r="3" fill="#1B6971"/><circle cx="100" cy="48" r="3" fill="#1B6971"/><circle cx="150" cy="56" r="3" fill="#1B6971"/><circle cx="200" cy="40" r="3" fill="#1B6971"/><circle cx="250" cy="28" r="3" fill="#1B6971"/><circle cx="300" cy="20" r="3" fill="#1B6971"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-label">PRs Merged</div>
+            <span class="td-value">25</span>
+            <span class="td-delta positive">+4</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563EB" stop-opacity="0.15"/><stop offset="100%" stop-color="#2563EB" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,44 L50,36 L100,40 L150,52 L200,28 L250,20 L300,16" fill="none" stroke="#2563EB" stroke-width="2"/>
+                <path d="M0,44 L50,36 L100,40 L150,52 L200,28 L250,20 L300,16 L300,80 L0,80Z" fill="url(#gBlue)"/>
+                <circle cx="0" cy="44" r="3" fill="#2563EB"/><circle cx="50" cy="36" r="3" fill="#2563EB"/><circle cx="100" cy="40" r="3" fill="#2563EB"/><circle cx="150" cy="52" r="3" fill="#2563EB"/><circle cx="200" cy="28" r="3" fill="#2563EB"/><circle cx="250" cy="20" r="3" fill="#2563EB"/><circle cx="300" cy="16" r="3" fill="#2563EB"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Individual Dashboard -->
+      <div class="dash-panel" id="tab-3">
+        <h3>Individual Dashboard</h3>
+        <div class="dash-desc">Per-person output over time</div>
+        <div class="id-people">
+          <span class="id-pill active">Darpan <span class="id-team">Application</span></span>
+          <span class="id-pill">Yousuf <span class="id-team">Application</span></span>
+          <span class="id-pill">Mei <span class="id-team">Application</span></span>
+          <span class="id-pill">Aniruddha <span class="id-team">Medical Insights</span></span>
+          <span class="id-pill">Priya <span class="id-team">Medical Insights</span></span>
+          <span class="id-pill">Rahul <span class="id-team">Medical Insights</span></span>
+          <span class="id-pill">Alex <span class="id-team">Infra</span></span>
+          <span class="id-pill">Jasper <span class="id-team">Infra</span></span>
+        </div>
+        <div class="id-main">
+          <div class="id-features-card">
+            <div class="td-label">Features Developed</div>
+            <div class="td-value">9 total</div>
+            <div class="td-chart" style="margin-top: 16px;">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <path d="M0,64 L40,72 L80,52 L120,52 L160,56 L200,44 L240,32 L280,28 L300,20" fill="none" stroke="#1B6971" stroke-width="2"/>
+                <circle cx="0" cy="64" r="3" fill="#1B6971"/><circle cx="40" cy="72" r="3" fill="#1B6971"/><circle cx="80" cy="52" r="3" fill="#1B6971"/><circle cx="120" cy="52" r="3" fill="#1B6971"/><circle cx="160" cy="56" r="3" fill="#1B6971"/><circle cx="200" cy="44" r="3" fill="#1B6971"/><circle cx="240" cy="32" r="3" fill="#1B6971"/><circle cx="280" cy="28" r="3" fill="#1B6971"/><circle cx="300" cy="20" r="3" fill="#1B6971"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="id-shipped">
+            <div class="id-shipped-header">Shipped Features (9)</div>
+            <div class="id-shipped-row"><span>Billing page with Stripe top-up</span><span>Feb 5</span></div>
+            <div class="id-shipped-row"><span>Biomarker detail view with trends</span><span>Feb 3</span></div>
+            <div class="id-shipped-row"><span>Record upload with progress tracking</span><span>Jan 24</span></div>
+            <div class="id-shipped-row"><span>Medical records table with status tracking</span><span>Jan 17</span></div>
+            <div class="id-shipped-row"><span>Patient list & context switching</span><span>Jan 8</span></div>
+            <div class="id-shipped-row"><span>Biomarker views with reference ranges</span><span>Dec 18</span></div>
+            <div class="id-shipped-row"><span>Authentication (login, signup, sessions)</span><span>Dec 11</span></div>
+          </div>
+        </div>
+        <div class="id-bottom">
+          <div class="td-card">
+            <div class="td-label">PRs Merged</div>
+            <span class="td-value">40</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gBlue2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563EB" stop-opacity="0.12"/><stop offset="100%" stop-color="#2563EB" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,40 L50,44 L100,36 L150,52 L200,28 L250,24 L300,20" fill="none" stroke="#2563EB" stroke-width="2"/>
+                <path d="M0,40 L50,44 L100,36 L150,52 L200,28 L250,24 L300,20 L300,80 L0,80Z" fill="url(#gBlue2)"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-label">Issues Solved</div>
+            <span class="td-value">19</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gGreen2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16A34A" stop-opacity="0.12"/><stop offset="100%" stop-color="#16A34A" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,56 L50,48 L100,52 L150,44 L200,36 L250,28 L300,20" fill="none" stroke="#16A34A" stroke-width="2"/>
+                <path d="M0,56 L50,48 L100,52 L150,44 L200,36 L250,28 L300,20 L300,80 L0,80Z" fill="url(#gGreen2)"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-label">Issues Identified</div>
+            <span class="td-value">13</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gOrange" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EA580C" stop-opacity="0.12"/><stop offset="100%" stop-color="#EA580C" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28" fill="none" stroke="#EA580C" stroke-width="2"/>
+                <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28 L300,80 L0,80Z" fill="url(#gOrange)"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function switchTab(index) {
+      document.querySelectorAll('.dash-tab').forEach((t, i) => t.classList.toggle('active', i === index));
+      document.querySelectorAll('.dash-panel').forEach((p, i) => p.classList.toggle('active', i === index));
+    }
+  </script>
+
+  <!-- Teams -->
+  <section>
+    <div class="section-title">Team Structure</div>
+    <p class="section-subtitle">Three teams, clear ownership. Each team owns their domain end-to-end, from issue identification through production deployment.</p>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-icon icon-platform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Platform & Extraction</h3>
+        <div class="team-lead">Lead: Umar</div>
+        <div class="team-scope">Core API, document parsing, data extraction pipelines, patient data management, record processing</div>
+      </div>
+      <div class="team-card">
+        <div class="team-icon icon-medical">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Medical AI</h3>
+        <div class="team-lead">Lead: Nikhil / Raj</div>
+        <div class="team-scope">Health reports, biomarker analysis, clinical insights, AI workflow orchestration, medical knowledge graph</div>
+      </div>
+      <div class="team-card">
+        <div class="team-icon icon-infra">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <h3>Infrastructure</h3>
+        <div class="team-lead">Arun</div>
+        <div class="team-scope">Cloud infrastructure, CI/CD, monitoring, security, deployments, database operations, SigNoz observability</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cadence -->
+  <section>
+    <div class="section-title">Sprint Cycle & Meeting Rhythm</div>
+    <p class="section-subtitle">Two-week sprints with a clear rhythm. Minimal meetings, maximum signal.</p>
+
+    <h3 style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px;">Sprint Cycle</h3>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Week 1 is about starting right. Week 2 is about finishing strong.</p>
+    <div class="sprint-timeline" style="margin-top: 0; margin-bottom: 40px;">
+      <div class="sprint-week week-1">
+        <h4>Week 1 &mdash; Build</h4>
+        <ul>
+          <li>Monday: Sprint Planning &mdash; assign feature pairs, triage issues</li>
+          <li>Team standups: Deep dive into approach and architecture</li>
+          <li>Pairs begin feature implementation</li>
+          <li>Issue fixes worked in parallel with features</li>
+          <li>PRs open early &mdash; draft PRs on day 2-3</li>
+        </ul>
+      </div>
+      <div class="sprint-week week-2">
+        <h4>Week 2 &mdash; Ship</h4>
+        <ul>
+          <li>Monday: Progress Check &mdash; surface blockers, adjust scope</li>
+          <li>Features move to review and testing</li>
+          <li>Pairs prepare user-facing demos</li>
+          <li>Issue cleanup &mdash; close resolved, re-triage stale</li>
+          <li>Thursday: Work Showcase &mdash; demo and celebrate</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px;">Meetings</h3>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Every meeting has a clear purpose tied to the sprint cycle.</p>
+    <div class="rhythm-grid">
+      <div class="rhythm-card">
+        <div class="day">Monday &middot; Week 1</div>
+        <h3>Tech Update: Sprint Planning</h3>
+        <p>Set sprint scope. Assign feature pairs. Review issue backlog. Define what "done" looks like for each feature.</p>
+        <span class="cadence">Every 2 weeks</span>
+      </div>
+      <div class="rhythm-card">
+        <div class="day">Monday &middot; Week 2</div>
+        <h3>Tech Update: Progress Check</h3>
+        <p>Mid-sprint sync. Are pairs on track? Surface blockers early. Adjust scope if needed. Review open issues.</p>
+        <span class="cadence">Every 2 weeks</span>
+      </div>
+      <div class="rhythm-card">
+        <div class="day">Thursday &middot; End of Sprint</div>
+        <h3>Work Showcase</h3>
+        <p>Live demo of completed features. Pairs present what they built and how it works from a user perspective. Celebrate shipped work.</p>
+        <span class="cadence">Every 2 weeks</span>
+      </div>
+      <div class="rhythm-card">
+        <div class="day">Weekly &middot; All Teams</div>
+        <h3>Team Meeting</h3>
+        <p>Every team has a dedicated 1-hour meeting each week. Technical deep-dives, pair coordination, issue triage within their domain.</p>
+        <span class="cadence">Weekly &middot; 1 hour per team</span>
+        <p style="font-size: 11px; color: var(--text-faint); margin-top: 10px; font-style: italic;">Note: Teams may optionally add a short daily standup if they find it useful, but this is not required.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 88 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.08994 95.9974C6.08994 64.6049 6.08994 33.2124 6.10519 1.81992C6.10519 1.25514 5.75442 0.355668 6.33395 0.170022C7.12444 -0.0809925 8.0827 -0.109755 8.86811 0.470716C9.03586 0.596223 9.16804 0.774025 9.32054 0.923065C12.8841 4.40589 16.407 7.93316 20.024 11.3585C22.7411 13.9287 25.4253 16.533 28.117 19.1295C30.8418 21.7546 33.5717 24.372 36.2965 26.9972C38.8967 29.5021 41.5097 31.9966 44.115 34.5015C46.8423 37.124 49.6052 39.7048 52.2843 42.3797C54.5388 44.6283 56.8747 46.7933 59.2005 48.9636C59.7393 49.4656 59.963 49.9807 59.9605 50.7468C59.9325 59.3885 59.9452 68.0276 59.93 76.6693C59.93 77.017 60.1841 77.5295 59.7241 77.6995C59.3784 77.825 59.1878 77.3543 58.9565 77.1295C55.6547 73.929 52.4037 70.6763 49.0588 67.5256C46.4941 65.1069 43.9523 62.6621 41.4105 60.2174C38.9018 57.8014 36.3524 55.4298 33.8665 52.985C31.3908 50.5481 28.8262 48.2079 26.1548 45.6873V96H6.08994V95.9974Z" fill="#1B6971"/>
+      <path d="M63.9843 96C63.9843 70.2426 63.9767 44.4852 64.0122 18.7252C64.0122 17.5329 63.7182 17.2453 62.5779 17.2609C57.771 17.3289 52.959 17.2897 48 17.2897C48.8692 14.2828 49.7231 11.3726 50.5466 8.45464C51.2435 5.99421 51.9327 3.53378 52.5662 1.05504C52.7588 0.299393 53.0806 7.00232e-05 53.8433 7.00232e-05C63.551 0.0288317 73.2586 0.0575934 82.9663 7.00232e-05C84.1319 -0.00777407 83.9951 0.644533 83.9951 1.39234C83.99 32.9282 83.99 64.4615 83.99 95.9974H63.9843V96Z" fill="#1B6971"/>
+    </svg>
+    <span>N1 Healthcare</span>
+  </div>
+  <p>Engineering Operations Proposal &middot; February 2026</p>
+  <p>Authored by Jasper Middendorp &middot; For internal discussion only</p>
+</footer>
+
+</body>
+</html>
