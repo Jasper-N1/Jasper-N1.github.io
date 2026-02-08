@@ -1117,19 +1117,30 @@
       <div class="dash-topbar">
         <span class="dash-brand">N1 Healthcare</span>
         <span class="dash-sprint">Sprint 22 &middot; 02/03 &ndash; 02/14</span>
+        <span style="margin-left: auto; font-size: 12px; color: var(--text-muted); padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;">Jasper</span>
       </div>
       <div class="dash-tabs">
         <button class="dash-tab active" onclick="switchTab(0)">Sprint</button>
         <button class="dash-tab" onclick="switchTab(1)">Future Features</button>
         <button class="dash-tab" onclick="switchTab(2)">Team Dashboard</button>
-        <button class="dash-tab" onclick="switchTab(3)">Individual Dashboard</button>
+        <button class="dash-tab" onclick="switchTab(3)">Individual</button>
+        <button class="dash-tab" onclick="switchTab(4)">Open PRs</button>
+        <button class="dash-tab" onclick="switchTab(5)">Open Issues</button>
+      </div>
+      <!-- Filter bar -->
+      <div style="display: flex; align-items: center; gap: 10px; padding: 8px 24px; border-bottom: 1px solid var(--border); background: var(--surface-raised); font-size: 12px;" id="filterBar">
+        <span style="font-size: 11px; font-weight: 600; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em;">Team</span>
+        <span class="ff-pill active">All</span>
+        <span class="ff-pill">Application</span>
+        <span class="ff-pill">Medical AI</span>
+        <span class="ff-pill">Infra</span>
+        <span style="margin-left: auto; padding: 4px 12px; border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 600; color: var(--text-muted); background: var(--surface);">Just Me</span>
       </div>
 
       <!-- Tab 1: Sprint -->
       <div class="dash-panel active" id="tab-0">
         <h3>Sprint 22: React Launch & CHR v2</h3>
-        <div class="dash-desc">2026-02-03 &rarr; 2026-02-14</div>
-        <div class="sprint-goal">Ship React frontend to production, launch CHR v2 pipeline</div>
+        <div class="dash-desc">Feb 3 &rarr; Feb 14 &middot; Focus: Ship React frontend to production, launch CHR v2 pipeline</div>
         <div class="sprint-section-label">Application</div>
         <div class="sprint-tables">
           <div class="sprint-table">
@@ -1157,50 +1168,40 @@
             <div class="sprint-row"><span class="sprint-dot dot-done"></span><div style="flex:1"><span class="sr-name done">JWT refresh race condition on parallel requests</span><span class="sr-repo">api-backend</span></div><span class="sr-meta">Darpan</span></div>
           </div>
         </div>
+        <!-- Collapsible open issues -->
+        <div style="margin-top: 20px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); padding: 8px 0;">
+          <span style="font-size: 11px; color: var(--text-faint);">&#9654;</span> Open Issues <span style="font-size: 11px; color: var(--text-faint); font-weight: 400;">(21)</span>
+        </div>
       </div>
 
       <!-- Tab 2: Future Features -->
       <div class="dash-panel" id="tab-1">
         <h3>Future Features</h3>
         <div class="dash-desc">Planned work beyond the current sprint</div>
-        <div class="ff-filters">
-          <span class="ff-label">Team</span>
-          <span class="ff-pill active">All</span>
-          <span class="ff-pill">Application</span>
-          <span class="ff-pill">Medical Insights</span>
-          <span class="ff-pill">Infra</span>
-          <span style="width: 16px"></span>
-          <span class="ff-label">Priority</span>
-          <span class="ff-pill active">All</span>
-          <span class="ff-pill">high</span>
-          <span class="ff-pill">medium</span>
-          <span class="ff-pill">low</span>
-        </div>
-        <div class="sprint-section-label">Application</div>
         <div class="ff-table">
           <div class="ff-table-header">
             <span>Feature</span>
             <span style="text-align:center">Priority</span>
             <span style="text-align:center">Target</span>
           </div>
-          <div class="ff-row"><div><div class="ff-name">Report generation & viewer</div><div class="ff-sub">Generate CHR reports from patient data, PDF viewer with annotations</div></div><div class="ff-priority high">high</div><div class="ff-target">Q1 2026</div></div>
-          <div class="ff-row"><div><div class="ff-name">Real-time WebSocket progress updates</div><div class="ff-sub">Live parsing progress via WebSocket instead of polling</div></div><div class="ff-priority high">high</div><div class="ff-target">Q1 2026</div></div>
-          <div class="ff-row"><div><div class="ff-name">Cost estimation before report generation</div><div class="ff-sub">Show credit cost estimate before generating a report</div></div><div class="ff-priority medium">medium</div><div class="ff-target">Q1 2026</div></div>
-          <div class="ff-row"><div><div class="ff-name">Auto top-up (recurring billing)</div><div class="ff-sub">Stripe subscription for automatic credit replenishment</div></div><div class="ff-priority medium">medium</div><div class="ff-target">Q2 2026</div></div>
-          <div class="ff-row"><div><div class="ff-name">Invoice generation & download</div><div class="ff-sub">PDF invoices for all transactions</div></div><div class="ff-priority medium">medium</div><div class="ff-target">Q2 2026</div></div>
-          <div class="ff-row"><div><div class="ff-name">Multi-language support (i18n)</div><div class="ff-sub">Dutch, German, French translations</div></div><div class="ff-priority low">low</div><div class="ff-target">Q2+ 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Report generation & viewer</div><div class="ff-sub">Generate CHR reports from patient data, PDF viewer with annotations</div></div><div class="ff-priority high">High</div><div class="ff-target">Q1 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Real-time WebSocket progress updates</div><div class="ff-sub">Live parsing progress via WebSocket instead of polling</div></div><div class="ff-priority high">High</div><div class="ff-target">Q1 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Cost estimation before report generation</div><div class="ff-sub">Show credit cost estimate before generating a report</div></div><div class="ff-priority medium">Medium</div><div class="ff-target">Q1 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Auto top-up (recurring billing)</div><div class="ff-sub">Stripe subscription for automatic credit replenishment</div></div><div class="ff-priority medium">Medium</div><div class="ff-target">Q2 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Invoice generation & download</div><div class="ff-sub">PDF invoices for all transactions</div></div><div class="ff-priority medium">Medium</div><div class="ff-target">Q2 2026</div></div>
+          <div class="ff-row"><div><div class="ff-name">Multi-language support (i18n)</div><div class="ff-sub">Dutch, German, French translations</div></div><div class="ff-priority low">Low</div><div class="ff-target">Q2+ 2026</div></div>
         </div>
       </div>
 
       <!-- Tab 3: Team Dashboard -->
       <div class="dash-panel" id="tab-2">
-        <h3>Team Dashboard</h3>
-        <div class="dash-desc">Weekly metrics across all teams</div>
-        <div class="td-grid">
+        <h3>Team Metrics</h3>
+        <div class="dash-desc">Weekly metrics across all teams &middot; <span style="color: var(--primary); font-weight: 500;">&#8635; Refresh from GitHub</span></div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
           <div class="td-card">
             <div class="td-label">Issues Remaining</div>
             <span class="td-value">22</span>
-            <span class="td-delta negative">-5</span>
+            <span class="td-delta negative">-5 from last week</span>
             <div class="td-chart">
               <svg viewBox="0 0 300 80" preserveAspectRatio="none">
                 <defs><linearGradient id="gRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#DC2626" stop-opacity="0.15"/><stop offset="100%" stop-color="#DC2626" stop-opacity="0.02"/></linearGradient></defs>
@@ -1214,7 +1215,7 @@
           <div class="td-card">
             <div class="td-label">Issues Solved</div>
             <span class="td-value">13</span>
-            <span class="td-delta positive">+2</span>
+            <span class="td-delta positive">+2 from last week</span>
             <div class="td-chart">
               <svg viewBox="0 0 300 80" preserveAspectRatio="none">
                 <defs><linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16A34A" stop-opacity="0.15"/><stop offset="100%" stop-color="#16A34A" stop-opacity="0.02"/></linearGradient></defs>
@@ -1228,7 +1229,7 @@
           <div class="td-card">
             <div class="td-label">Features Complete</div>
             <span class="td-value">4</span>
-            <span class="td-delta positive">+1</span>
+            <span class="td-delta positive">+1 from last week</span>
             <div class="td-chart">
               <svg viewBox="0 0 300 80" preserveAspectRatio="none">
                 <defs><linearGradient id="gTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1B6971" stop-opacity="0.15"/><stop offset="100%" stop-color="#1B6971" stop-opacity="0.02"/></linearGradient></defs>
@@ -1242,7 +1243,7 @@
           <div class="td-card">
             <div class="td-label">PRs Merged</div>
             <span class="td-value">25</span>
-            <span class="td-delta positive">+4</span>
+            <span class="td-delta positive">+4 from last week</span>
             <div class="td-chart">
               <svg viewBox="0 0 300 80" preserveAspectRatio="none">
                 <defs><linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563EB" stop-opacity="0.15"/><stop offset="100%" stop-color="#2563EB" stop-opacity="0.02"/></linearGradient></defs>
@@ -1253,22 +1254,47 @@
             </div>
             <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
           </div>
+          <div class="td-card">
+            <div class="td-label">Issues Identified</div>
+            <span class="td-value">13</span>
+            <span class="td-delta positive">+3 from last week</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gOrange" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EA580C" stop-opacity="0.12"/><stop offset="100%" stop-color="#EA580C" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28" fill="none" stroke="#EA580C" stroke-width="2"/>
+                <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28 L300,80 L0,80Z" fill="url(#gOrange)"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-label">PRs Open</div>
+            <span class="td-value">19</span>
+            <span class="td-delta" style="color: var(--text-faint);">No change</span>
+            <div class="td-chart">
+              <svg viewBox="0 0 300 80" preserveAspectRatio="none">
+                <defs><linearGradient id="gPurple" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9333EA" stop-opacity="0.12"/><stop offset="100%" stop-color="#9333EA" stop-opacity="0.02"/></linearGradient></defs>
+                <path d="M0,36 L50,40 L100,32 L150,44 L200,36 L250,32 L300,28" fill="none" stroke="#9333EA" stroke-width="2"/>
+                <path d="M0,36 L50,40 L100,32 L150,44 L200,36 L250,32 L300,28 L300,80 L0,80Z" fill="url(#gPurple)"/>
+              </svg>
+            </div>
+            <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
+          </div>
         </div>
       </div>
 
       <!-- Tab 4: Individual Dashboard -->
       <div class="dash-panel" id="tab-3">
         <h3>Individual Dashboard</h3>
-        <div class="dash-desc">Per-person output over time</div>
+        <div class="dash-desc">Contributions recognised automatically &mdash; no more invisible effort</div>
         <div class="id-people">
-          <span class="id-pill active">Darpan <span class="id-team">Application</span></span>
+          <span class="id-pill active">Jasper <span class="id-team">Infra</span></span>
+          <span class="id-pill">Darpan <span class="id-team">Application</span></span>
           <span class="id-pill">Yousuf <span class="id-team">Application</span></span>
-          <span class="id-pill">Mei <span class="id-team">Application</span></span>
-          <span class="id-pill">Aniruddha <span class="id-team">Medical Insights</span></span>
-          <span class="id-pill">Priya <span class="id-team">Medical Insights</span></span>
-          <span class="id-pill">Rahul <span class="id-team">Medical Insights</span></span>
-          <span class="id-pill">Alex <span class="id-team">Infra</span></span>
-          <span class="id-pill">Jasper <span class="id-team">Infra</span></span>
+          <span class="id-pill">Raj <span class="id-team">Medical AI</span></span>
+          <span class="id-pill">Aniruddha <span class="id-team">Medical AI</span></span>
+          <span class="id-pill">Paawan <span class="id-team">Medical AI</span></span>
+          <span class="id-pill">Arun <span class="id-team">Infra</span></span>
         </div>
         <div class="id-main">
           <div class="id-features-card">
@@ -1283,20 +1309,20 @@
             <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
           </div>
           <div class="id-shipped">
-            <div class="id-shipped-header">Shipped Features (9)</div>
-            <div class="id-shipped-row"><span>Billing page with Stripe top-up</span><span>Feb 5</span></div>
-            <div class="id-shipped-row"><span>Biomarker detail view with trends</span><span>Feb 3</span></div>
-            <div class="id-shipped-row"><span>Record upload with progress tracking</span><span>Jan 24</span></div>
-            <div class="id-shipped-row"><span>Medical records table with status tracking</span><span>Jan 17</span></div>
-            <div class="id-shipped-row"><span>Patient list & context switching</span><span>Jan 8</span></div>
-            <div class="id-shipped-row"><span>Biomarker views with reference ranges</span><span>Dec 18</span></div>
-            <div class="id-shipped-row"><span>Authentication (login, signup, sessions)</span><span>Dec 11</span></div>
+            <div class="id-shipped-header">Recent Shipped Work (7)</div>
+            <div class="id-shipped-row"><span>Persist guided tour to Kratos</span><span>Feb 7</span></div>
+            <div class="id-shipped-row"><span>Fix guided tour skip not marking complete</span><span>Feb 6</span></div>
+            <div class="id-shipped-row"><span>Add sorting and fix search on billing</span><span>Feb 6</span></div>
+            <div class="id-shipped-row"><span>Fix whitespace on signup pages</span><span>Feb 5</span></div>
+            <div class="id-shipped-row"><span>Cap upload progress at 95%</span><span>Feb 5</span></div>
+            <div class="id-shipped-row"><span>Handle insufficient credit errors</span><span>Feb 4</span></div>
+            <div class="id-shipped-row"><span>Fix all pre-existing lint errors</span><span>Feb 4</span></div>
           </div>
         </div>
         <div class="id-bottom">
           <div class="td-card">
             <div class="td-label">PRs Merged</div>
-            <span class="td-value">40</span>
+            <span class="td-value">58</span>
             <div class="td-chart">
               <svg viewBox="0 0 300 80" preserveAspectRatio="none">
                 <defs><linearGradient id="gBlue2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563EB" stop-opacity="0.12"/><stop offset="100%" stop-color="#2563EB" stop-opacity="0.02"/></linearGradient></defs>
@@ -1323,14 +1349,68 @@
             <span class="td-value">13</span>
             <div class="td-chart">
               <svg viewBox="0 0 300 80" preserveAspectRatio="none">
-                <defs><linearGradient id="gOrange" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EA580C" stop-opacity="0.12"/><stop offset="100%" stop-color="#EA580C" stop-opacity="0.02"/></linearGradient></defs>
+                <defs><linearGradient id="gOrange2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EA580C" stop-opacity="0.12"/><stop offset="100%" stop-color="#EA580C" stop-opacity="0.02"/></linearGradient></defs>
                 <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28" fill="none" stroke="#EA580C" stroke-width="2"/>
-                <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28 L300,80 L0,80Z" fill="url(#gOrange)"/>
+                <path d="M0,48 L50,44 L100,56 L150,40 L200,48 L250,36 L300,28 L300,80 L0,80Z" fill="url(#gOrange2)"/>
               </svg>
             </div>
             <div class="td-chart-labels"><span>Dec 2</span><span>Jan 6</span><span>Feb 3</span></div>
           </div>
         </div>
+      </div>
+
+      <!-- Tab 5: Open PRs -->
+      <div class="dash-panel" id="tab-4">
+        <h3>Open PRs</h3>
+        <div class="dash-desc">Across all repositories &middot; sorted by age</div>
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; font-size: 13px;">
+          <div style="display: grid; grid-template-columns: 120px 1fr 100px 60px; padding: 10px 18px; border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-raised);">
+            <span>Repo</span><span>Title</span><span>Author</span><span>Age</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 100px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">parser-seq</span><span>Fix scientific notation conversion</span><span style="font-size: 12px; color: var(--text-muted);">aniruddhasd</span><span style="font-size: 12px; color: var(--text-muted);">0d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 100px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">workflow-fn</span><span>Migrate from OpenAI to Claude via LiteLLM</span><span style="font-size: 12px; color: var(--text-muted);">rajkstats</span><span style="font-size: 12px; color: var(--text-muted);">1d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 100px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">react-fe</span><span>Fix session safety and a11y labels</span><span style="font-size: 12px; color: var(--text-muted);">Jasper-N1</span><span style="font-size: 12px; color: var(--text-muted);">2d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 100px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">api-backend</span><span>Generate summaries with user key</span><span style="font-size: 12px; color: var(--text-muted);">aniruddhasd</span><span style="font-size: 12px; color: var(--text-muted);">2d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 100px 60px; padding: 9px 18px; align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">e2e-tests</span><span>Add login, signup, dashboard test cases</span><span style="font-size: 12px; color: var(--text-muted);">puneetsinghal</span><span style="font-size: 12px; color: var(--text-muted);">3d</span>
+          </div>
+        </div>
+        <div style="font-size: 12px; color: var(--text-faint); margin-top: 10px; text-align: center;">Showing 5 of 19 open PRs</div>
+      </div>
+
+      <!-- Tab 6: Open Issues -->
+      <div class="dash-panel" id="tab-5">
+        <h3>Open Issues</h3>
+        <div class="dash-desc">Across all repositories &middot; sorted by newest</div>
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; font-size: 13px;">
+          <div style="display: grid; grid-template-columns: 120px 1fr 120px 60px; padding: 10px 18px; border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-raised);">
+            <span>Repo</span><span>Title</span><span>Labels</span><span>Age</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 120px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">react-fe</span><span>Not aligned buttons confusing UI</span><span><span style="padding: 1px 7px; font-size: 11px; border-radius: 100px; background: var(--red-50); color: var(--red); border: 1px solid var(--red-light);">bug</span></span><span style="font-size: 12px; color: var(--text-muted);">0d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 120px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">react-fe</span><span>Record got stuck at 65%</span><span><span style="padding: 1px 7px; font-size: 11px; border-radius: 100px; background: var(--red-50); color: var(--red); border: 1px solid var(--red-light);">bug</span></span><span style="font-size: 12px; color: var(--text-muted);">0d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 120px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">auth-svc</span><span>Add user/identity delete endpoint</span><span></span><span style="font-size: 12px; color: var(--text-muted);">1d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 120px 60px; padding: 9px 18px; border-bottom: 1px solid var(--surface-raised); align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">react-fe</span><span>Failed to signup using OAuth</span><span><span style="padding: 1px 7px; font-size: 11px; border-radius: 100px; background: var(--red-50); color: var(--red); border: 1px solid var(--red-light);">bug</span></span><span style="font-size: 12px; color: var(--text-muted);">1d</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 120px 1fr 120px 60px; padding: 9px 18px; align-items: center;">
+            <span style="font-family: monospace; font-size: 12px; color: var(--text-muted);">parser-seq</span><span>Parser extracts chart data as biomarkers</span><span><span style="padding: 1px 7px; font-size: 11px; border-radius: 100px; background: var(--red-50); color: var(--red); border: 1px solid var(--red-light);">bug</span></span><span style="font-size: 12px; color: var(--text-muted);">1d</span>
+          </div>
+        </div>
+        <div style="font-size: 12px; color: var(--text-faint); margin-top: 10px; text-align: center;">Showing 5 of 21 open issues</div>
       </div>
     </div>
   </section>
