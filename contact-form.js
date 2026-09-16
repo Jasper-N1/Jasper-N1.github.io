@@ -1,0 +1,154 @@
+(() => {
+  const form = document.querySelector('#contact-form');
+  if (!form) return;
+
+  const intentSelect = form.querySelector('#contact-intent');
+  const title = document.querySelector('#contact-title');
+  const intro = document.querySelector('#contact-intro');
+  const status = document.querySelector('#contact-status');
+  const success = document.querySelector('#contact-success');
+  const successCopy = document.querySelector('#contact-success-copy');
+  const resetButton = document.querySelector('#contact-reset');
+  const submitButton = form.querySelector('button[type="submit"]');
+  const messageInput = form.querySelector('#contact-message');
+  const messageHelp = document.querySelector('#message-help');
+
+  const intents = {
+    walkthrough: {
+      label: 'Product walkthrough',
+      title: 'Tell us what <em>you’re evaluating.</em>',
+      intro: 'We’ll reply by email with the most useful next step: an answer, a relevant example, or a product walkthrough.',
+    },
+    pricing: {
+      label: 'Plans and expected use',
+      title: 'Estimate from <em>your expected use.</em>',
+      intro: 'Share your expected monthly page and report volume. We’ll confirm the current commercial terms.',
+    },
+    labs: {
+      label: 'Lab or diagnostic workflow',
+      title: 'Discuss a lab or <em>diagnostic workflow.</em>',
+      intro: 'Tell us about the report file, the patient-identification process, and the clinician handoff you need to support.',
+    },
+    reports: {
+      label: 'Reporting workflow',
+      title: 'Discuss the reports <em>your practice needs.</em>',
+      intro: 'Tell us which clinical task the report supports, who reviews it, and how the final version needs to be shared.',
+    },
+    patients: {
+      label: 'Patient sharing',
+      title: 'Ask how patient sharing <em>works.</em>',
+      intro: 'Tell us which report a patient should receive, and which access controls your workflow requires.',
+    },
+    compliance: {
+      label: 'Security and data handling',
+      title: 'Ask about security, <em>data handling, or governance.</em>',
+      intro: 'Share the requirement and we’ll respond directly or arrange a focused review.',
+    },
+    dpa: {
+      label: 'Data Processing Agreement request',
+      title: 'Request a <em>Data Processing Agreement.</em>',
+      intro: 'Send us your organization and contracting details. We’ll review the request and reply by email with the next step.',
+    },
+    governance: {
+      label: 'Governance requirements',
+      title: 'Ask about clinical <em>governance requirements.</em>',
+      intro: 'Share the requirement and we’ll respond directly or arrange a focused review.',
+    },
+    workflow: {
+      label: 'Clinical workflow',
+      title: 'Map a clinical workflow <em>with us.</em>',
+      intro: 'Tell us what records arrive, what the clinician needs to review, and what output is required.',
+    },
+  };
+
+  const requestedIntent = new URLSearchParams(window.location.search).get('intent');
+  const activeIntent = Object.hasOwn(intents, requestedIntent) ? requestedIntent : 'walkthrough';
+  const setIntent = (intent) => {
+    const selectedIntent = Object.hasOwn(intents, intent) ? intent : 'walkthrough';
+    intentSelect.value = selectedIntent;
+    title.innerHTML = intents[selectedIntent].title;
+    intro.textContent = intents[selectedIntent].intro;
+    const isDpa = selectedIntent === 'dpa';
+    messageHelp.textContent = isDpa
+      ? 'Include your organization’s legal name, country or jurisdiction, and the name and email of the person who will review or sign the agreement.'
+      : 'Tell us which files you get, what task you need to do, who checks the work, and what you share.';
+    messageInput.placeholder = isDpa
+      ? 'Organization legal name:\nCountry or jurisdiction:\nReviewer or signer name and email:\nAnything else we should know:'
+      : '';
+  };
+  setIntent(activeIntent);
+  intentSelect.addEventListener('change', () => setIntent(intentSelect.value));
+
+  form.addEventListener('invalid', (event) => {
+    event.target.setAttribute('aria-invalid', 'true');
+  }, true);
+
+  form.addEventListener('input', (event) => {
+    if (event.target.matches('input, select, textarea')) event.target.removeAttribute('aria-invalid');
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    status.textContent = '';
+    status.className = 'contact-status';
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      form.querySelector(':invalid')?.focus();
+      return;
+    }
+
+    const fields = new FormData(form);
+    const selectedIntent = Object.hasOwn(intents, fields.get('intent')) ? fields.get('intent') : 'walkthrough';
+    const organization = String(fields.get('organization') || '').trim();
+    const message = String(fields.get('message') || '').trim();
+    const payload = {
+      name: String(fields.get('name') || '').trim(),
+      email: String(fields.get('email') || '').trim(),
+      type: String(fields.get('type') || ''),
+      message: `Inquiry: ${intents[selectedIntent].label}\nOrganization: ${organization || 'Not provided'}\n\n${message}`,
+      website: String(fields.get('website') || ''),
+    };
+
+    const originalLabel = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending inquiry…';
+    status.textContent = 'Sending your inquiry.';
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const response = await fetch('https://api.n1.care/support/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error(`Contact request failed with ${response.status}`);
+
+      form.hidden = true;
+      success.hidden = false;
+      successCopy.textContent = `We’ll reply to ${payload.email}. If that address is incorrect, send another inquiry.`;
+      success.focus();
+    } catch (_error) {
+      status.className = 'contact-status error';
+      status.innerHTML = 'We could not send the form. Your details are still here—try again, or email <a href="mailto:longevity@n1.care">longevity@n1.care</a>.';
+      submitButton.disabled = false;
+      submitButton.textContent = originalLabel;
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  });
+
+  resetButton?.addEventListener('click', () => {
+    form.reset();
+    setIntent(activeIntent);
+    form.hidden = false;
+    success.hidden = true;
+    submitButton.disabled = false;
+    submitButton.textContent = 'Send inquiry';
+    status.textContent = '';
+    form.querySelector('#contact-name')?.focus();
+  });
+})();
