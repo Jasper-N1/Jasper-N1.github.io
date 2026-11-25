@@ -1465,7 +1465,29 @@ if (LITE) document.documentElement.classList.add("lite");
     el.style.transform = `translate(${x}px, ${y + sy}px)`; };
   let hiVidOK = false, hiImgOK = false;
   let frame = 0, lastFrame = -1, nextFrameAt = 0;
-  const sheets = new Map(), sheetCount = 47, frameCount = 186, frameTime = 1000 / 36;
+  const sheets = new Map(), downloads = new Map(), sheetCount = 47, frameCount = 186, frameTime = 1000 / 36;
+  const canStream = typeof createImageBitmap === "function" && location.protocol !== "file:";
+  function sheetURL(index) {
+    return "walk36-" + String(index).padStart(2, "0") + ".webp";
+  }
+  function downloadSheet(index) {
+    if (!downloads.has(index)) {
+      const entry = { ready: false, failed: false };
+      entry.blob = fetch(sheetURL(index)).then(response => {
+        if (!response.ok) throw new Error("Animation sheet unavailable");
+        return response.blob();
+      }).then(blob => {
+        entry.ready = true;
+        return blob;
+      }).catch(() => {
+        entry.failed = true;
+        setTimeout(() => { if (downloads.get(index) === entry) downloads.delete(index); }, 1500);
+        return null;
+      });
+      downloads.set(index, entry);
+    }
+    return downloads.get(index);
+  }
   function clearWalk() {
     for (const sheet of sheets.values()) sheet.image?.close?.();
     sheets.clear();
@@ -1475,18 +1497,15 @@ if (LITE) document.documentElement.classList.add("lite");
     if (sheets.has(index)) return sheets.get(index).image;
     const sheet = {};
     sheets.set(index, sheet);
-    const url = "walk36-" + String(index).padStart(2, "0") + ".webp";
+    const url = sheetURL(index);
     const loadImage = () => {
       const image = new Image();
       image.decoding = "async";
       image.src = url;
       return image.decode().then(() => image);
     };
-    const decoded = window.createImageBitmap && location.protocol !== "file:" ?
-      fetch(url).then(response => {
-        if (!response.ok) throw new Error("Animation sheet unavailable");
-        return response.blob();
-      }).then(blob => createImageBitmap(blob)).catch(loadImage) : loadImage();
+    const decoded = canStream ? downloadSheet(index).blob.then(blob =>
+      blob ? createImageBitmap(blob).catch(loadImage) : loadImage()) : loadImage();
     decoded.then(image => {
       if (sheets.get(index) === sheet) sheet.image = image;
       else image.close?.();
@@ -1502,6 +1521,15 @@ if (LITE) document.documentElement.classList.add("lite");
     }
     const image = walkSheet(index);
     walkSheet(next);
+    if (canStream) {
+      let buffered = true;
+      // Fetch bytes ahead over the network without decoding the images.
+      for (let offset = 0; offset < 12; offset++) {
+        const download = downloadSheet((index + offset) % sheetCount);
+        if (offset < 5 && !download.ready && !download.failed) buffered = false;
+      }
+      if (!hiVidOK && !buffered) return;
+    }
     if (!image || now < nextFrameAt) return;
     const dpr = Math.min(2, devicePixelRatio || 1), cw = Math.max(1, Math.round(Math.min(500, w * dpr)));
     const ch = Math.round(cw * 1344 / 500);
