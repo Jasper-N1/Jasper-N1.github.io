@@ -1254,7 +1254,8 @@ if (LITE) document.documentElement.classList.add("lite");
     field.style.clipPath = "polygon(" + pts.join(",") + ")";
   }
 
-  function updateModel() {
+  let handoffProgress = 0, handoffTime = null;
+  function updateModel(now = performance.now()) {
     scheduled = false;
     const height = innerHeight;
     const narrow = innerWidth <= 800;
@@ -1316,15 +1317,30 @@ if (LITE) document.documentElement.classList.add("lite");
     if (index === 0 && slot && slot.height) {
       const initialBlue = blue.top - fsR.top;
       const handoffTop = Math.min(height * .85, initialBlue - height * .12);
-      const entry = Math.max(0, Math.min(1, (handoffTop - blue.top) / (height * .65)));
+      const distance = height * .65;
+      const target = Math.max(0, Math.min(1, (handoffTop - blue.top) / distance));
+      if (motion.matches || blue.top > handoffTop + height * .08) handoffProgress = target;
+      else {
+        const delta = Math.min(32, handoffTime === null ? 16 : now - handoffTime);
+        const step = (target - handoffProgress) * (1 - Math.exp(-delta / 46));
+        handoffProgress += Math.max(-.10, Math.min(.10, step));
+        if (Math.abs(target - handoffProgress) < .002) handoffProgress = target;
+      }
+      handoffTime = handoffProgress === target ? null : now;
+      if (handoffTime !== null) scheduleModel();
+      const entry = handoffProgress;
       const heroWeight = 1 - entry * entry * (3 - 2 * entry);
       const initialCenter = slot.top - fsR.top + slot.height / 2;
       const heroSize = slot.height / .94;
-      // Scroll with the photo first, then ease into the viewport-sized wire model.
+      // Move the photo anchor with the same eased sample as the shrink.
+      const easedPhotoTop = entry === 0 ? fsR.top : handoffTop - initialBlue - entry * distance;
       px = twinX;
-      pCenter = center + (initialCenter + fsR.top - center) * heroWeight;
+      pCenter = center + (initialCenter + easedPhotoTop - center) * heroWeight;
       pSize = size + (heroSize - size) * heroWeight;
-      if (entry === 0) photoScroll = scrollY;
+      if (entry === 0 && target === 0) photoScroll = scrollY;
+    } else {
+      handoffProgress = 1;
+      handoffTime = null;
     }
     let top = pCenter + Math.min(0, stage.bottom - height);
     { const tl = Math.round(px / 100 * innerWidth - pSize * .936 / .956 * 768 / 1344 * .36); if (tl !== updateModel.tl) { updateModel.tl = tl; document.documentElement.style.setProperty("--twin-l", tl + "px"); } }
@@ -1488,7 +1504,7 @@ if (LITE) document.documentElement.classList.add("lite");
       setTimeout(() => { if (sheets.get(index) === sheet) sheets.delete(index); }, 1500);
     });
   }
-  function drawFrame(now, w) {
+  function drawFrame(now) {
     const index = frame >> 2, next = (index + 1) % sheetCount;
     for (const [key, sheet] of sheets) {
       if (key !== index && key !== next) { sheet.image?.close?.(); sheets.delete(key); }
@@ -1505,8 +1521,8 @@ if (LITE) document.documentElement.classList.add("lite");
       if (!hiVidOK && !buffered) return;
     }
     if (!image || now < nextFrameAt) return;
-    const dpr = Math.min(2, devicePixelRatio || 1), cw = Math.max(1, Math.round(Math.min(500, w * dpr)));
-    const ch = Math.round(cw * 1344 / 500);
+    // Keep the backing surface at source size. CSS handles the changing display size.
+    const cw = 500, ch = 1344;
     if (hiWrap.width !== cw || hiWrap.height !== ch) { hiWrap.width = cw; hiWrap.height = ch; }
     const k = frame & 3;
     hg2.clearRect(0, 0, cw, ch);
@@ -1599,7 +1615,7 @@ if (LITE) document.documentElement.classList.add("lite");
       c.style.display = "block"; c.style.left = r.left + "px"; c.style.top = r.top + "px"; c.style.width = r.width + "px"; c.style.height = r.height + "px";
       c.style.opacity = op; c.style.clipPath = v.style.clipPath || "";
       const m = cs.webkitMaskImage || cs.maskImage || "none"; c.style.webkitMaskImage = c.style.maskImage = m;
-      const d = Math.min(1.5, devicePixelRatio || 1), cw = Math.min(720, Math.round(r.width * d)), ch = Math.round(cw * 738 / 360);
+      const cw = 360, ch = 738;
       const fadeKey = wireFade ? wireFade.map(y => Math.round(y - r.top)).join(":") : "";
       const key = `${f}:${cw}:${ch}:${fadeKey}`;
       if (wirePainted[i] === key) return;
@@ -1661,7 +1677,7 @@ if (LITE) document.documentElement.classList.add("lite");
     const bandBot = stT > H * .55 || hiBuild <= 0 ? Math.max(stT, top + Hh + 20) : top + (1 - hiBuild) * Hh * .99;
     const onScreen = Math.max(top, clipTop, 0) < Math.min(top + Hh, clipBot, H);
     const covered = bandTop <= top + .015 * Hh && bandBot >= top + .985 * Hh;
-    if (hiMode === "img" && onScreen && !covered && !motion.matches && !document.hidden) drawFrame(now, Wh * 500 / 768);
+    if (hiMode === "img" && onScreen && !covered && !motion.matches && !document.hidden) drawFrame(now);
     else if (sheets.size) clearWalk();
     const hiOK = GLM ? !!(glp && glp.has) : hiVidOK || hiImgOK;
     lineBot = hiOK && si0 === 1 && hiBuild > 0 ? bandBot : null;
