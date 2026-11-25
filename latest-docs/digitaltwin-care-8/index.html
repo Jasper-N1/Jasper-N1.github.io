@@ -1322,8 +1322,13 @@ if (LITE) document.documentElement.classList.add("lite");
       if (motion.matches || blue.top > handoffTop + height * .08) handoffProgress = target;
       else {
         const delta = Math.min(32, handoffTime === null ? 16 : now - handoffTime);
-        const step = (target - handoffProgress) * (1 - Math.exp(-delta / 46));
-        handoffProgress += Math.max(-.10, Math.min(.10, step));
+        const gap = target - handoffProgress;
+        // Catch up faster when a quick scroll moves well ahead of the transition.
+        const catchUp = Math.max(0, Math.min(1, (Math.abs(gap) - .18) / .32));
+        const response = 46 - 10 * catchUp;
+        const maxStep = .10 + .035 * catchUp;
+        const step = gap * (1 - Math.exp(-delta / response));
+        handoffProgress += Math.max(-maxStep, Math.min(maxStep, step));
         if (Math.abs(target - handoffProgress) < .002) handoffProgress = target;
       }
       handoffTime = handoffProgress === target ? null : now;
