@@ -1216,7 +1216,7 @@ if (LITE) document.documentElement.classList.add("lite");
   const light = video.cloneNode(false);
   light.id = "body-video-light"; light.removeAttribute("poster"); light.preload = "auto"; video.preload = "auto";
   video.after(light);
-  const both = [video, light]; var twinLocked = false;
+  const both = [video, light];
   // keep the white copy in step by nudging its speed; only seek when far off (a seek can show a blank frame)
   const resync = () => { if (!light.src) return; const d = video.currentTime - light.currentTime, dur = video.duration || 3.6, dd = Math.abs(d) > dur / 2 ? d - Math.sign(d) * dur : d;
     if (Math.abs(dd) > .6 || light.paused) { light.currentTime = video.currentTime; light.playbackRate = 1; }
@@ -1263,7 +1263,6 @@ if (LITE) document.documentElement.classList.add("lite");
     const slotEl = document.querySelector(".fs-slot"), slot = slotEl ? slotEl.getBoundingClientRect() : null;
     const fsR = document.getElementById("fs").getBoundingClientRect();
     // the twin shows through the header, the blue and the scene, then again in How it works; not in between
-    const sceneDone = blue.bottom <= 0, s3In = stage.top < height && stage.bottom > 0;
     const active = stage.bottom > 0;
     const blueInView = blue.top < height && blue.bottom > 0;
     const copyBottom = heroCopy.getBoundingClientRect().bottom;
@@ -1308,37 +1307,24 @@ if (LITE) document.documentElement.classList.add("lite");
     both.forEach(v => v.classList.toggle("is-scrub", index === 0 && raw < 1));
     const twinX = slot && slot.width ? (slot.left + slot.width / 2) / innerWidth * 100 : 63;
     const x = narrow ? 50 : twinX;
-    const stagePanel = document.getElementById("s3stage");
     // centred in the space under the menu bar, with a little air above the head and below the feet
     const barH = Math.max(64, Math.min(96, innerWidth * .06)), avail = height - barH;
     const center = narrow ? height * .30 : barH + avail / 2;
     const size = narrow ? Math.min(height * .50, innerWidth * 1.2) : Math.min(avail * .9 / .936, innerWidth * .81);
 
-    twinLocked = false;
     let px = x, pCenter = center, pSize = size;
-    if (index === 0) {
-      // Capture: scale from the header size down to the person photo's size,
-      // feet and head on the same lines, as the section slides in.
-      const sp = stagePanel.getBoundingClientRect();
-      let heroX = x, heroCenter = center;
-      let heroSize = size;
-      // the scene below the blue: the twin settles beside the man as the scene comes up
-      // header scene: the twin stands beside the man, then travels down into the blue as it comes up
-      if (slot && slot.height) { const q0 = Math.max(0, Math.min(1, (height - blue.top) / (height * .9))), q = 1 - q0 * q0 * (3 - 2 * q0);
-        let sx = (slot.left + slot.width / 2) / innerWidth * 100, sy = slot.top + slot.height / 2, ss = slot.height / .94;
-        // the dive: after a hold, grow towards the chest and bring it to the middle of the screen
-        const span = fsR.height - height, z0 = span > 0 ? Math.max(0, Math.min(1, -fsR.top / span)) : 0, dv = 0;
-        if (dv > 0) { const f = .03 + .3 * .936, ay = sy - ss / 2 + f * ss, s2 = ss * (1 + 4.5 * dv * dv), ay2 = ay + (height * .5 - ay) * dv;
-          sx += (50 - sx) * dv; sy = ay2 + s2 / 2 - f * s2; ss = s2; }
-        diveFx(0, 0);
-        heroX = sx; if (!sceneDone) { heroCenter += (sy - heroCenter) * q; heroSize += (ss - heroSize) * q; } twinLocked = !sceneDone && q > .999; }
-      else diveFx(0, 0);
-      if (sp.height) {
-        const capSize = narrow ? Math.min(height * .42, innerWidth * .9) : Math.min(height * .84, innerWidth * .62);
-        const capCenter = sp.top + sp.height * (narrow ? .33 : .53);
-        px = heroX; pCenter = heroCenter;
-        pSize = heroSize;
-      } else { px = heroX; pCenter = heroCenter; pSize = heroSize; }
+    if (index === 0 && slot && slot.height) {
+      const entry = Math.max(0, Math.min(1, -blue.top / (height * .55)));
+      const heroWeight = 1 - entry * entry * (3 - 2 * entry);
+      const initialBlue = blue.top - fsR.top;
+      const initialMix = Math.max(0, Math.min(1, (height - initialBlue) / (height * .9)));
+      const initialWeight = 1 - initialMix * initialMix * (3 - 2 * initialMix);
+      // Keep the hero position fixed until its photo has scrolled away.
+      const heroCenter = center + (slot.top - fsR.top + slot.height / 2 - center) * initialWeight;
+      const heroSize = size + (slot.height / .94 - size) * initialWeight;
+      px = twinX;
+      pCenter = center + (heroCenter - center) * heroWeight;
+      pSize = size + (heroSize - size) * heroWeight;
     }
     let top = pCenter + Math.min(0, stage.bottom - height);
     { const tl = Math.round(px / 100 * innerWidth - pSize * .936 / .956 * 768 / 1344 * .36); if (tl !== updateModel.tl) { updateModel.tl = tl; document.documentElement.style.setProperty("--twin-l", tl + "px"); } }
@@ -1378,13 +1364,6 @@ if (LITE) document.documentElement.classList.add("lite");
   const glow = document.querySelector(".imp-glow");
   const impCv = steps.querySelector(".improve-viz"), ig = impCv.getContext("2d");
   let fsClip = 1e9, clipTop = 0, clipBot = 1e9;
-  const fsBg = document.querySelector(".fs-bg"), fsTitle = document.querySelector(".fs-title"), fsVeil = document.querySelector(".fs-veil");
-  // the dive: the room and the man fall away, the twin fills the screen, then fades into the next section
-  function diveFx(dv, z) {
-    fsBg.style.transform = dv ? `scale(${1 + dv * .25})` : ""; fsBg.style.opacity = 1 - Math.min(1, dv * 1.4);
-    fsTitle.style.opacity = 1 - Math.min(1, dv * 3); fsTitle.style.transform = dv ? `translateY(${-dv * 40}px)` : "";
-    const out = Math.max(0, Math.min(1, (z - .9) / .1)); fsVeil.style.opacity = out; hiCv.style.opacity = 1 - out;
-  }
   const fsEl = document.getElementById("fs"), fsL = fsEl.querySelectorAll(".fs-links path");
   // the scene's panels appear once the twin has arrived; thin lines run from its chest to each panel
   function fsLinks(on) {
@@ -1458,11 +1437,6 @@ if (LITE) document.documentElement.classList.add("lite");
   const hiWrap = document.createElement("canvas"), hiVid = { paused: false, play: () => Promise.resolve() }, hg2 = hiWrap.getContext("2d");
   hiWrap.setAttribute("aria-hidden", "true"); hiWrap.style.cssText = "position:fixed;left:0;top:0;z-index:4;pointer-events:none;display:none;transform-origin:0 0";
   hiImg.after(hiWrap);
-  // while the twin stands in the photo it is pinned to the page (absolute), so it scrolls exactly with the photo
-  // instead of being repositioned a frame late; once it starts its own move down it switches to fixed
-  const pin = (el, x, y) => { const lock = twinLocked, sy = lock ? scrollY : 0;
-    if (el.style.position !== (lock ? "absolute" : "fixed")) el.style.position = lock ? "absolute" : "fixed";
-    el.style.transform = `translate(${x}px, ${y + sy}px)`; };
   let hiVidOK = false, hiImgOK = false;
   let frame = 0, lastFrame = -1, nextFrameAt = 0;
   const sheets = new Map(), downloads = new Map(), sheetCount = 47, frameCount = 186, frameTime = 1000 / 36;
@@ -1646,8 +1620,6 @@ if (LITE) document.documentElement.classList.add("lite");
   function bmUpdate(on, now, cx, top, Wh, Hh) {
     if (!on || motion.matches && false) { if (bmL.style.display !== "none") { bmL.style.display = "none"; bmSet = -1; } return; }
     bmL.style.display = "block";
-    { const lk = twinLocked; if (bmL.style.position !== (lk ? "absolute" : "fixed")) bmL.style.position = lk ? "absolute" : "fixed";
-      bmL.style.transform = lk ? `translateY(${scrollY}px)` : ""; bmL.style.height = innerHeight + "px"; bmL.style.width = "100%"; }
     const fr = bmClip || fsEl.getBoundingClientRect(); bmL.style.clipPath = `inset(${Math.max(0, fr.top)}px 0 ${Math.max(0, innerHeight - fr.bottom)}px 0)`;
     const per = 4.6, cyc = Math.floor((now - bmT0) / 1000 / per), ph = ((now - bmT0) / 1000) % per;
     if (bmSet < 0) { bmT0 = now; }
@@ -1716,7 +1688,7 @@ if (LITE) document.documentElement.classList.add("lite");
       const a = (bandTop - top) / Hh * 100, b = (bandBot - top) / Hh * 100, e = 1.5;
       const m = bandTop < bandBot && b > 0 && a < 100 ? `linear-gradient(to bottom, #000 ${a}%, transparent ${a + 7}%, transparent ${b}%, #000 ${b + e}%)` : "none";
       el.style.display = (hiVidOK || hiOK) && !(a <= 1.5 && b >= 98.5) ? "block" : "none";
-      el.style.width = Wh * 500 / 768 + "px"; el.style.height = Hh + "px"; pin(el, cx - Wh / 2 + Wh * 128 / 768, top);
+      el.style.width = Wh * 500 / 768 + "px"; el.style.height = Hh + "px"; el.style.transform = `translate(${cx - Wh / 2 + Wh * 128 / 768}px, ${top}px)`;
       el.style.webkitMaskImage = el.style.maskImage = m;
       el.style.clipPath = clipTop > 0 || clipBot < H ? `inset(${Math.max(0, clipTop - top)}px 0 ${Math.max(0, top + Hh - clipBot)}px 0)` : "";
     }
