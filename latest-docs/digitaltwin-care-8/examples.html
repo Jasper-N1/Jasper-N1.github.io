@@ -79,44 +79,8 @@ section{position:relative}
 }
 @media(prefers-reduced-motion:reduce){.twinload .ring{animation:none}}
 
-/* podcast */
-#podcast{width:min(1050px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:0;border:var(--hair);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 24px 80px #131b2440}
-#podcast::backdrop{background:#14232b70}
-#podcast .pod{border:0}
-.pod-close{position:sticky;top:0;height:0;z-index:2;display:flex;justify-content:flex-end;padding:0 12px}
-.pod-close button{margin-top:12px;width:40px;height:40px;border:var(--hair);border-radius:50%;background:var(--paper);color:var(--ink);font:400 25px/1 var(--sans);cursor:pointer}
-@media(max-width:600px){#podcast .pod{padding:24px 16px}.pod-close button{margin-top:8px}#podcast .cover{max-width:140px}}
-.pod{background:var(--paper);color:var(--ink);border:var(--hair-soft);border-radius:var(--r);padding:clamp(28px,3.4vw,52px);display:grid;grid-template-columns:300px 1fr;gap:clamp(28px,4vw,60px);position:relative;overflow:hidden}
-.pod::before{content:"";position:absolute;width:700px;height:700px;right:-200px;top:-300px;background:radial-gradient(circle,rgba(0,150,214,.08),transparent 60%)}
-.cover{aspect-ratio:1;border-radius:var(--r);position:relative;overflow:hidden;background:radial-gradient(circle at 50% 36%,#7FD0F2 0%,#0096D6 58%,#007FB8 100%)}
-.cover img{position:absolute;left:50%;top:9%;height:118%;transform:translateX(-50%);filter:drop-shadow(0 0 24px rgba(255,255,255,.55))}
-.cover .ep{position:absolute;left:16px;top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:#fff}
-.cover .nm{position:absolute;left:16px;bottom:14px;right:16px;font-family:var(--serif);font-size:25px;line-height:1.02;color:#fff}
-.cover .eq{position:absolute;right:16px;top:12px;display:flex;gap:3px;align-items:flex-end;height:18px}
-.cover .eq i{width:3px;background:#fff;border-radius:2px;height:30%;transition:height .15s}
-.podmain{position:relative;display:flex;flex-direction:column;min-width:0}
-.podmain h3{font-size:clamp(28px,2.8vw,42px);margin:10px 0 10px}
-.podmain .meta{color:var(--ink3);font-size:14px}
-.player{display:flex;align-items:center;gap:18px;margin:26px 0 8px}
-.play{width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--bg);border:0;cursor:pointer;display:grid;place-items:center;flex:none;transition:transform .2s}
-.play:hover{transform:scale(1.06)}
-.play svg{width:22px;height:22px}
-#wave{flex:1;height:64px;min-width:0;cursor:pointer}
-.ptime{font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;justify-content:space-between;margin-left:82px}
-.chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
-.chap{border:var(--hair-soft);background:var(--bg);border-radius:var(--r);padding:11px 13px;cursor:pointer;transition:background .2s,border-color .2s}
-.chap:hover{border-color:rgba(28,27,23,.3)}
-.chap.on{border-color:var(--blue);background:rgba(0,150,214,.06)}
-.chap .k{color:var(--blue)}
-.chap div:last-child{font-size:13.5px;margin-top:3px}
-.caption{margin-top:20px;min-height:64px;font-family:var(--serif);font-size:21px;line-height:1.4;color:var(--ink2)}
-.caption mark{background:none;color:var(--ink);border-bottom:2px solid var(--blue)}
-.podlinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
-.podlinks a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:var(--hair);border-radius:999px;padding:9px 15px;font-size:13px;color:var(--ink);background:var(--bg)}
-.podlinks a:hover{border-color:var(--blue);color:var(--blue)}
-.podlinks .feed{font-family:var(--mono);font-size:11.5px;color:var(--ink3);padding:0 4px}
-.podnote{font-size:12px;color:var(--ink3);margin-top:16px;line-height:1.5}
-@media(max-width:900px){.pod{grid-template-columns:1fr}.cover{max-width:300px}.chapters{grid-template-columns:1fr 1fr}.ptime{margin-left:0}}
+.day-close{position:sticky;top:0;height:0;z-index:2;display:flex;justify-content:flex-end;padding:0 12px}
+.day-close button{margin-top:12px;width:40px;height:40px;border:var(--hair);border-radius:50%;background:var(--paper);color:var(--ink);font:400 25px/1 var(--sans);cursor:pointer}
 
 /* today */
 #today{padding:clamp(90px,10vw,150px) 0}
@@ -647,38 +611,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- PODCAST -->
-<dialog id="podcast" aria-labelledby="podcastTitle">
-  <form method="dialog" class="pod-close"><button type="submit" aria-label="Close podcast">×</button></form>
-    <div class="pod">
-      <div class="cover">
-        <img src="twin-f0.webp" alt="">
-        <div class="ep">EP. 47 · 26 NOV 2026</div>
-        <div class="eq" id="eq"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="nm">The Twin<br>Briefing</div>
-      </div>
-      <div class="podmain">
-        <div class="num"><b>01</b> Your weekly briefing</div>
-        <h3 id="podcastTitle">The eighteenth of November, read back to you</h3>
-        <div class="meta">Personal episode · generated from your N1 record, wearables and notes · <span id="pdur">≈3 min</span></div>
-        <div class="player">
-          <button class="play" id="play" aria-label="Play episode"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button>
-          <canvas id="wave"></canvas>
-        </div>
-        <div class="ptime"><span id="tNow">0:00</span><span id="tAll">3:58</span></div>
-        <div class="caption" id="caption">Press play and your twin reads this week back to you. The lab chapters only use numbers N1 has checked against your records.</div>
-        <div class="chapters" id="chapters"></div>
-        <div class="podlinks">
-          <a href="https://digitaltwin.care/feed/jasper-7f3a.rss" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="11" r="3" fill="currentColor"/><path d="M10.5 15h3l-.6 5h-1.8z" fill="currentColor"/></svg>Apple Podcasts</a>
-          <a href="https://digitaltwin.care/feed/jasper-7f3a.rss" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7 9.5c3.5-1 7-.6 10 1M7.6 12.6c3-.8 5.6-.4 8 .9M8.3 15.4c2.4-.6 4.3-.3 6.2.7" stroke="#F7F6F0" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Spotify</a>
-          <a href="https://digitaltwin.care/feed/jasper-7f3a.rss" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="5" cy="19" r="2.5" fill="currentColor"/><path d="M3 11a10 10 0 0 1 10 10M3 4a17 17 0 0 1 17 17" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>Private RSS</a>
-          <span class="feed">digitaltwin.care/feed/jasper-7f3a</span>
-        </div>
-        <div class="podnote">Voice plays in your browser on this example page. Lab chapters checked by N1: every number is a cited reading. Recovery and sleep chapters use the simulated wearable streams on this page.</div>
-      </div>
-    </div>
-</dialog>
-
 <section id="report" class="sec" aria-labelledby="reportTitle">
   <div class="wrap">
     <header class="sechead">
@@ -864,7 +796,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 
 <!-- Linked day detail -->
 <dialog id="day" aria-labelledby="dayDetailTitle">
-  <form method="dialog" class="pod-close"><button type="submit" aria-label="Close day details">×</button></form>
+  <form method="dialog" class="day-close"><button type="submit" aria-label="Close day details">×</button></form>
   <div class="wrap">
     <div class="sechead">
       <div><h2 id="dayDetailTitle">Day details</h2>
@@ -1755,67 +1687,6 @@ TAGS.forEach(t => {
   column.appendChild(tile);
 });
 
-/* =========================================================
-   PODCAST
-   ========================================================= */
-const recNow = T.rec, hrvAug = Math.round(avg(DAY.slice(0, 7).map(d => d.hrv))), rhrAug = Math.round(avg(DAY.slice(0, 7).map(d => d.rhr)));
-const spoken = h => { const hh = Math.floor(h), mm = Math.round((h - hh) * 60); return hh + " hours" + (mm ? " and " + mm + " minutes" : ""); };
-const CHAPS = [
-  { t: "Welcome", src: "note", text: "Good morning Jasper. This is your twin briefing for Thursday the twenty-sixth of November. New bloods arrived this week, your twelve-week strength plan starts today, and this week's Thursday jiu-jitsu moves to Friday." },
-  { t: "Your newest bloods", src: "n1", text: "Your newest bloods are from the eighteenth of November, and five of the numeric results sit outside the lab's range. Creatinine was 119.4 micromoles per litre, above the upper limit of 105. In May it was 99.2. Uric acid was 541, against an upper limit of 470. In May it was 328. LDL cholesterol was 2.98 millimoles per litre. That is still above the 2.58 limit, but lower than the 3.61 measured in May. Fasting glucose was 3.77, just under the lower limit of 3.9. And hepatitis B surface antibody was 38.0, under the 50 the lab uses, as it was in both earlier draws. You noted you had trained, and fasted the day before this draw. That context is worth sharing when you go through these results with your doctor." },
-  { t: "Vitamin D & weight", src: "n1", text: "One result moved back into range. Vitamin D was 97.59 nanomoles per litre in November, above the 74.88 threshold, after 71.06 in May. On the scale, this morning's reading was 81.9 kilograms. Your first logged weight, at the start of September, was 88.1." },
-  { t: "Recovery & sleep", src: "sim", text: `From your wearables. You slept ${spoken(T.sleep)} last night, and your recovery this morning is ${recNow} percent. Your seven-day heart rate variability averages ${hrv7} milliseconds, against ${hrvAug} in your first week back in August. Resting heart rate is averaging ${rhr7}, down from ${rhrAug}.` },
-  { t: "Training", src: "note", text: "Today is day one of the twelve-week plan. Five sessions a week, three sets of twenty: a warm-up, a moderate set and a hard set. From next week, the last set of each lift goes to failure, so we can track your strength. Jiu-jitsu is on Friday this week." },
-  { t: "For your doctor", src: "note", text: "Questions you could bring to your doctor: what the creatinine and uric acid results mean given the training and fasting before the draw, whether to repeat them, and what the hepatitis B antibody result means for you. That's your briefing. See you next week." }
-];
-const SENT = []; CHAPS.forEach((c, ci) => c.text.match(/[^.!?]+[.!?]+/g).forEach(s => SENT.push({ ci, s: s.trim(), d: s.trim().split(/\s+/).length / 2.55 })));
-let acc = 0; SENT.forEach(s => { s.t0 = acc; acc += s.d + .35; }); const TOTAL = acc;
-CHAPS.forEach((c, i) => { c.t0 = SENT.find(s => s.ci == i).t0; });
-const mmss = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
-$("tAll").textContent = mmss(TOTAL); $("pdur").textContent = "≈" + Math.round(TOTAL / 60) + " min";
-const chEl = $("chapters");
-CHAPS.forEach((c, i) => { const d = H("div", { class: "chap" }, `<div class="k">${mmss(c.t0)} · ${c.src == "n1" ? "checked by N1" : c.src == "sim" ? "simulated" : "health note"}</div><div>${c.t}</div>`); d.onclick = () => seek(SENT.findIndex(s => s.ci == i)); chEl.appendChild(d); c.el = d; });
-const wave = $("wave"), wctx = wave.getContext("2d");
-const BARS = 120, amps = []; { let s = 7; for (let i = 0; i < BARS; i++) { s = (s * 9301 + 49297) % 233280; amps.push(.25 + .75 * Math.abs(Math.sin(i * .37) * .5 + (s / 233280) * .6)); } }
-let playing = false, si = 0, sStart = 0, pos = 0, voice = null, useTTS = "speechSynthesis" in window;
-function pickVoice() { if (!useTTS) return; const vs = speechSynthesis.getVoices(); voice = vs.find(v => /Daniel|Google UK English Male|Arthur/i.test(v.name)) || vs.find(v => /en-GB/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null; }
-if (useTTS) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function drawWave() {
-  const r = wave.getBoundingClientRect(), dpr = devicePixelRatio || 1;
-  if (wave.width != Math.round(r.width * dpr)) { wave.width = Math.round(r.width * dpr); wave.height = Math.round(r.height * dpr); }
-  const w = wave.width, h = wave.height; wctx.clearRect(0, 0, w, h);
-  const bw = w / BARS, p = pos / TOTAL, now = performance.now() / 1000;
-  for (let i = 0; i < BARS; i++) {
-    const done = i / BARS < p; let a = amps[i];
-    if (playing && Math.abs(i / BARS - p) < .03) a *= .7 + .5 * Math.abs(Math.sin(now * 9 + i));
-    const bh = Math.max(3 * dpr, a * h * .9);
-    wctx.fillStyle = done ? "#0096D6" : "rgba(28,27,23,.14)";
-    wctx.beginPath(); wctx.roundRect ? wctx.roundRect(i * bw + bw * .2, (h - bh) / 2, bw * .6, bh, bw * .3) : wctx.rect(i * bw + bw * .2, (h - bh) / 2, bw * .6, bh); wctx.fill();
-  }
-  CHAPS.forEach(c => { wctx.fillStyle = "rgba(28,27,23,.3)"; wctx.fillRect(c.t0 / TOTAL * w, h - 2 * dpr, 1 * dpr, 2 * dpr); });
-  document.querySelectorAll("#eq i").forEach((b, i) => b.style.height = playing ? (25 + 75 * Math.abs(Math.sin(now * (5 + i * 1.7) + i))) + "%" : "30%");
-}
-function showSentence(i, wordIdx) {
-  const s = SENT[i]; if (!s) return;
-  let html = s.s;
-  if (wordIdx != null) { const ws = s.s.split(" "); html = ws.map((w, k) => k == wordIdx ? `<mark>${w}</mark>` : w).join(" "); }
-  $("caption").innerHTML = html;
-  CHAPS.forEach((c, k) => c.el.classList.toggle("on", k == s.ci));
-}
-function speak(i) {
-  if (i >= SENT.length) { stop(true); return; }
-  si = i; sStart = performance.now(); pos = SENT[i].t0; showSentence(i);
-  if (useTTS) {
-    const u = new SpeechSynthesisUtterance(SENT[i].s.replace(/µmol\/L/g, "micromoles per litre"));
-    if (voice) u.voice = voice; u.rate = 1.0; u.pitch = 1;
-    u.onboundary = e => { if (e.name && e.name != "word") return; const before = SENT[i].s.slice(0, e.charIndex); showSentence(i, before.split(" ").length - 1); };
-    u.onend = () => { if (playing && si == i) speak(i + 1); };
-    speechSynthesis.speak(u);
-  } else { setTimeout(() => { if (playing && si == i) speak(i + 1); }, SENT[i].d * 1000); }
-}
-function stop(end) { playing = false; if (useTTS) speechSynthesis.cancel(); $("playIcon").innerHTML = '<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>'; if (end) { pos = 0; si = 0; } }
-function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("playIcon").innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>'; setTimeout(() => speak(i), 60); }
-$("play").onclick = () => playing ? stop() : seek(si);
 const examplePicker = $("examplePicker");
 const exampleOptions = $("exampleOptions");
 const exampleChoices = [...exampleOptions.querySelectorAll("[data-twin]")];
@@ -1869,19 +1740,6 @@ document.addEventListener("focusin", event => {
 document.addEventListener("pointerdown", event => {
   if (!exampleChoice.contains(event.target)) setExamplePicker(false);
 });
-const podcastDialog = $("podcast");
-podcastDialog.addEventListener("close", () => {
-  if (playing) stop();
-});
-podcastDialog.addEventListener("click", event => {
-  if (event.target !== podcastDialog) return;
-  const bounds = podcastDialog.getBoundingClientRect();
-  if (event.clientX < bounds.left || event.clientX > bounds.right ||
-      event.clientY < bounds.top || event.clientY > bounds.bottom) podcastDialog.close();
-});
-wave.onclick = e => { const r = wave.getBoundingClientRect(), t = (e.clientX - r.left) / r.width * TOTAL; let i = SENT.findIndex(s => s.t0 + s.d > t); seek(Math.max(0, i)); };
-(function podLoop() { if (!podcastDialog.open) return requestAnimationFrame(podLoop); if (playing) { pos = Math.min(SENT[si].t0 + SENT[si].d, SENT[si].t0 + (performance.now() - sStart) / 1000); } $("tNow").textContent = mmss(pos); drawWave(); requestAnimationFrame(podLoop); })();
-
 /* =========================================================
    TODAY: rings + 24h clock
    ========================================================= */
@@ -2707,7 +2565,7 @@ document.querySelectorAll("#cal .k, #strain, #macro").forEach(() => {});
 $("wt").addEventListener("click", e => { if (e.target.tagName != "circle") return; const cx = +e.target.getAttribute("cx"); const t = pd("2026-08-27") + (cx - 40) / (800 - 54) * (pd("2026-12-14") - pd("2026-08-27")); const i = Math.round((t - pd(DAY[0].d)) / 864e5); if (i >= 0 && i <= LAST) openDay(i); });
 
 /* ================= renumber section labels ================= */
-document.querySelectorAll(".sechead .num b, .podmain .num b, .mhead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
+document.querySelectorAll(".sechead .num b, .mhead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
 })();
 
 </script>
@@ -3029,7 +2887,7 @@ exUI(); exDraw();
 const tsSel = $("tsm"); tsSel.innerHTML = optHTML(tsKey); tsSel.onchange = e => { tsKey = e.target.value; tsDraw(); }; tsDraw();
 $("drvt").onchange = e => { target = e.target.value; drivers(); }; drivers();
 matrix(); energy(); glucoseDrivers(); weekly(); labmap(); raw();
-document.querySelectorAll(".sechead .num b, .podmain .num b, .mhead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
+document.querySelectorAll(".sechead .num b, .mhead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
 })();
 
 </script>
