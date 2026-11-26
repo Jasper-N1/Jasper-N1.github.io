@@ -975,8 +975,8 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 <section id="supp" class="sec light" style="padding-top:0">
   <div class="wrap">
     <div class="sechead">
-      <div><div class="num"><b>11</b> Supplements & clinical</div><h2>What goes in.<br><em>What's on file.</em></h2></div>
-      <div class="srcs"><span class="src">N1 · 11 supplements</span><span class="src">N1 · 1 diagnosis</span></div>
+      <div><div class="num"><b>11</b> Supplements and background</div><h2>What goes in.<br><em>What's on file.</em></h2></div>
+      <div class="srcs"><span class="src">N1 · 11 supplements</span></div>
     </div>
     <div class="card"><svg id="gantt" viewBox="0 0 1200 420"></svg></div>
     <div class="dx" id="dx"></div>
@@ -1051,7 +1051,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 
 <footer><div class="wrap">
   <div><span class="logo">digitaltwin<i style="color:var(--blue);font-style:normal">.</i>care</span><br>Example page built from Jasper Middendorp's own N1 record, read on 26 November 2026.</div>
-  <div>Labs, weights, body fat, blood pressure, supplements and the diagnosis are real records in N1. Meals, schedule and the training plan come from the health note in N1. Whoop, Apple Watch Ultra, macros, session logs and genetics are simulated for this example and marked as such. This page shows data; it is not medical advice. Nothing in N1 was changed.</div>
+  <div>Labs, weights, body fat, blood pressure, and supplements are real records in N1. Meals, schedule and the training plan come from the health note in N1. Whoop, Apple Watch Ultra, macros, session logs and genetics are simulated for this example and marked as such. This page shows data; it is not medical advice. Nothing in N1 was changed.</div>
 </div></footer>
 
 <div class="drawer" id="drawer"><div class="dbox"><div class="top"><div><div class="k" id="dg"></div><h3 id="dn"></h3></div><button class="x" id="dx_">×</button></div><svg id="dchart" viewBox="0 0 800 300"></svg><table class="dtable" id="dt"></table></div></div>
@@ -1150,7 +1150,6 @@ const SUPPS = [
 ["PHGG","1 tbsp daily (for gut health)","2026-10-01",null],
 ["Vitamin C","1000 mg daily",null,null]
 ];
-const DIAG = [["Hemorrhoids","2026-11-21","Diagnosed by a colorectal surgeon. Not currently causing an issue. Colonoscopy under consideration to look for another cause of earlier rectal bleeding."]];
 const RECORDS = [
 ["Laboratory report","2025-05-22",81,9,"Jasper middend_VST13277015"],
 ["Laboratory report","2026-05-11",82,9,"Jasper middend_VST14340192"],
@@ -2167,8 +2166,7 @@ GENES.forEach(g => { const m = GMAP[g[6]] && byName(GMAP[g[6]]); $("genes").appe
     if (!b) S("path", { d: `M${x(s1)},${yy + 8}l8,7l-8,7`, fill: a ? "#006E9C" : "none", stroke: "#006E9C" }, svg);
   });
 })();
-$("dx").innerHTML = `<div class="card"><div class="lab"><div><div class="k">Diagnosis · N1</div><h4>${DIAG[0][0]}</h4></div><span class="src">${fd(DIAG[0][1], 1)}</span></div><p style="font-size:14.5px;line-height:1.55;color:var(--ink2);margin:0">${DIAG[0][2]}</p></div>
-<div class="card"><div class="lab"><div><div class="k">History · health note</div><h4>Reported background</h4></div><span class="src note">Patient-reported</span></div>
+$("dx").innerHTML = `<div class="card"><div class="lab"><div><div class="k">History · health note</div><h4>Reported background</h4></div><span class="src note">Patient-reported</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;font-size:14px">${[["Age · height", "39 · 190 cm"], ["Smoking · alcohol", "Never · never"], ["Allergies", "None known"], ["Vaccinations", "Hep B series, hep A"], ["Family history", "None known reported"], ["Sleep", "6–7 h a night"], ["Skin", "La Roche-Posay Toleriane, red-light mask"], ["Prescriptions", "None, supplements only"]].map(([a, b]) => `<div><div class="k">${a}</div>${b}</div>`).join("")}</div></div>`;
 
 /* =========================================================
@@ -2176,7 +2174,7 @@ $("dx").innerHTML = `<div class="card"><div class="lab"><div><div class="k">Diag
    ========================================================= */
 (function sankey() {
   const labN = L.reduce((p, x) => p + x.pts.length, 0) + QUAL.length;
-  const SRC = [["Laboratory reports ×3", labN, 1], ["Scale & weight log", WEIGHT.length + FAT.length, 1], ["Home blood pressure", BP.length * 2, 1], ["Supplements & diagnosis", SUPPS.length + 1, 1], ["Health note", NOTE.meals.length + 12 * 6 + 20, 1], ["Apple Watch Ultra", DAY.length * 10 + hr24.length + W.length * 8, 0], ["Whoop", DAY.length * 12 + hyp.length, 0], ["Meal macros", DAY.length * 5, 0], ["Genotype panel", GENES.length + PRS.length, 0]];
+  const SRC = [["Laboratory reports ×3", labN, 1], ["Scale & weight log", WEIGHT.length + FAT.length, 1], ["Home blood pressure", BP.length * 2, 1], ["Supplements", SUPPS.length, 1], ["Health note", NOTE.meals.length + 12 * 6 + 20, 1], ["Apple Watch Ultra", DAY.length * 10 + hr24.length + W.length * 8, 0], ["Whoop", DAY.length * 12 + hyp.length, 0], ["Meal macros", DAY.length * 5, 0], ["Genotype panel", GENES.length + PRS.length, 0]];
   const DST = ["Heart & vessels", "Metabolism", "Kidneys & liver", "Blood & immunity", "Body composition", "Sleep & recovery", "Training", "Nutrition"];
   const LINKS = [[0, 0, .2], [0, 1, .15], [0, 2, .3], [0, 3, .35], [1, 4, 1], [2, 0, 1], [3, 6, .4], [3, 2, .2], [3, 1, .4], [4, 7, .5], [4, 6, .5], [5, 0, .4], [5, 6, .35], [5, 5, .25], [6, 5, .6], [6, 0, .2], [6, 6, .2], [7, 7, .7], [7, 1, .3], [8, 0, .3], [8, 1, .3], [8, 2, .2], [8, 6, .2]];
   const svg = $("sankey"), w = 1200, h = 560, sc = v => Math.max(6, Math.sqrt(v) * 2.4);
@@ -2189,7 +2187,7 @@ $("dx").innerHTML = `<div class="card"><div class="lab"><div><div class="k">Diag
     const p = S("path", { d: `M${x0},${ya}C${(x0 + x1) / 2},${ya} ${(x0 + x1) / 2},${yb} ${x1},${yb}`, fill: "none", stroke: real ? "#0096D6" : "#A889F5", "stroke-opacity": real ? .42 : .16, "stroke-width": th }, svg); tipOn(p, `<b>${SRC[s][0]}</b> → ${DST[d]}${real ? "" : " · simulated"}`); });
   SRC.forEach(([n, v, real], i) => { S("rect", { x: x0 - 8, y: sY[i], width: 8, height: sH[i], fill: real ? "#0096D6" : "#A889F5" }, svg); S("text", { x: x0 - 16, y: sY[i] + sH[i] / 2, "text-anchor": "end", "font-size": 14, fill: "#1C1B17", "font-family": "DM Sans" }, svg).textContent = n; S("text", { x: x0 - 16, y: sY[i] + sH[i] / 2 + 16, "text-anchor": "end", "font-size": 10.5, fill: real ? "#0096D6" : "#A889F5", "font-family": "DM Mono" }, svg).textContent = v.toLocaleString("en-GB") + (real ? " · N1" : " · SIMULATED"); });
   DST.forEach((n, i) => { S("rect", { x: x1, y: dY[i], width: 8, height: dIn[i], fill: "#1C1B17" }, svg); S("text", { x: x1 + 18, y: dY[i] + dIn[i] / 2 + 5, "font-size": 15, fill: "#1C1B17", "font-family": "Newsreader" }, svg).textContent = n; });
-  const rows = [["Laboratory report", "N1 record", "22 May 2025", "81 values"], ["Laboratory report", "N1 record", "11 May 2026", "82 values"], ["Self-reported weight history", "N1 record", "Sep 2026", "19 values"], ["Laboratory report", "N1 record", "18 Nov 2026", "94 values"], ["Daily weights, body fat, blood pressure", "N1 readings", "Sep – Nov 2026", (WEIGHT.length + FAT.length + BP.length * 2) + " readings"], ["Supplements & diagnosis", "N1 clinical history", "Aug – Nov 2026", (SUPPS.length + 1) + " entries"], ["Health note: goals, meals, schedule, strength plan", "N1 patient note", "Updated to 26 Nov 2026", NOTE.meals.length + " meals · 12-week plan"], ["Whoop 5.0 · Apple Watch Ultra 3", "Simulated for this page", "29 Aug – 26 Nov 2026", (DAY.length * 22 + hr24.length + hyp.length).toLocaleString("en-GB") + " points"], ["Meal macros, session logs, genotype panel", "Simulated for this page", "—", (DAY.length * 5 + GENES.length + PRS.length + 4) + " points"]];
+  const rows = [["Laboratory report", "N1 record", "22 May 2025", "81 values"], ["Laboratory report", "N1 record", "11 May 2026", "82 values"], ["Self-reported weight history", "N1 record", "Sep 2026", "19 values"], ["Laboratory report", "N1 record", "18 Nov 2026", "94 values"], ["Daily weights, body fat, blood pressure", "N1 readings", "Sep – Nov 2026", (WEIGHT.length + FAT.length + BP.length * 2) + " readings"], ["Supplements", "N1 clinical history", "Aug – Nov 2026", (SUPPS.length) + " entries"], ["Health note: goals, meals, schedule, strength plan", "N1 patient note", "Updated to 26 Nov 2026", NOTE.meals.length + " meals · 12-week plan"], ["Whoop 5.0 · Apple Watch Ultra 3", "Simulated for this page", "29 Aug – 26 Nov 2026", (DAY.length * 22 + hr24.length + hyp.length).toLocaleString("en-GB") + " points"], ["Meal macros, session logs, genotype panel", "Simulated for this page", "—", (DAY.length * 5 + GENES.length + PRS.length + 4) + " points"]];
   $("prov").innerHTML = `<tr><th>Source</th><th>Type</th><th>Period</th><th>Volume</th></tr>` + rows.map(r => `<tr><td>${r[0]}</td><td><span class="src${r[1].startsWith("Sim") ? " sim" : r[1].includes("note") ? " note" : ""}">${r[1]}</span></td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
 })();
 
