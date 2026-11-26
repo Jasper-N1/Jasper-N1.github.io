@@ -468,7 +468,17 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 
 /* Example navigation */
 .example-tools{width:calc(100% - 2 * var(--g));max-width:1200px;margin:16px auto 0;border:var(--hair);border-radius:10px;background:var(--paper);box-shadow:0 10px 24px #1c1b1710;color:var(--ink);font:500 13px var(--sans)}
-.example-name{appearance:none;-webkit-appearance:none;display:block;width:100%;max-width:none;min-height:52px;padding:9px 38px 8px 14px;border:0;border-bottom:var(--hair-soft);border-radius:9px 9px 0 0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%23006e9c' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 13px center/17px 17px no-repeat;color:var(--ink);font:400 28px/1.1 var(--serif);cursor:pointer}
+.example-choice{position:relative;z-index:2}
+.example-name{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:9px 14px 8px;border:0;border-bottom:var(--hair-soft);border-radius:9px 9px 0 0;background:transparent;color:var(--ink);font:400 28px/1.1 var(--serif);text-align:left;cursor:pointer}
+.example-name:hover,.example-name[aria-expanded="true"]{background:#edf3ee}
+.example-name svg{color:var(--action);transition:transform .2s}
+.example-name[aria-expanded="true"] svg{transform:rotate(180deg)}
+.example-options{position:absolute;top:calc(100% + 5px);inset-inline:6px;max-width:260px;padding:4px;border:var(--hair);border-radius:8px;background:var(--paper);box-shadow:0 8px 22px #1c1b1726}
+.example-option{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:42px;padding:8px 10px;border:0;border-radius:5px;background:none;color:var(--ink);font:500 15px var(--sans);text-align:left;cursor:pointer}
+.example-option:hover,.example-option:focus-visible{background:#edf3ee}
+.example-option[aria-pressed="true"]{background:#dceef1;color:#005d7d}
+.example-option:not([aria-pressed="true"]) svg{visibility:hidden}
+@media(prefers-reduced-motion:reduce){.example-name svg{transition:none}}
 .example-tools svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .example-tools-panel{max-height:calc(100vh - var(--bar) - 74px);max-height:calc(100dvh - var(--bar) - 74px);overflow:auto;padding:14px 12px 12px}
 .example-tools-label{margin:0 0 6px;font:500 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
@@ -579,10 +589,16 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 </nav>
 
 <aside class="example-tools" aria-label="Example navigation">
-  <select class="example-name" id="examplePicker" aria-label="Select example twin">
-    <option value="jasper">Jasper</option>
-    <option value="jy">JY</option>
-  </select>
+  <div class="example-choice">
+    <button class="example-name" id="examplePicker" type="button" aria-label="Example twin: Jasper" aria-expanded="false" aria-controls="exampleOptions">
+      <span id="currentExample">Jasper</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="example-options" id="exampleOptions" role="group" aria-label="Example twins" hidden>
+      <button class="example-option" type="button" data-twin="jasper" aria-pressed="true">Jasper <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button>
+      <button class="example-option" type="button" data-twin="jy" aria-pressed="false">JY <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button>
+    </div>
+  </div>
   <div class="example-tools-panel">
     <div class="jasper-tools">
     <p class="example-tools-label" id="exampleIndexLabel">Body systems</p>
@@ -1802,15 +1818,57 @@ function stop(end) { playing = false; if (useTTS) speechSynthesis.cancel(); $("p
 function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("playIcon").innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>'; setTimeout(() => speak(i), 60); }
 $("play").onclick = () => playing ? stop() : seek(si);
 const examplePicker = $("examplePicker");
-function updateExample() {
-  document.body.dataset.example = examplePicker.value;
+const exampleOptions = $("exampleOptions");
+const exampleChoices = [...exampleOptions.querySelectorAll("[data-twin]")];
+
+function setExamplePicker(open, returnFocus = false) {
+  exampleOptions.hidden = !open;
+  examplePicker.setAttribute("aria-expanded", String(open));
+  if (open) exampleOptions.querySelector('[aria-pressed="true"]').focus({ preventScroll: true });
+  else if (returnFocus) examplePicker.focus({ preventScroll: true });
 }
-examplePicker.addEventListener("change", () => {
-  updateExample();
-  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
-  window.scrollTo({ top: 0, behavior: "instant" });
+
+examplePicker.onclick = () => setExamplePicker(exampleOptions.hidden, true);
+examplePicker.addEventListener("keydown", event => {
+  if (!["ArrowDown", "ArrowUp"].includes(event.key)) return;
+  event.preventDefault();
+  setExamplePicker(true);
 });
-updateExample();
+exampleChoices.forEach(choice => {
+  choice.addEventListener("click", () => {
+    const changed = choice.getAttribute("aria-pressed") !== "true";
+    document.body.dataset.example = choice.dataset.twin;
+    const label = choice.textContent.trim();
+    $("currentExample").textContent = label;
+    examplePicker.setAttribute("aria-label", "Example twin: " + label);
+    exampleChoices.forEach(option => option.setAttribute("aria-pressed", String(option === choice)));
+    setExamplePicker(false, true);
+    if (!changed) return;
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  });
+});
+exampleOptions.addEventListener("keydown", event => {
+  const index = exampleChoices.indexOf(document.activeElement);
+  if (event.key === "Escape") {
+    event.preventDefault();
+    setExamplePicker(false, true);
+    return;
+  }
+  if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  const next = event.key === "Home" ? 0
+    : event.key === "End" ? exampleChoices.length - 1
+    : (index + (event.key === "ArrowDown" ? 1 : -1) + exampleChoices.length) % exampleChoices.length;
+  exampleChoices[next].focus();
+});
+const exampleChoice = examplePicker.parentElement;
+exampleChoice.addEventListener("focusout", event => {
+  if (!exampleChoice.contains(event.relatedTarget)) setExamplePicker(false);
+});
+document.addEventListener("pointerdown", event => {
+  if (!exampleChoice.contains(event.target)) setExamplePicker(false);
+});
 const podcastDialog = $("podcast");
 $("quickListen").onclick = () => {
   podcastDialog.showModal();
