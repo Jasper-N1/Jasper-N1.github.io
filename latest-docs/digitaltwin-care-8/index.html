@@ -1059,7 +1059,10 @@
     background: linear-gradient(145deg, #10242de8 0%, #10242d82 41%, transparent 76%), linear-gradient(0deg, #10242dcc, transparent 42%); }
   .bento-capture img { object-fit: contain; object-position: 95% top; transform: scale(1.16); transform-origin: right top; }
   .bento-model { background: #c8e5eb; color: #173641; }
-  .bento-model img { width: clamp(136px, 17vw, 225px); right: 1%; top: 32%; }
+  .bento-twin { position: absolute; inset: 32% 1% 0 auto; z-index: -1; pointer-events: none;
+    width: clamp(136px, 17vw, 225px); }
+  .bento-twin :is(canvas, img) { display: block; position: absolute; inset: 0 auto auto 0;
+    width: 100%; height: auto; aspect-ratio: 500 / 1344; }
   .bento-record-art { position: absolute; z-index: -1; width: clamp(106px, 12vw, 155px); height: clamp(112px, 16vh, 140px); bottom: 6%; right: 8%; }
   .bento-record-art div { position: absolute; inset: 0 8px 2px 0; border: 1px solid #749daa; border-radius: 6px; background: #d8edf0; transform: rotate(13deg) translateX(9px); }
   .bento-record-art div:nth-child(2) { background: #edf6f3; transform: rotate(-11deg) translate(-9px, 0); }
@@ -1088,7 +1091,7 @@
     .twin-bento-grid { grid-template-columns: minmax(0, 1fr); }
     .bento-feature, .bento-life, .bento-details { grid-column: auto; }
     .bento-feature { min-height: 275px; }
-    .bento-model img { width: 151px; }
+    .bento-twin { width: 151px; }
   }
 
 </style>
@@ -1201,7 +1204,7 @@
       <a href="#s3">Explore your twin <span aria-hidden="true">↗</span></a>
     </article>
     <article class="bento-feature bento-model">
-      <img src="twin-walk-poster.webp" alt="" loading="lazy" decoding="async">
+      <div class="bento-twin" aria-hidden="true"></div>
       <div><h3>A model that keeps up</h3><p>As you add new results, your twin updates with you.</p></div>
       <a href="#s2">See the model <span aria-hidden="true">↗</span></a>
     </article>
@@ -1426,7 +1429,8 @@ if (LITE) document.documentElement.classList.add("lite");
     const slotEl = document.querySelector(".fs-slot"), slot = slotEl ? slotEl.getBoundingClientRect() : null;
     const fsR = document.getElementById("fs").getBoundingClientRect();
     // the twin shows through the header, the blue and the scene, then again in How it works; not in between
-    const active = stage.bottom > 0;
+    const stageCutoff = bentoVisible ? document.querySelector(".bar").getBoundingClientRect().bottom + 16 : 0;
+    const active = stage.bottom > stageCutoff;
     const blueInView = blue.top < height && blue.bottom > 0;
     const copyBottom = heroCopy.getBoundingClientRect().bottom;
     const copyOpacity = Math.max(0, Math.min(1, (blue.top - copyBottom + 80) / 80));
@@ -1454,7 +1458,10 @@ if (LITE) document.documentElement.classList.add("lite");
       both.forEach(v => { if (v.paused) v.play().catch(() => {}); });
       resync();
     }
-    if (!active) return;
+    if (!active) {
+      if (bentoVisible && !hiRaf && !document.hidden) hiRaf = requestAnimationFrame(hiLoop);
+      return;
+    }
 
     const inSteps = stage.top < height * .5;
     const index = Number(steps.dataset.i);
@@ -1625,13 +1632,26 @@ if (LITE) document.documentElement.classList.add("lite");
   const hiCv = document.createElement("canvas"); hiCv.id = "twinHi"; hiCv.setAttribute("aria-hidden", "true"); light.after(hiCv);
   // fallback when a browser won't let us draw the walking clip (seen in Safari): the same twin as a still picture
   const hiImg = new Image(); hiImg.id = "twinHiImg"; hiImg.alt = ""; hiImg.setAttribute("aria-hidden", "true"); hiImg.decoding = "async";
-  hiImg.style.cssText = "position:fixed;left:0;top:0;z-index:4;pointer-events:none;display:none;transform-origin:0 0";
+  const floatingTwinStyle = "position:fixed;left:0;top:0;z-index:4;pointer-events:none;display:none;transform-origin:0 0";
+  hiImg.style.cssText = floatingTwinStyle;
   hiCv.after(hiImg); let hiMode = "gl";
-  // The walking twin: 62 full-resolution transparent frames on 16 sprite sheets (4 frames each, 500 x 1344 per frame),
-  // drawn into a canvas. Plain images, so it behaves the same in every browser. The still shows until the sheets arrive.
   const hiWrap = document.createElement("canvas"), hiVid = { paused: false, play: () => Promise.resolve() }, hg2 = hiWrap.getContext("2d");
-  hiWrap.setAttribute("aria-hidden", "true"); hiWrap.style.cssText = "position:fixed;left:0;top:0;z-index:4;pointer-events:none;display:none;transform-origin:0 0";
+  hiWrap.setAttribute("aria-hidden", "true");
+  hiWrap.style.cssText = floatingTwinStyle;
   hiImg.after(hiWrap);
+  const bentoTwin = document.querySelector(".bento-twin");
+  let bentoVisible = false, inBento = false;
+  function moveTwin(toBento) {
+    if (toBento === inBento) return;
+    inBento = toBento;
+    if (toBento) bentoTwin.append(hiImg, hiWrap);
+    else hiCv.after(hiImg, hiWrap);
+    for (const el of [hiImg, hiWrap]) el.style.cssText = toBento ? "" : floatingTwinStyle;
+  }
+  new IntersectionObserver(([entry]) => {
+    bentoVisible = entry.isIntersecting;
+    scheduleModel();
+  }).observe(bentoTwin);
   let hiVidOK = false, hiImgOK = false;
   let frame = 0, lastFrame = -1, nextFrameAt = 0;
   const sheets = new Map(), downloads = new Map(), sheetCount = 47, frameCount = 186, frameTime = 1000 / 36;
@@ -1660,7 +1680,7 @@ if (LITE) document.documentElement.classList.add("lite");
   function clearWalk() {
     for (const sheet of sheets.values()) sheet.image?.close?.();
     sheets.clear();
-    frame = 0; lastFrame = -1; nextFrameAt = 0; hiVidOK = false;
+    lastFrame = -1; nextFrameAt = 0; hiVidOK = false;
   }
   function walkSheet(index) {
     if (sheets.has(index)) return sheets.get(index).image;
@@ -1836,7 +1856,25 @@ if (LITE) document.documentElement.classList.add("lite");
   }
   let hiBuild = 0;
   function hiLoop(now) {
-    if (!hiShow || !cur) { clearWalk(); hiRaf = 0; hiCv.style.display = "none"; hiImg.style.display = "none"; hiWrap.style.display = "none"; bmL.style.display = "none"; bmSet = -1; both.forEach(v => { v.style.clipPath = ""; v.classList.remove("is-swapped"); }); return; }
+    if (!hiShow || !cur) {
+      if (bentoVisible && !document.hidden) {
+        moveTwin(true);
+        if (!motion.matches) drawFrame(now);
+        else if (sheets.size) clearWalk();
+        hiWrap.style.display = hiVidOK ? "block" : "none";
+        hiImg.style.display = hiVidOK ? "none" : "block";
+        bmL.style.display = "none";
+        hiRaf = requestAnimationFrame(hiLoop);
+        return;
+      }
+      clearWalk();
+      hiRaf = 0;
+      hiCv.style.display = hiImg.style.display = hiWrap.style.display = bmL.style.display = "none";
+      bmSet = -1;
+      both.forEach(v => { v.style.clipPath = ""; v.classList.remove("is-swapped"); });
+      return;
+    }
+    moveTwin(false);
     useStill("frames");
     const GLM = hiMode === "gl";
     hiCv.style.display = GLM ? "block" : "none";
