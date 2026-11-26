@@ -1094,11 +1094,43 @@
     .bento-twin { width: 151px; }
   }
 
+
+  .bar .logo { color: inherit; text-decoration: none; }
+  .primary-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center;
+    gap: clamp(18px, 3vw, 44px); margin: 0; padding: 0; list-style: none; pointer-events: auto; }
+  .primary-links a { display: flex; align-items: center; min-height: 44px; color: inherit;
+    text-decoration: none; font: 500 15px var(--sans); }
+  .primary-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .bar .logo:focus-visible, .primary-links a:focus-visible, .primary-menu-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  .primary-menu-toggle { display: none; }
+  #pricing, #plat, #s6 { scroll-margin-top: calc(var(--bar) + 12px); }
+  @media (max-width: 800px) {
+    .bar { gap: 8px; }
+    .primary-menu-toggle { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; margin-left: auto;
+      padding: 0 6px; border: 0; color: inherit; background: transparent; font: 600 13px var(--sans); cursor: pointer; }
+    .primary-links { display: none; top: calc(100% - 1px); left: auto; right: 20px; transform: none; min-width: 160px;
+      padding: 4px 12px; border: 1px solid #c9cbc1; border-radius: 6px; color: var(--ink); background: #faf7ee; box-shadow: 0 8px 28px #172b311c; }
+    .primary-menu-toggle[aria-expanded="true"] + .primary-links { display: block; }
+  }
+  @media (max-width: 365px) {
+    .bar { padding-inline: 12px !important; gap: 4px; }
+    .bar .sign { padding-inline: 11px !important; gap: 5px; font-size: 13px !important; }
+  }
+
 </style>
 </head>
 <body>
 <a class="skip" href="#s2">Skip to content</a>
-<nav class="bar"><div class="logo"><span>digital twin</span><span class="c">.care</span></div><a class="sign" href="#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a></nav>
+<nav class="bar" aria-label="Main navigation">
+  <a class="logo" href="#main"><span>digital twin</span><span class="c">.care</span></a>
+  <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
+  <ul class="primary-links" id="primary-menu">
+    <li><a href="#s5">Examples</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#plat">About</a></li>
+  </ul>
+  <a class="sign" href="#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
+</nav>
 <div id="blue-wash" aria-hidden="true"></div>
 <div id="shared-field" aria-hidden="true"></div>
 <main id="main"><section class="alldots"><div class="copy"><h1><span class="l1">The digital model of your health.</span><span class="l2">Analysed by Superintelligence.</span></h1><p class="sub">Upload your labs and connect your watch. Get one picture of your health, and what to do next.</p><div class="hero-cta"><a class="go" href="#s6">Build my free twin <span aria-hidden="true">→</span></a><a class="preview-link" href="#fs">Explore a sample twin</a></div></div></section></main>
@@ -1324,7 +1356,7 @@
 <section class="s7" id="s7" aria-labelledby="s7h">
   <div class="kick" data-bounce style="text-align:center">Questions</div><h2 id="s7h" data-bounce>Frequently asked questions</h2>
   <div class="grid">
-    <div class="list"><details data-bounce><summary><span class="qn">01</span><span class="qt">What is a digital twin?</span></summary><div class="ans"><div><p>A living model of your health, built from everything you share with us: lab results, scans, wearable data, doctor’s letters and how you live. It brings it all into one picture and keeps itself up to date as new data comes in.</p></div></div></details><details data-bounce><summary><span class="qn">02</span><span class="qt">What can I upload or connect?</span></summary><div class="ans"><div><p>Lab reports and blood tests (PDFs or photos), scans and imaging reports, letters from your doctors, and data from your watch, ring or phone. If you’re not sure, upload it and we’ll work out what it is.</p></div></div></details><details data-bounce><summary><span class="qn">03</span><span class="qt">How does the clinical intelligence work?</span></summary><div class="ans"><div><p>It reads each record, pulls out the results that matter, matches them to the right measures and checks them against published medical guidelines. Every finding links back to the record it came from, so you can see where it came from.</p></div></div></details><details data-bounce><summary><span class="qn">04</span><span class="qt">Is my health data private and secure?</span></summary><div class="ans"><div><p>Your data is encrypted, never sold, and only shared when you choose to share it. You can export or delete it at any time.</p></div></div></details><details data-bounce><summary><span class="qn">05</span><span class="qt">Does it replace my doctor?</span></summary><div class="ans"><div><p>No. Your twin helps you understand your health and prepares you for better conversations with your doctor. It doesn’t diagnose or prescribe.</p></div></div></details><details data-bounce><summary><span class="qn">06</span><span class="qt">Can I share my twin with my doctor or family?</span></summary><div class="ans"><div><p>Yes. Share a full report or just one part of it, choose exactly who sees what, and stop sharing whenever you like.</p></div></div></details><details data-bounce><summary><span class="qn">07</span><span class="qt">How much does it cost?</span></summary><div class="ans"><div><p>You can start for free and see your twin before you pay for anything. Pricing details are coming soon.</p></div></div></details></div>
+    <div class="list"><details data-bounce><summary><span class="qn">01</span><span class="qt">What is a digital twin?</span></summary><div class="ans"><div><p>A living model of your health, built from everything you share with us: lab results, scans, wearable data, doctor’s letters and how you live. It brings it all into one picture and keeps itself up to date as new data comes in.</p></div></div></details><details data-bounce><summary><span class="qn">02</span><span class="qt">What can I upload or connect?</span></summary><div class="ans"><div><p>Lab reports and blood tests (PDFs or photos), scans and imaging reports, letters from your doctors, and data from your watch, ring or phone. If you’re not sure, upload it and we’ll work out what it is.</p></div></div></details><details data-bounce><summary><span class="qn">03</span><span class="qt">How does the clinical intelligence work?</span></summary><div class="ans"><div><p>It reads each record, pulls out the results that matter, matches them to the right measures and checks them against published medical guidelines. Every finding links back to the record it came from, so you can see where it came from.</p></div></div></details><details data-bounce><summary><span class="qn">04</span><span class="qt">Is my health data private and secure?</span></summary><div class="ans"><div><p>Your data is encrypted, never sold, and only shared when you choose to share it. You can export or delete it at any time.</p></div></div></details><details data-bounce><summary><span class="qn">05</span><span class="qt">Does it replace my doctor?</span></summary><div class="ans"><div><p>No. Your twin helps you understand your health and prepares you for better conversations with your doctor. It doesn’t diagnose or prescribe.</p></div></div></details><details data-bounce><summary><span class="qn">06</span><span class="qt">Can I share my twin with my doctor or family?</span></summary><div class="ans"><div><p>Yes. Share a full report or just one part of it, choose exactly who sees what, and stop sharing whenever you like.</p></div></div></details><details id="pricing" data-bounce><summary><span class="qn">07</span><span class="qt">How much does it cost?</span></summary><div class="ans"><div><p>You can start for free and see your twin before you pay for anything. Pricing details are coming soon.</p></div></div></details></div>
   </div>
 </section>
 <footer class="foot" id="foot">
@@ -2595,6 +2627,35 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   });
   new ResizeObserver(setPositions).observe(reel);
   setPositions();
+})();
+</script>
+
+<script>
+(() => {
+  const toggle = document.querySelector(".primary-menu-toggle");
+  const links = document.getElementById("primary-menu");
+  const pricing = document.getElementById("pricing");
+  function setMenu(open) {
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+  }
+  toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
+  links.addEventListener("click", event => {
+    const link = event.target.closest("a");
+    if (!link) return;
+    if (link.hash === "#pricing") pricing.open = true;
+    setMenu(false);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || toggle.getAttribute("aria-expanded") !== "true") return;
+    setMenu(false);
+    toggle.focus();
+  });
+  function showPricing() {
+    if (location.hash === "#pricing") pricing.open = true;
+  }
+  addEventListener("hashchange", showPricing);
+  showPricing();
 })();
 </script>
 </body>
