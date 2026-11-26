@@ -474,9 +474,19 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   #wear,#train,#lab{overflow-x:clip}
 }
 
-/* Floating example shortcuts */
-.example-tools{position:fixed;top:calc(var(--bar) + 12px);right:var(--edge);width:min(19rem,calc(100% - 2 * var(--g)));z-index:9;font:500 14px var(--sans)}
-.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:12px;width:max-content;margin-left:auto;min-height:44px;padding:0 15px;cursor:pointer;list-style:none;border:var(--hair);border-radius:999px;background:var(--paper);color:var(--action);box-shadow:0 4px 16px #1c1b1710}
+/* Example navigation */
+.example-profile{display:grid;gap:6px;padding:4px 9px 12px;border-bottom:var(--hair-soft);margin-bottom:8px}
+.example-profile strong{font:400 30px/1 var(--serif)}
+.example-profile label{color:var(--ink2);font-size:12px}
+.example-profile select{width:100%;min-height:36px;padding:4px 8px;border:var(--hair);border-radius:6px;background:#fffdf8;color:var(--ink);font:inherit}
+@media(min-width:1720px){
+  .example-tools#exampleTools{left:max(20px,calc(var(--edge) - 248px));width:224px}
+}
+@media(min-width:1050px) and (max-width:1719px){
+  #hero .hero-title{top:13%}
+}
+.example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(19rem,calc(100% - 2 * var(--g)));z-index:9;font:500 14px var(--sans)}
+.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:12px;width:max-content;min-height:44px;padding:0 15px;cursor:pointer;list-style:none;border:var(--hair);border-radius:999px;background:var(--paper);color:var(--action);box-shadow:0 4px 16px #1c1b1710}
 .example-tools summary::-webkit-details-marker{display:none}
 .example-tools summary span{transition:transform .2s}
 .example-tools[open] summary span{transform:rotate(180deg)}
@@ -525,8 +535,15 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 </nav>
 
 <details class="example-tools" id="exampleTools">
-  <summary>Explore &amp; download <span aria-hidden="true">⌄</span></summary>
+  <summary>Jasper <span aria-hidden="true">⌄</span></summary>
   <div class="example-tools-panel">
+    <div class="example-profile">
+      <strong>Jasper</strong>
+      <label for="exampleProfile">Example twin</label>
+      <select id="exampleProfile">
+        <option value="examples.html">Jasper, in data</option>
+      </select>
+    </div>
     <div class="example-tools-actions" role="group" aria-label="Downloads and playback">
       <a href="jasper-in-data-report.pdf" download>Download full report · PDF</a>
       <button type="button" id="quickDownloadData">Download data · JSON</button>
@@ -1532,11 +1549,14 @@ function stop(end) { playing = false; if (useTTS) speechSynthesis.cancel(); $("p
 function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("playIcon").innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>'; setTimeout(() => speak(i), 60); }
 $("play").onclick = () => playing ? stop() : seek(si);
 const exampleTools = $("exampleTools");
+const wideExample = matchMedia("(min-width:1720px)");
+exampleTools.open = wideExample.matches;
+wideExample.addEventListener("change", event => { exampleTools.open = event.matches; });
 exampleTools.addEventListener("click", event => {
-  if (event.target.closest(".example-tools-panel a[href^='#']")) exampleTools.open = false;
+  if (!wideExample.matches && event.target.closest(".example-tools-panel a[href^='#']")) exampleTools.open = false;
 });
 document.addEventListener("click", event => {
-  if (!exampleTools.contains(event.target)) exampleTools.open = false;
+  if (!wideExample.matches && !exampleTools.contains(event.target)) exampleTools.open = false;
 });
 exampleTools.addEventListener("keydown", event => {
   if (event.key !== "Escape" || !exampleTools.open) return;
