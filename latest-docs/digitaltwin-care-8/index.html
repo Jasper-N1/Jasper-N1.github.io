@@ -1255,6 +1255,7 @@ if (LITE) document.documentElement.classList.add("lite");
   }
 
   let handoffProgress = 0, handoffTime = null;
+  let previousTarget = 0, scrollDirection = 0, lastHandoffInput = 0;
   function updateModel(now = performance.now()) {
     scheduled = false;
     const height = innerHeight;
@@ -1319,32 +1320,44 @@ if (LITE) document.documentElement.classList.add("lite");
       const handoffTop = Math.min(height * .85, initialBlue - height * .12);
       const distance = height * .65;
       const target = Math.max(0, Math.min(1, (handoffTop - blue.top) / distance));
-      if (motion.matches || blue.top > handoffTop + height * .08) handoffProgress = target;
+      if (target !== previousTarget) {
+        scrollDirection = Math.sign(target - previousTarget);
+        lastHandoffInput = now;
+        previousTarget = target;
+      }
+      if (target === 0 || motion.matches) handoffProgress = target;
       else {
         const delta = Math.min(32, handoffTime === null ? 16 : now - handoffTime);
         const gap = target - handoffProgress;
-        // Catch up faster when a quick scroll moves well ahead of the transition.
-        const catchUp = Math.max(0, Math.min(1, (Math.abs(gap) - .18) / .32));
-        const response = 46 - 10 * catchUp;
-        const maxStep = .10 + .035 * catchUp;
-        const step = gap * (1 - Math.exp(-delta / response));
-        handoffProgress += Math.max(-maxStep, Math.min(maxStep, step));
+        // A reversal can leave the target ahead of the displayed size. Hold it
+        // briefly instead of continuing to shrink while the user scrolls up.
+        if (Math.sign(gap) === scrollDirection || now - lastHandoffInput > 90) {
+          const catchUp = Math.max(0, Math.min(1, (Math.abs(gap) - .18) / .32));
+          const response = 46 - 10 * catchUp;
+          const maxStep = .10 + .035 * catchUp;
+          const step = gap * (1 - Math.exp(-delta / response));
+          handoffProgress += Math.max(-maxStep, Math.min(maxStep, step));
+        }
         if (Math.abs(target - handoffProgress) < .002) handoffProgress = target;
+        // Rejoin the full-size photo smoothly as the handoff approaches its start.
+        handoffProgress = Math.min(handoffProgress, target * 2);
       }
       handoffTime = handoffProgress === target ? null : now;
       if (handoffTime !== null) scheduleModel();
-      const entry = handoffProgress;
-      const heroWeight = 1 - entry * entry * (3 - 2 * entry);
+
       const initialCenter = slot.top - fsR.top + slot.height / 2;
       const heroSize = slot.height / .94;
-      // Move the photo anchor with the same eased sample as the shrink.
-      const easedPhotoTop = entry === 0 ? fsR.top : handoffTop - initialBlue - entry * distance;
+      const positionWeight = 1 - target * target * (3 - 2 * target);
+      const sizeWeight = 1 - handoffProgress * handoffProgress * (3 - 2 * handoffProgress);
+      const positionSize = size + (heroSize - size) * positionWeight;
       px = twinX;
-      pCenter = center + (initialCenter + easedPhotoTop - center) * heroWeight;
-      pSize = size + (heroSize - size) * heroWeight;
-      if (entry === 0 && target === 0) photoScroll = scrollY;
+      pSize = size + (heroSize - size) * sizeWeight;
+      // The top follows the live page position even while the scale is catching up.
+      pCenter = center + (initialCenter + fsR.top - center) * positionWeight +
+        (pSize - positionSize) * (.47 + .019 * .936 / .956);
+      if (target === 0) photoScroll = scrollY;
     } else {
-      handoffProgress = 1;
+      handoffProgress = previousTarget = 1;
       handoffTime = null;
     }
     let top = pCenter + Math.min(0, stage.bottom - height);
