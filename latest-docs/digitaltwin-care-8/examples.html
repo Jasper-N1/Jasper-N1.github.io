@@ -467,12 +467,8 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 }
 
 /* Example navigation */
-.example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(240px,calc(100% - 2 * var(--g)));z-index:9;color:var(--ink);font:500 13px var(--sans)}
-.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:16px;width:max-content;min-height:48px;padding:8px 14px;cursor:pointer;list-style:none;border:var(--hair);border-radius:8px;background:var(--paper);font:400 28px/1 var(--serif)}
-.example-tools summary::-webkit-details-marker{display:none}
-.example-tools summary svg{color:var(--action)}
-.example-tools[open] summary{width:100%;border-radius:10px 10px 0 0}
-.example-tools[open] summary svg{transform:rotate(180deg)}
+.example-tools{width:calc(100% - 2 * var(--g));max-width:1200px;margin:16px auto 0;color:var(--ink);font:500 13px var(--sans)}
+.example-name{display:block;width:100%;max-width:none;min-height:48px;padding:6px 12px;border:var(--hair);border-radius:10px 10px 0 0;background:var(--paper);color:var(--ink);font:400 28px/1 var(--serif);cursor:pointer}
 .example-tools svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .example-tools-panel{max-height:calc(100vh - var(--bar) - 74px);max-height:calc(100dvh - var(--bar) - 74px);overflow:auto;padding:12px;border:var(--hair);border-top:0;border-radius:0 0 10px 10px;background:var(--paper);box-shadow:0 10px 24px #1c1b1710}
 .example-tools-label{margin:0 0 6px;font:500 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
@@ -488,14 +484,20 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools-actions #quickListen{background:#dceef1;color:#005d7d;border-color:transparent}
 .example-tools :focus-visible{outline:2px solid var(--action);outline-offset:-2px}
 @media(pointer:coarse){.example-tools-sections a,.example-tool-action{min-height:44px}}
-@media(min-width:1780px){.example-tools{left:max(20px,calc(var(--edge) - 276px));width:224px}}
-.example-switch{display:grid;width:100%;margin-bottom:12px;text-align:left}
-.example-switch strong{font:600 15px var(--sans)}
+@media(min-width:1780px){
+  .example-tools{position:fixed;top:calc(var(--bar) + 12px);left:max(20px,calc(var(--edge) - 276px));width:224px;margin:0;z-index:9}
+}
+@media(max-width:1779px){
+  .example-tools-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 8px;max-height:150px}
+  .example-tools-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .example-tools-actions .example-tools-label{grid-column:1/-1}
+}
 #day{width:min(1220px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:26px 0;border:var(--hair);border-radius:12px;background:var(--paper);color:var(--ink)}
 #day::backdrop{background:#14232b70}
 #day .sechead{margin-bottom:20px}
 #jyPreview{display:none;min-height:60vh;padding:clamp(96px,12vw,180px) 0}
-body[data-example="jy"] > section:not(#jyPreview),body[data-example="jy"] > footer,body[data-example="jy"] .jasper-tools{display:none}
+body[data-example="jy"] > section:not(#jyPreview),body[data-example="jy"] > footer,body[data-example="jy"] .example-tools-panel{display:none}
+body[data-example="jy"] .example-name{border-radius:10px}
 body[data-example="jy"] #jyPreview{display:block}
 #hero{padding-top:clamp(76px,6vw,108px)}
 @media(min-width:1050px){
@@ -561,12 +563,12 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
 </nav>
 
-<details class="example-tools" id="exampleTools">
-  <summary><span id="exampleName">Jasper</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+<aside class="example-tools" aria-label="Example navigation">
+  <select class="example-name" id="examplePicker" aria-label="Select example twin">
+    <option value="jasper">Jasper</option>
+    <option value="jy">JY</option>
+  </select>
   <div class="example-tools-panel">
-    <button class="example-tool-action example-switch" id="examplePicker" type="button" aria-label="Switch to JY">
-      <span>Switch twin</span><strong id="otherExample">JY</strong>
-    </button>
     <div class="jasper-tools">
     <p class="example-tools-label" id="exampleIndexLabel">Body systems</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
@@ -595,7 +597,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
     </div>
     </div>
   </div>
-</details>
+</aside>
 
 <section id="jyPreview" aria-labelledby="jyPreviewTitle">
   <div class="wrap">
@@ -1679,33 +1681,16 @@ function speak(i) {
 function stop(end) { playing = false; if (useTTS) speechSynthesis.cancel(); $("playIcon").innerHTML = '<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>'; if (end) { pos = 0; si = 0; } }
 function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("playIcon").innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>'; setTimeout(() => speak(i), 60); }
 $("play").onclick = () => playing ? stop() : seek(si);
-const exampleTools = $("exampleTools");
 const examplePicker = $("examplePicker");
-examplePicker.addEventListener("click", () => {
-  const isJY = document.body.dataset.example !== "jy";
-  document.body.dataset.example = isJY ? "jy" : "jasper";
-  $("exampleName").textContent = isJY ? "JY" : "Jasper";
-  $("otherExample").textContent = isJY ? "Jasper" : "JY";
-  examplePicker.setAttribute("aria-label", "Switch to " + $("otherExample").textContent);
+function updateExample() {
+  document.body.dataset.example = examplePicker.value;
+}
+examplePicker.addEventListener("change", () => {
+  updateExample();
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
   window.scrollTo({ top: 0, behavior: "instant" });
-  $("exampleName").closest("summary").focus({ preventScroll: true });
-  if (!wideExample.matches) exampleTools.open = false;
 });
-const wideExample = matchMedia("(min-width:1780px)");
-exampleTools.open = wideExample.matches;
-wideExample.addEventListener("change", event => { exampleTools.open = event.matches; });
-exampleTools.addEventListener("click", event => {
-  if (!wideExample.matches && event.target.closest(".example-tools-panel a[href^='#']")) exampleTools.open = false;
-});
-document.addEventListener("click", event => {
-  if (!wideExample.matches && !exampleTools.contains(event.target) && !event.target.closest("#podcast")) exampleTools.open = false;
-});
-exampleTools.addEventListener("keydown", event => {
-  if (event.key !== "Escape" || !exampleTools.open) return;
-  exampleTools.open = false;
-  exampleTools.querySelector("summary").focus();
-});
+updateExample();
 const podcastDialog = $("podcast");
 $("quickListen").onclick = () => {
   podcastDialog.showModal();
