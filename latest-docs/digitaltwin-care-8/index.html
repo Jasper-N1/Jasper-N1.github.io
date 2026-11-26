@@ -11,7 +11,7 @@
 <link rel="preload" as="image" href="twin-walk-poster.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
-<link rel="stylesheet" href="site-menu.css">
+<link rel="stylesheet" href="site-menu.css?v=2">
 <style>
   :root { --bg: #F3F2E9; --ink: #1C1B17; --blue: #0096D6; --blue-deep: #0096D6; --blue-text: #0096D6; --dk: #0c0d0e; }
   * { box-sizing: border-box; }
@@ -33,10 +33,9 @@
   .t-h2 { font: 400 var(--fs-h2)/var(--lh-h) var(--serif); letter-spacing: var(--ls-h); }
   html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   :root { --g: clamp(20px, 3.3vw, 64px); --bar: clamp(64px, 6vw, 96px); }
-  .bar { position: fixed; left: 0; right: 0; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; height: var(--bar); padding: 0 var(--g); pointer-events: none; transition: color .3s; }
+  .bar { position: fixed; left: 0; right: 0; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; height: var(--bar); pointer-events: none; transition: color .3s; }
   .bar > * { pointer-events: auto; }
   .logo { font-weight: 500; font-size: clamp(18px, 1.45vw, 24px); line-height: 1; letter-spacing: -0.03em; white-space: nowrap; } .logo span { display: inline; } .logo .c { color: var(--blue); }
-  .sign { font: 500 var(--fs-body) var(--sans); display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 clamp(18px, 1.5vw, 26px); border-radius: 999px; background: var(--ink); color: var(--bg); text-decoration: none; white-space: nowrap; }
   .sign .s { display: none; }
   body.ondark .bar { color: #eef0f1; } body.ondark .logo .c { color: #fff; } body.ondark .sign { background: #fff !important; color: var(--blue-deep) !important; } body.ondark .sign { background: #eef0f1; color: #111; }
   section { position: relative; height: 100vh; height: 100svh; min-height: 620px; overflow: hidden; cursor: crosshair; }
@@ -297,7 +296,7 @@
   .skip { position: fixed; left: 12px; top: -60px; z-index: 50; padding: 10px 14px; background: var(--ink); color: var(--bg); font: 500 var(--fs-body) var(--sans); border-radius: 6px; text-decoration: none; transition: top .2s; } .skip:focus { top: 12px; }
   a:focus-visible, button:focus-visible, summary:focus-visible, .st:focus-visible { outline: 2px solid var(--blue-text); outline-offset: 3px; border-radius: 6px; }
   .s2 a:focus-visible, .foot a:focus-visible, body.ondark .bar a:focus-visible { outline-color: #fff; }
-  .sign, .s4 .go, .s6 .cta, .foot .go, .copy .go { border-radius: 6px !important; }
+  .s4 .go, .s6 .cta, .foot .go, .copy .go { border-radius: 6px !important; }
   .kick, .tag, .s4 .card .k span:first-child, .s5 .stars, .s5 .more, .s7 summary .qn, .s5 .note { color: var(--blue-text); }
   .s5 .meta, .s4 .card .k, .s6 .perk { color: #66645D; }
   .s2 p, .foot .legal, .foot nav h3 { color: #fff; } .s3 .st.on p { color: #fff; }
@@ -376,7 +375,6 @@
   /* ---- one page grid: every section shares the same content edges, with generous vertical breathing room ----
      content is 1200px wide at most; below that the side gutter is 20 to 64px. */
   :root { --wrap: 1200px; --edge: max(var(--g), calc((100vw - var(--wrap)) / 2)); --sec: clamp(96px, 11vw, 168px); }
-  .bar { padding: 0 var(--edge) !important; }
   .copy { left: var(--edge) !important; }
   .prog { left: max(8px, calc(var(--edge) / 2 - 7px)) !important; }
   .s3 .steps { right: var(--edge) !important; }
@@ -387,7 +385,7 @@
   .plat h2, .s5 .head h2 { margin-bottom: clamp(56px, 6vw, 96px) !important; }
   .s7 .grid { max-width: 820px !important; }
   .s2 .in { max-width: min(var(--wrap), calc(100vw - 2 * var(--edge))) !important; }
-  @media (max-width: 800px) { .plat, .s4, .s5, .s6, .s7, .foot { padding-left: 20px !important; padding-right: 20px !important; } .bar { padding: 0 20px !important; } .copy { left: 20px !important; } }
+  @media (max-width: 800px) { .plat, .s4, .s5, .s6, .s7, .foot { padding-left: 20px !important; padding-right: 20px !important; } .copy { left: 20px !important; } }
 
   /* ---- testimonials: one calm, even grid in the page's card style ---- */
   .s5 .tsh { max-width: 640px; margin-bottom: clamp(48px, 5vw, 80px); } .s5 .tsh h2 { margin: 0 !important; white-space: normal; }
@@ -986,15 +984,14 @@
   .prio li.watch span { color: #9a3e24; }
   .plat .pbody { margin: clamp(14px, 2vh, 20px) 0 0; max-width: 27em; font: 400 clamp(15px, 1.15vw, 18px)/1.55 var(--sans, inherit); color: #4a4740; }
   /* CTAs: one action colour (accessible brand blue, 5.3:1 with white), pill shape, 48px tall, arrow that nudges forward */
-  .sign, .s6 .cta, .s4 .go, a.go { background: #006E9C !important; color: #fff !important; border-radius: 999px !important; min-height: 48px; height: auto !important;
+  .s6 .cta, .s4 .go, a.go { background: #006E9C !important; color: #fff !important; border-radius: 999px !important; min-height: 48px; height: auto !important;
     padding: 0 24px !important; display: inline-flex !important; align-items: center; justify-content: center; gap: 10px; font: 500 16px/1 var(--sans) !important;
     letter-spacing: .005em; box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 6px 18px -8px rgba(0,110,156,.55); transition: background .2s, box-shadow .2s, transform .2s !important; }
-  .sign:hover, .s6 .cta:hover, .s4 .go:hover, a.go:hover { background: #005A80 !important; transform: translateY(-1px) !important; box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 10px 24px -10px rgba(0,90,128,.6); }
+  .s6 .cta:hover, .s4 .go:hover, a.go:hover { background: #005A80 !important; transform: translateY(-1px) !important; box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, 0 10px 24px -10px rgba(0,90,128,.6); }
   .sign [aria-hidden], .s6 .cta [aria-hidden], a.go [aria-hidden] { transition: transform .2s; } .sign:hover [aria-hidden], .s6 .cta:hover [aria-hidden], a.go:hover [aria-hidden] { transform: translateX(3px); }
   .sign:focus-visible, .s6 .cta:focus-visible, a.go:focus-visible { outline: 3px solid #7cc8ea; outline-offset: 3px; }
   body.ondark .sign, .foot a.go { background: #fff !important; color: #005A80 !important; box-shadow: none; } body.ondark .sign:hover, .foot a.go:hover { background: #eaf6fc !important; }
   .s6 .cta { width: 100%; }
-  @media (max-width: 800px) { .sign { min-height: 44px; padding: 0 18px !important; font-size: 15px !important; } }
   /* desktop: zoom the header out a little so more of the man and the twin show (around the middle between them) */
   @media (min-width: 801px) {
     .fs-bg { width: 114% !important; margin-left: -11.6% !important; }
