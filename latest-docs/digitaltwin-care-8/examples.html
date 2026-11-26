@@ -464,25 +464,27 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 }
 
 /* Example navigation */
-.example-profile{display:grid;gap:6px;padding:4px 9px 12px;border-bottom:var(--hair-soft);margin-bottom:8px}
-.example-profile strong{font:400 30px/1 var(--serif)}
-.example-profile label{color:var(--ink2);font-size:12px}
-.example-profile select{width:100%;min-height:36px;padding:4px 8px;border:var(--hair);border-radius:6px;background:#fffdf8;color:var(--ink);font:inherit}
-@media(min-width:1720px){
-  .example-tools#exampleTools{left:max(20px,calc(var(--edge) - 248px));width:224px}
-}
-
-.example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(19rem,calc(100% - 2 * var(--g)));z-index:9;font:500 14px var(--sans)}
-.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:12px;width:max-content;min-height:44px;padding:0 15px;cursor:pointer;list-style:none;border:var(--hair);border-radius:999px;background:var(--paper);color:var(--action);box-shadow:0 4px 16px #1c1b1710}
+.example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(240px,calc(100% - 2 * var(--g)));z-index:9;font:500 13px var(--sans);color:var(--ink)}
+.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:14px;width:max-content;min-height:44px;padding:0 14px;cursor:pointer;list-style:none;border:var(--hair);border-radius:8px;background:var(--paper)}
 .example-tools summary::-webkit-details-marker{display:none}
-.example-tools summary span{transition:transform .2s}
+.example-tools summary span{color:var(--action);transition:transform .2s}
+.example-tools[open] summary{width:100%;border-radius:10px 10px 0 0;font-weight:600}
 .example-tools[open] summary span{transform:rotate(180deg)}
-.example-tools-panel{max-height:calc(100vh - var(--bar) - 76px);max-height:calc(100dvh - var(--bar) - 76px);overflow:auto;margin-top:8px;padding:10px;border:var(--hair);border-radius:12px;background:var(--paper);box-shadow:0 8px 28px #1c1b171c}
-.example-tools-actions{display:grid;gap:2px;padding-bottom:8px;border-bottom:var(--hair-soft)}
-.example-tools-sections{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding-top:8px}
-.example-tools-panel a,.example-tools-panel button{display:flex;align-items:center;min-height:40px;padding:6px 9px;border:0;border-radius:6px;background:none;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
+.example-tools-panel{max-height:calc(100vh - var(--bar) - 66px);max-height:calc(100dvh - var(--bar) - 66px);overflow:auto;padding:12px;border:var(--hair);border-top:0;border-radius:0 0 10px 10px;background:var(--paper);box-shadow:0 10px 24px #1c1b1710}
+.example-profile{display:grid;gap:5px;margin-bottom:14px}
+.example-tools-label{margin:0;font:500 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
+.example-profile select{width:100%;min-height:36px;padding:4px 8px;border:var(--hair);border-radius:6px;background:#fffdf8;color:var(--ink);font:inherit}
+.example-tools-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px 4px;margin-top:5px}
+.example-tools-actions{display:grid;gap:2px;margin-top:12px;padding-top:12px;border-top:var(--hair-soft)}
+.example-tools-panel a,.example-tools-panel button{display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:30px;padding:5px 6px;border:0;border-radius:5px;background:none;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
 .example-tools-panel a:hover,.example-tools-panel button:hover{background:#e6f0ef;color:var(--action)}
-.example-tools :focus-visible{outline:2px solid var(--action);outline-offset:2px}
+.example-tools-actions small{font:500 10px var(--mono);color:var(--ink2)}
+.example-tools-actions #quickListen{justify-content:center;gap:8px;margin-top:6px;min-height:36px;background:#dceef1;color:#005d7d}
+.example-tools :focus-visible{outline:2px solid var(--action);outline-offset:1px}
+@media(pointer:coarse){.example-tools-panel a,.example-tools-panel button{min-height:38px}}
+@media(min-width:1720px){
+  .example-tools{left:max(20px,calc(var(--edge) - 248px));width:224px}
+}
 #hero{padding-top:clamp(76px,6vw,108px)}
 @media(min-width:1050px){
   #hero{padding:36px 0 32px;background:radial-gradient(ellipse at 50% 50%,#fff 0%,var(--bg) 68%)}
@@ -516,21 +518,15 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 </nav>
 
 <details class="example-tools" id="exampleTools">
-  <summary>Jasper <span aria-hidden="true">⌄</span></summary>
+  <summary>Explore this twin <span aria-hidden="true">⌄</span></summary>
   <div class="example-tools-panel">
     <div class="example-profile">
-      <strong>Jasper</strong>
-      <label for="exampleProfile">Example twin</label>
+      <label class="example-tools-label" for="exampleProfile">Example twin</label>
       <select id="exampleProfile">
-        <option value="examples.html">Jasper, in data</option>
+        <option value="examples.html">Jasper</option>
       </select>
     </div>
-    <div class="example-tools-actions" role="group" aria-label="Downloads and playback">
-      <a href="jasper-in-data-report.pdf" download>Download full report · PDF</a>
-      <button type="button" id="quickDownloadData">Download data · JSON</button>
-      <button type="button" id="quickDownloadSummary">Download summary · TXT</button>
-      <button type="button" id="quickListen">Listen to podcast</button>
-    </div>
+    <p class="example-tools-label">On this page</p>
     <div class="example-tools-sections" role="group" aria-label="Sections">
       <a href="#podcast">Podcast</a>
       <a href="#today">Today</a>
@@ -548,6 +544,13 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
       <a href="#lab">Data lab</a>
       <a href="#raw">Raw data</a>
       <a href="#sources">Sources</a>
+    </div>
+    <div class="example-tools-actions" role="group" aria-label="Downloads and playback">
+      <p class="example-tools-label">Downloads</p>
+      <a href="jasper-in-data-report.pdf" download>Full report <small>PDF</small></a>
+      <button type="button" id="quickDownloadData">Raw data <small>JSON</small></button>
+      <button type="button" id="quickDownloadSummary">Summary <small>TXT</small></button>
+      <button type="button" id="quickListen"><span aria-hidden="true">▶</span> Listen to podcast</button>
     </div>
   </div>
 </details>
