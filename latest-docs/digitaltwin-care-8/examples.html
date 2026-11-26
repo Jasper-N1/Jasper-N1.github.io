@@ -489,7 +489,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools-actions #quickListen{background:#dceef1;color:#005d7d;border-color:transparent}
 .example-tools :focus-visible{outline:2px solid var(--action);outline-offset:-2px}
 @media(pointer:coarse){.example-tools-sections a,.example-tool-action{min-height:44px}}
-@media(min-width:1720px){.example-tools{left:max(20px,calc(var(--edge) - 248px));width:224px}}
+@media(min-width:1780px){.example-tools{left:max(20px,calc(var(--edge) - 276px));width:224px}}
  .example-picker{width:100%;max-width:none;min-height:38px;margin-bottom:12px;padding:6px 9px;border-radius:6px;background:#fffdf8}
 #jyPreview{display:none;min-height:60vh;padding:clamp(96px,12vw,180px) 0}
 body[data-example="jy"] > section:not(#jyPreview),body[data-example="jy"] > footer,body[data-example="jy"] .jasper-tools{display:none}
@@ -1689,7 +1689,7 @@ examplePicker.addEventListener("change", () => {
   $("exampleName").closest("summary").focus({ preventScroll: true });
   if (!wideExample.matches) exampleTools.open = false;
 });
-const wideExample = matchMedia("(min-width:1720px)");
+const wideExample = matchMedia("(min-width:1780px)");
 exampleTools.open = wideExample.matches;
 wideExample.addEventListener("change", event => { exampleTools.open = event.matches; });
 exampleTools.addEventListener("click", event => {
