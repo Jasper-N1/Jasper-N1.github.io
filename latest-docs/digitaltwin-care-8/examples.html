@@ -81,7 +81,12 @@ section{position:relative}
 @media(prefers-reduced-motion:reduce){.twinload .ring{animation:none}}
 
 /* podcast */
-#podcast{padding:clamp(60px,7vw,110px) 0 clamp(90px,10vw,150px);background:var(--bg)}
+#podcast{width:min(1050px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:0;border:var(--hair);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 24px 80px #131b2440}
+#podcast::backdrop{background:#14232b70}
+#podcast .pod{border:0}
+.pod-close{position:sticky;top:0;height:0;z-index:2;display:flex;justify-content:flex-end;padding:0 12px}
+.pod-close button{margin-top:12px;width:40px;height:40px;border:var(--hair);border-radius:50%;background:var(--paper);color:var(--ink);font:400 25px/1 var(--sans);cursor:pointer}
+@media(max-width:600px){#podcast .pod{padding:24px 16px}.pod-close button{margin-top:8px}#podcast .cover{max-width:140px}}
 .pod{background:var(--paper);color:var(--ink);border:var(--hair-soft);border-radius:var(--r);padding:clamp(28px,3.4vw,52px);display:grid;grid-template-columns:300px 1fr;gap:clamp(28px,4vw,60px);position:relative;overflow:hidden}
 .pod::before{content:"";position:absolute;width:700px;height:700px;right:-200px;top:-300px;background:radial-gradient(circle,rgba(0,150,214,.08),transparent 60%)}
 .cover{aspect-ratio:1;border-radius:var(--r);position:relative;overflow:hidden;background:radial-gradient(circle at 50% 36%,#7FD0F2 0%,#0096D6 58%,#007FB8 100%)}
@@ -522,7 +527,6 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   <div class="example-tools-panel">
     <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
-      <li><a href="#podcast">Podcast</a></li>
       <li><a href="#today">Today</a></li>
       <li><a href="#day">Day explorer</a></li>
       <li><a href="#model">Twin model</a></li>
@@ -544,7 +548,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
       <a class="example-tool-action" href="jasper-in-data-report.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z M14 3v5h4 M10 12h5 M10 16h5"/></svg> Full report <small>PDF</small></a>
       <button class="example-tool-action" type="button" id="quickDownloadData"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6-6 6 6 6 M15 6l6 6-6 6"/></svg> Raw data <small>JSON</small></button>
       <button class="example-tool-action" type="button" id="quickDownloadSummary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7z M10 9h4 M10 13h4 M10 17h2"/></svg> Summary <small>TXT</small></button>
-      <button class="example-tool-action" type="button" id="quickListen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg> Listen to podcast</button>
+      <button class="example-tool-action" type="button" id="quickListen" aria-haspopup="dialog" aria-controls="podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg> Listen to podcast</button>
     </div>
   </div>
 </details>
@@ -562,9 +566,9 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 </section>
 
 <!-- PODCAST -->
-<section id="podcast">
-  <div class="wrap">
-    <div class="pod reveal">
+<dialog id="podcast" aria-labelledby="podcastTitle">
+  <form method="dialog" class="pod-close"><button type="submit" aria-label="Close podcast">×</button></form>
+    <div class="pod">
       <div class="cover">
         <img src="twin-f0.webp" alt="">
         <div class="ep">EP. 47 · 26 NOV 2026</div>
@@ -573,7 +577,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
       </div>
       <div class="podmain">
         <div class="num"><b>01</b> Your weekly briefing</div>
-        <h3>The eighteenth of November, read back to you</h3>
+        <h3 id="podcastTitle">The eighteenth of November, read back to you</h3>
         <div class="meta">Personal episode · generated from your N1 record, wearables and notes · <span id="pdur">≈3 min</span></div>
         <div class="player">
           <button class="play" id="play" aria-label="Play episode"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></button>
@@ -591,8 +595,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
         <div class="podnote">Voice plays in your browser on this example page. Lab chapters checked by N1: every number is a cited reading. Recovery and sleep chapters use the simulated wearable streams on this page.</div>
       </div>
     </div>
-  </div>
-</section>
+</dialog>
 
 <!-- TODAY -->
 <section id="today">
@@ -1518,21 +1521,31 @@ exampleTools.addEventListener("click", event => {
   if (!wideExample.matches && event.target.closest(".example-tools-panel a[href^='#']")) exampleTools.open = false;
 });
 document.addEventListener("click", event => {
-  if (!wideExample.matches && !exampleTools.contains(event.target)) exampleTools.open = false;
+  if (!wideExample.matches && !exampleTools.contains(event.target) && !event.target.closest("#podcast")) exampleTools.open = false;
 });
 exampleTools.addEventListener("keydown", event => {
   if (event.key !== "Escape" || !exampleTools.open) return;
   exampleTools.open = false;
   exampleTools.querySelector("summary").focus();
 });
+const podcastDialog = $("podcast");
 $("quickListen").onclick = () => {
-  exampleTools.open = false;
-  $("podcast").scrollIntoView();
+  podcastDialog.showModal();
   $("play").focus({ preventScroll: true });
   if (!playing) $("play").click();
 };
+podcastDialog.addEventListener("close", () => {
+  if (playing) stop();
+  $("quickListen").focus({ preventScroll: true });
+});
+podcastDialog.addEventListener("click", event => {
+  if (event.target !== podcastDialog) return;
+  const bounds = podcastDialog.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom) podcastDialog.close();
+});
 wave.onclick = e => { const r = wave.getBoundingClientRect(), t = (e.clientX - r.left) / r.width * TOTAL; let i = SENT.findIndex(s => s.t0 + s.d > t); seek(Math.max(0, i)); };
-(function podLoop() { if (playing) { pos = Math.min(SENT[si].t0 + SENT[si].d, SENT[si].t0 + (performance.now() - sStart) / 1000); } $("tNow").textContent = mmss(pos); drawWave(); requestAnimationFrame(podLoop); })();
+(function podLoop() { if (!podcastDialog.open) return requestAnimationFrame(podLoop); if (playing) { pos = Math.min(SENT[si].t0 + SENT[si].d, SENT[si].t0 + (performance.now() - sStart) / 1000); } $("tNow").textContent = mmss(pos); drawWave(); requestAnimationFrame(podLoop); })();
 
 /* =========================================================
    TODAY: rings + 24h clock
