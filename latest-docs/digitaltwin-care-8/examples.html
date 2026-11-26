@@ -513,7 +513,14 @@ body[data-example="jy"] #jyPreview{display:block}
 }
 /* Report highlights */
 .report-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.report-grid article{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.report-chapter{display:grid;gap:5px;margin:clamp(30px,5vw,52px) 0 16px}
+.report-chapter p{margin:0}
+.report-art-note{font-size:13px;color:var(--ink2);margin:0}
+.report-grid article{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.report-figure{margin:0;background:#eef2ed;border-bottom:var(--hair-soft)}
+.report-figure img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain}
+.report-figure figcaption{padding:10px 15px;font-size:12px;line-height:1.45;color:var(--ink2)}
+.report-story-copy{display:flex;flex:1;flex-direction:column;gap:10px;align-items:flex-start;padding:18px}
 .report-grid article p,.report-method p{margin:0;color:var(--ink2);line-height:1.55}
 .report-grid .report-result{font:400 clamp(23px,2vw,31px)/1.12 var(--serif);color:var(--ink)}
 .report-source{color:var(--action);font-size:13px;text-underline-offset:3px}
@@ -550,7 +557,7 @@ body[data-example="jy"] #jyPreview{display:block}
     <div class="jasper-tools">
     <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
-      <li><a href="#report">Report highlights</a></li>
+      <li><a href="#report">Visual report</a></li>
       <li><a href="#today">Today</a></li>
       <li><a href="#day">Day explorer</a></li>
       <li><a href="#model">Twin model</a></li>
@@ -633,54 +640,101 @@ body[data-example="jy"] #jyPreview{display:block}
     <header class="sechead">
       <div>
         <div class="num"><b>01</b> Health report · 26 Nov 2026</div>
-        <h2 id="reportTitle">What the report <em>highlights.</em></h2>
-        <p class="lede">In the 18 November draw, 57 of 62 numeric markers were within the laboratory’s reference ranges. These highlights show where the report goes deeper, comparing results over time and explaining what the record can support.</p>
+        <h2 id="reportTitle">Jasper’s health <em>at a glance.</em></h2>
+        <p class="lede">In the 18 November draw, 57 of 62 numeric markers were within the laboratory’s reference ranges. Explore the main findings, the ideas behind the measurements, and the gaps the report leaves open.</p>
       </div>
       <a class="cta" href="jasper-in-data-report.pdf" download>Download full report · PDF</a>
     </header>
+    <p class="report-art-note">The illustrations explain general health concepts. Patient measurements appear in the accompanying text.</p>
+    <div class="report-chapter">
+      <p class="k">The clinical record</p>
+      <h3>What the bloodwork shows</h3>
+    </div>
     <div class="report-grid">
-      <article class="card">
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/02-kidney-filtration.webp" width="960" height="640" alt="Kidney cross-section with a close-up of its microscopic filter." loading="lazy" decoding="async"><figcaption>Creatinine is one of the inputs used to estimate kidney filtration.</figcaption></figure>
+        <div class="report-story-copy">
         <span class="k">Kidneys and uric acid</span>
         <h3 class="report-result">Two markers above range</h3>
         <p>Creatinine was 119.4 µmol/L and uric acid was 541 µmol/L. Both were high in the first draw, in range in May, and high again in November. Estimated kidney filtration stayed within the lab’s range. The report notes recent training and fasting as context, with the cause unresolved.</p>
         <a class="report-source" href="jasper-in-data-report.pdf#page=11">Kidneys and uric acid · p. 11</a>
+        </div>
       </article>
-      <article class="card">
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/05-ldl-and-arteries.webp" width="960" height="640" alt="Artery cross-sections showing an open vessel and one with plaque." loading="lazy" decoding="async"><figcaption>The illustration explains why the report tracks LDL.</figcaption></figure>
+        <div class="report-story-copy">
         <span class="k">Cholesterol</span>
         <h3 class="report-result">LDL fell to 2.98 mmol/L</h3>
         <p>LDL came down from 3.61 mmol/L in May to the lowest of the three draws. It was still above this lab’s limit of 2.58 mmol/L. Total cholesterol returned to range.</p>
         <a class="report-source" href="jasper-in-data-report.pdf#page=13">Heart and cholesterol · p. 13</a>
+        </div>
       </article>
-      <article class="card">
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/08-hba1c-and-red-cells.webp" width="960" height="640" alt="Red blood cells with a close-up of glucose attached to haemoglobin." loading="lazy" decoding="async"><figcaption>HbA1c gives a longer view of blood sugar than a fasting sample.</figcaption></figure>
+        <div class="report-story-copy">
         <span class="k">Blood sugar</span>
         <h3 class="report-result">A low snapshot, an in-range average</h3>
         <p>Fasting glucose was 3.77 mmol/L, just below the lab’s lower limit of 3.9. HbA1c, which reflects blood sugar over roughly two to three months, was within range at 35.63 mmol/mol.</p>
         <a class="report-source" href="jasper-in-data-report.pdf#page=15">Blood sugar · p. 15</a>
+        </div>
       </article>
-      <article class="card">
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/11-vitamin-d-pathway.webp" width="960" height="640" alt="Sunlight on skin, a capsule, and a blood sample." loading="lazy" decoding="async"><figcaption>The report compares vitamin D measured in blood across three draws.</figcaption></figure>
+        <div class="report-story-copy">
         <span class="k">Vitamins</span>
         <h3 class="report-result">Vitamin D returned to range</h3>
         <p>Vitamin D rose from 71.06 to 97.59 nmol/L between May and November, crossing the lab’s threshold of 74.88 nmol/L. The record also lists a vitamin D supplement. The readings alone leave the cause open.</p>
         <a class="report-source" href="jasper-in-data-report.pdf#page=21">Vitamins and nutrients · p. 21</a>
+        </div>
       </article>
-      <article class="card">
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/14-hepatitis-b-antibodies.webp" width="960" height="640" alt="Conceptual view of antibodies binding to the hepatitis B virus surface." loading="lazy" decoding="async"><figcaption>The lab measures antibodies that recognise the surface of the virus.</figcaption></figure>
+        <div class="report-story-copy">
         <span class="k">Immunity</span>
         <h3 class="report-result">Hepatitis B antibody stayed below the lab threshold</h3>
         <p>The latest surface antibody reading was 38.0 IU/L against this lab’s threshold of 50. All three draws were below that threshold. Vaccination history comes from the health note.</p>
         <a class="report-source" href="jasper-in-data-report.pdf#page=25">Immunity · p. 25</a>
+        </div>
       </article>
-      <article class="card">
+    </div>
+    <div class="report-chapter">
+      <p class="k">Body composition and daily signals</p>
+      <h3>Measurements in context</h3>
+    </div>
+    <div class="report-grid">
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/16-lean-and-fat-mass.webp" width="960" height="640" alt="Muscle fibres and fat cells beside a weighing scale." loading="lazy" decoding="async"><figcaption>A change on the scale can reflect changes in fat, lean tissue, or body water.</figcaption></figure>
+        <div class="report-story-copy">
         <span class="k">Body composition</span>
         <h3 class="report-result">88.1 kg to 81.9 kg</h3>
         <p>Weight fell between the first logged reading on 1 September and the 26 November reading. The report separates morning and evening measurements to show how timing affects the comparison.</p>
         <a class="report-source" href="jasper-in-data-report.pdf#page=33">Body composition · p. 33</a>
+        </div>
+      </article>
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/20-sleep-and-recovery.webp" width="960" height="640" alt="Illustration of sleep and overnight recovery." loading="lazy" decoding="async"><figcaption>Sleep and heart rate are aligned by night so the two can be compared.</figcaption></figure>
+        <div class="report-story-copy">
+          <span class="k">Wearables · simulated preview</span>
+          <h3 class="report-result">Read recovery alongside sleep</h3>
+          <p>The report aligns sleep, resting heart rate, and heart rate variability by night. These wearable streams illustrate how connected devices could fill gaps between lab visits.</p>
+          <a class="report-source" href="jasper-in-data-report.pdf#page=40">Wearables · p. 40</a>
+        </div>
+      </article>
+      <article class="card report-story">
+        <figure class="report-figure"><img src="report-art/09-fasting-glucose-and-cgm.webp" width="960" height="640" alt="A blood draw next to a wearable glucose sensor and its filament." loading="lazy" decoding="async"><figcaption>A fasting test captures one moment. A sensor adds a series of readings.</figcaption></figure>
+        <div class="report-story-copy">
+          <span class="k">Glucose · simulated preview</span>
+          <h3 class="report-result">See what a single reading misses</h3>
+          <p>The glucose preview lines up changes over time with meals and activity. The sensor readings and meal responses on this example are simulated.</p>
+          <a class="report-source" href="jasper-in-data-report.pdf#page=47">Glucose · p. 47</a>
+        </div>
       </article>
     </div>
     <aside class="card report-method" aria-labelledby="reportMethodTitle">
       <h3 id="reportMethodTitle">How the report is written</h3>
       <ol>
         <li><strong>Explain the marker.</strong><p>Start in plain language with what it measures and how to read the figure.</p></li>
-        <li><strong>Show the evidence.</strong><p>Put dated readings next to the lab’s own range and prior results. The report says N1 checked the numbers in the marked lab paragraphs against cited readings.</p></li>
+        <li><strong>Show the evidence.</strong><p>Put dated readings next to the lab’s own range and prior results. N1 checked the numbers in marked lab paragraphs against cited readings.</p></li>
         <li><strong>Say what’s uncertain.</strong><p>Flag missing tests and possible explanations. Label simulated wearable, glucose, and genetics data, and collect open questions for follow-up.</p></li>
       </ol>
       <a class="report-source" href="jasper-in-data-report.pdf#page=4">Read the report guide · p. 4</a>
