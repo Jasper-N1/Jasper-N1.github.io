@@ -53,7 +53,7 @@ section{position:relative}
 
 /* hero */
 #hero{padding:clamp(40px,5vw,76px) 0 clamp(40px,5vw,72px)}
- .hero-grid{max-width:840px}
+.hero-grid{max-width:840px}
 .hero-visual{min-width:0;position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(10px,1.6vw,24px);padding:clamp(14px,2.3vw,32px);border:var(--hair-soft);border-radius:8px;background:radial-gradient(ellipse at center,#fafcfa 0%,var(--paper) 76%)}
 #heroTwin{grid-column:2;grid-row:1;min-width:0;display:flex;justify-content:center}
 #heroTwin canvas{display:block;width:100%;height:auto;max-width:190px}
@@ -1368,7 +1368,6 @@ const L = LABS.map(([name, unit, lo, hi, group, pts]) => {
   return { name, unit, lo, hi, group, pts, v, date: last[0], prev, flag };
 });
 const byName = n => L.find(x => x.name === n);
-const exampleReadDate = "Read 26 Nov 2026";
 
 /* mini range bar */
 function rangeBar(svg, lo, hi, v, w = 200, h = 14, dark) {
@@ -2677,7 +2676,7 @@ function raw() {
     });
     const summary = [
       "Jasper, in data — summary",
-      exampleReadDate,
+      "Read 26 Nov 2026",
       "",
       "Recorded in N1",
       ...recentLabs,
