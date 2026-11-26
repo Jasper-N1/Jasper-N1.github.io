@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="site-menu.css">
 <style>
   :root {
     --bg: #F3F2E9; --ink: #1C1B17; --muted: #545b52; --card: #fffcf2; --mist: #c8e5eb;
@@ -34,17 +35,6 @@
   .skip { position: fixed; left: 12px; top: -60px; z-index: 50; padding: 10px 14px; background: var(--ink); color: var(--bg); border-radius: 6px; text-decoration: none; transition: top .2s; }
   .skip:focus { top: 12px; }
   :focus-visible { outline: 2px solid var(--deep); outline-offset: 3px; }
-
-  /* nav: same bar as the home page */
-  .bar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; gap: 16px; height: var(--bar); padding: 0 var(--edge);
-    background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-  .logo { font-weight: 500; font-size: clamp(18px, 1.45vw, 24px); letter-spacing: -.03em; white-space: nowrap; text-decoration: none; }
-  .logo .c { color: var(--blue); }
-  .links { display: flex; gap: clamp(18px, 3vw, 44px); margin: 0; padding: 0; list-style: none; }
-  .links a { display: flex; align-items: center; min-height: 44px; font: 500 15px var(--sans); text-decoration: none; }
-  .links a:hover, .links a[aria-current] { text-decoration: underline; text-underline-offset: 4px; }
-  .sign { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 clamp(18px, 1.5vw, 26px); border-radius: 999px; background: var(--ink); color: var(--bg); font: 500 15px var(--sans); text-decoration: none; white-space: nowrap; }
-  .sign .s { display: none; }
 
   /* hero */
   .hero { padding-top: clamp(48px, 7vw, 120px); }
@@ -145,8 +135,6 @@
     .foot .top { grid-template-columns: 1fr 1fr; gap: 36px 20px; } .foot .top > :first-child { grid-column: 1 / -1; }
   }
   @media (max-width: 800px) {
-    .links { display: none; }
-    .sign .l { display: none; } .sign .s { display: inline; }
     .mosaic { grid-template-columns: 1fr 1fr; }
     .mosaic .a, .mosaic .d { grid-column: 1 / -1; grid-row: auto; } .mosaic .a img { aspect-ratio: 16 / 10; }
     .mosaic .b, .mosaic .c { grid-column: span 1; } .mosaic .b img, .mosaic .c img { aspect-ratio: 1; }
@@ -165,7 +153,8 @@
 <a class="skip" href="#main">Skip to content</a>
 <nav class="bar" aria-label="Main navigation">
   <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
-  <ul class="links">
+  <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
+  <ul class="primary-links" id="primary-menu">
     <li><a href="examples.html">Examples</a></li>
     <li><a href="index.html#pricing">Pricing</a></li>
     <li><a href="about.html" aria-current="page">About</a></li>
@@ -302,5 +291,6 @@
     });
   });
 </script>
+<script src="site-menu.js" defer></script>
 </body>
 </html>

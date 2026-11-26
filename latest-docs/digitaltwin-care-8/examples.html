@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
+<link rel="stylesheet" href="site-menu.css">
 <style>
 :root{
   --bg:#F3F2E9; --bg2:#EAE8DB; --ink:#1C1B17; --ink2:#5B594F; --ink3:#8F8C7F; --line:#D8D5C6;
@@ -15,7 +16,7 @@
   --flag:#E0573C; --amber:#D99A20; --teal:#2E9E8F; --violet:#7C6FE0; --pink:#E06AA6;
   --deep:#3949AB; --core:#5C8DF0; --rem:#A889F5; --awake:#F2A65A;
   --serif:"Newsreader",Georgia,serif; --sans:"DM Sans","Helvetica Neue",Arial,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
-  --g:clamp(20px,3.3vw,64px); --max:1320px; --paper:#F7F6F0; --hair:1px solid rgba(28,27,23,.16); --hair-soft:1px solid rgba(28,27,23,.09); --r:6px;
+  --g:clamp(20px,3.3vw,64px); --max:1500px; --paper:#fffcf2; --hair:1px solid rgba(28,27,23,.16); --hair-soft:1px solid rgba(28,27,23,.09); --r:6px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -24,14 +25,14 @@ a{color:inherit}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.03em;margin:0}
 h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
-h2 em,h1 em{font-style:italic;color:var(--blue)}
+h2 em,h1 em{font-style:normal;color:var(--action)}
 h3{font-size:clamp(22px,2vw,30px);line-height:1.1}
 .lede{font-size:clamp(17px,1.35vw,21px);line-height:1.5;color:var(--ink2);max-width:640px;margin:22px 0 0}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
 .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
 section.sec{border-top:var(--hair-soft)}
 section{position:relative}
-.sec{padding:clamp(90px,11vw,170px) 0}
+.sec{padding:clamp(72px,9vw,150px) 0}
 .sechead{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:clamp(40px,5vw,72px)}
 .num{font:500 11.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;display:flex;gap:12px;align-items:center}
 .num b{font-weight:500;color:var(--ink3)}
@@ -44,21 +45,14 @@ section{position:relative}
 .src.sim::before{background:transparent;border:1.5px dashed var(--ink3)}
 .srcs{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 
-/* nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:50;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--g);transition:background .3s,color .3s,box-shadow .3s}
-nav.solid{background:rgba(243,242,233,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
-.logo{font-family:var(--sans);font-weight:500;font-size:clamp(18px,1.45vw,24px);letter-spacing:-.03em;text-decoration:none}
-.logo i{color:var(--blue);font-style:normal}
-.navlinks{display:flex;gap:0;font-size:13px}
-.navlinks a{text-decoration:none;padding:8px 8px;border-radius:99px;opacity:.75;white-space:nowrap}
-.navlinks a:hover,.navlinks a.on{opacity:1;color:var(--blue)}
+/* Page actions */
 .cta{background:var(--action);color:#fff;text-decoration:none;padding:13px 24px;border-radius:999px;font-size:15px;font-weight:500;transition:background .2s,transform .3s cubic-bezier(.34,1.8,.64,1)}
 .cta:hover{background:#005A80;transform:scale(1.02)}
-@media(max-width:1340px){.navlinks{display:none}}
+
 
 /* hero */
-#hero{min-height:100vh;padding-top:68px;overflow:hidden;background:radial-gradient(ellipse 60% 55% at 50% 52%,#fff 0%,var(--bg) 70%)}
-.hero-grid{position:relative;height:calc(100vh - 68px);min-height:720px}
+#hero{overflow:hidden;background:radial-gradient(ellipse 60% 55% at 50% 52%,#fff 0%,var(--bg) 70%)}
+.hero-grid{position:relative;height:calc(100svh - var(--bar));min-height:680px}
 .hero-title{position:absolute;left:var(--g);top:8vh;max-width:520px;z-index:3}
 .hero-title h1{font-size:clamp(56px,7.6vw,124px);line-height:.9}
 .hero-title p{font-size:18px;line-height:1.5;color:var(--ink2);margin:26px 0 0;max-width:380px}
@@ -465,16 +459,33 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .dlb.ghost{background:transparent;color:var(--ink);border:var(--hair)}
 #rawtbl td{vertical-align:middle}
 @media(max-width:1000px){.exgrid,.tsgrid{grid-template-columns:1fr}.gfood{grid-template-columns:1fr}.xstats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){
+  .card,.spotc,.sechead > *{min-width:0}
+  .grid > *, .sechead > *{min-width:0}
+  .sechead{grid-template-columns:minmax(0,1fr)}
+  .srcs{justify-content:flex-start}
+  #wear .card,#train .card,#lab .card,.provenance-table{overflow-x:auto}
+  #wear,#train,#lab{overflow-x:clip}
+}
+@media(max-width:600px){
+  .hero-grid{min-height:620px}
+  .hero-title h1{font-size:clamp(46px,13vw,78px)}
+  .hero-title p{display:block;font-size:15px;margin-top:14px;max-width:28ch}
+  #heroTwin{top:31%;height:66%}
+}
 </style>
 </head>
 <body>
 
-<nav id="nav">
-  <a class="logo" href="index.html">digitaltwin<i>.</i>care</a>
-  <div class="navlinks">
-    <a href="#podcast">Briefing</a><a href="#today">Today</a><a href="#day">Any day</a><a href="#model">Model</a><a href="#labs">Labs</a><a href="#wear">Wearables</a><a href="#cgm">Glucose</a><a href="#body">Body</a><a href="#food">Food</a><a href="#train">Training</a><a href="#dna">Genetics</a><a href="#lab">Data lab</a><a href="#raw">Raw data</a><a href="#sources">Sources</a>
-  </div>
-  <a class="cta" href="index.html#s6">Build my free twin</a>
+<nav class="bar" aria-label="Main navigation">
+  <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
+  <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
+  <ul class="primary-links" id="primary-menu">
+    <li><a href="examples.html" aria-current="page">Examples</a></li>
+    <li><a href="index.html#pricing">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
 </nav>
 
 <!-- HERO -->
@@ -802,7 +813,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
       <p class="lede">Each source on the left, flowing into the systems of the model. Blue flows are real records in N1. Violet flows are the simulated streams used on this example page.</p></div>
     </div>
     <svg id="sankey" viewBox="0 0 1200 560"></svg>
-    <table class="provtable" id="prov"></table>
+    <div class="provenance-table"><table class="provtable" id="prov"></table></div>
   </div>
 </section>
 
@@ -1335,17 +1346,9 @@ function spark(svg, m, w, h, opts = {}) {
   });
 }
 
-/* ---------- reveal & nav ---------- */
+/* ---------- reveal ---------- */
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
 document.querySelectorAll(".reveal,.sechead,.card,.tile,.spotc,.gene,.meal,.log,.draw").forEach(el => { el.classList.add("reveal"); io.observe(el); });
-const nav = $("nav");
-function navUpdate() {
-  nav.classList.toggle("solid", scrollY > 40);
-  const secs = ["podcast","today","day","model","labs","wear","cgm","body","food","train","dna","lab","raw","sources"];
-  let cur = ""; secs.forEach(id => { const s = $(id); if (s && s.getBoundingClientRect().top < innerHeight * .4) cur = id; });
-  document.querySelectorAll(".navlinks a").forEach(a => a.classList.toggle("on", a.getAttribute("href") == "#" + cur));
-}
-addEventListener("scroll", navUpdate, { passive: true });
 
 /* ---------- counters ---------- */
 function count(el, to, dur = 1800) { const t0 = performance.now(); const step = t => { const k = clamp((t - t0) / dur, 0, 1), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(to * e).toLocaleString("en-GB"); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
@@ -1949,7 +1952,6 @@ $("dx").innerHTML = `<div class="card"><div class="lab"><div><div class="k">Diag
   $("prov").innerHTML = `<tr><th>Source</th><th>Type</th><th>Period</th><th>Volume</th></tr>` + rows.map(r => `<tr><td>${r[0]}</td><td><span class="src${r[1].startsWith("Sim") ? " sim" : r[1].includes("note") ? " note" : ""}">${r[1]}</span></td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join("");
 })();
 
-navUpdate();
 })();
 
 </script>
@@ -2610,5 +2612,6 @@ document.querySelectorAll(".sechead .num b, .podmain .num b, .mhead .num b").for
 })();
 
 </script>
+<script src="site-menu.js" defer></script>
 </body>
 </html>

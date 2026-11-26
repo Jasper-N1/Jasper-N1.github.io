@@ -11,6 +11,7 @@
 <link rel="preload" as="image" href="twin-walk-poster.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="site-menu.css">
 <style>
   :root { --bg: #F3F2E9; --ink: #1C1B17; --blue: #0096D6; --blue-deep: #0096D6; --blue-text: #0096D6; --dk: #0c0d0e; }
   * { box-sizing: border-box; }
@@ -1129,26 +1130,7 @@
 
 
   .bar .logo { color: inherit; text-decoration: none; }
-  .primary-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center;
-    gap: clamp(18px, 3vw, 44px); margin: 0; padding: 0; list-style: none; pointer-events: auto; }
-  .primary-links a { display: flex; align-items: center; min-height: 44px; color: inherit;
-    text-decoration: none; font: 500 15px var(--sans); }
-  .primary-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .bar .logo:focus-visible, .primary-links a:focus-visible, .primary-menu-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-  .primary-menu-toggle { display: none; }
   #pricing, #plat, #s6 { scroll-margin-top: calc(var(--bar) + 12px); }
-  @media (max-width: 800px) {
-    .bar { gap: 8px; }
-    .primary-menu-toggle { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; margin-left: auto;
-      padding: 0 6px; border: 0; color: inherit; background: transparent; font: 600 13px var(--sans); cursor: pointer; }
-    .primary-links { display: none; top: calc(100% - 1px); left: auto; right: 20px; transform: none; min-width: 160px;
-      padding: 4px 12px; border: 1px solid #c9cbc1; border-radius: 6px; color: var(--ink); background: #faf7ee; box-shadow: 0 8px 28px #172b311c; }
-    .primary-menu-toggle[aria-expanded="true"] + .primary-links { display: block; }
-  }
-  @media (max-width: 365px) {
-    .bar { padding-inline: 12px !important; gap: 4px; }
-    .bar .sign { padding-inline: 11px !important; gap: 5px; font-size: 13px !important; }
-  }
 
 
   #s6.twin-signup { display: block; padding-inline: var(--showcase-edge) !important; background: var(--bg); border-top: 0; text-align: left; }
@@ -2806,33 +2788,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
 })();
 </script>
 
-<script>
-(() => {
-  const toggle = document.querySelector(".primary-menu-toggle");
-  const links = document.getElementById("primary-menu");
-  const pricing = document.getElementById("pricing");
-  function setMenu(open) {
-    toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-  }
-  toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
-  links.addEventListener("click", event => {
-    const link = event.target.closest("a");
-    if (!link) return;
-    if (link.hash === "#pricing") pricing.open = true;
-    setMenu(false);
-  });
-  document.addEventListener("keydown", event => {
-    if (event.key !== "Escape" || toggle.getAttribute("aria-expanded") !== "true") return;
-    setMenu(false);
-    toggle.focus();
-  });
-  function showPricing() {
-    if (location.hash === "#pricing") pricing.open = true;
-  }
-  addEventListener("hashchange", showPricing);
-  showPricing();
-})();
-</script>
+
+<script src="site-menu.js" defer></script>
 </body>
 </html>
