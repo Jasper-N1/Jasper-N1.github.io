@@ -490,6 +490,10 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools :focus-visible{outline:2px solid var(--action);outline-offset:-2px}
 @media(pointer:coarse){.example-tools-sections a,.example-tool-action{min-height:44px}}
 @media(min-width:1720px){.example-tools{left:max(20px,calc(var(--edge) - 248px));width:224px}}
+ .example-picker{width:100%;max-width:none;min-height:38px;margin-bottom:12px;padding:6px 9px;border-radius:6px;background:#fffdf8}
+#jyPreview{display:none;min-height:60vh;padding:clamp(96px,12vw,180px) 0}
+body[data-example="jy"] > section:not(#jyPreview),body[data-example="jy"] > footer,body[data-example="jy"] .jasper-tools{display:none}
+body[data-example="jy"] #jyPreview{display:block}
 #hero{padding-top:clamp(76px,6vw,108px)}
 @media(min-width:1050px){
   #hero{padding:36px 0 32px;background:radial-gradient(ellipse at 50% 50%,#fff 0%,var(--bg) 68%)}
@@ -523,8 +527,13 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 </nav>
 
 <details class="example-tools" id="exampleTools">
-  <summary>Jasper <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+  <summary><span id="exampleName">Jasper</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="example-tools-panel">
+    <select id="examplePicker" class="example-picker" aria-label="Select an example twin">
+      <option value="jasper">Jasper</option>
+      <option value="jy">JY</option>
+    </select>
+    <div class="jasper-tools">
     <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
       <li><a href="#today">Today</a></li>
@@ -550,8 +559,15 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
       <button class="example-tool-action" type="button" id="quickDownloadSummary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7z M10 9h4 M10 13h4 M10 17h2"/></svg> Summary <small>TXT</small></button>
       <button class="example-tool-action" type="button" id="quickListen" aria-haspopup="dialog" aria-controls="podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg> Listen to podcast</button>
     </div>
+    </div>
   </div>
 </details>
+
+<section id="jyPreview" aria-labelledby="jyPreviewTitle">
+  <div class="wrap">
+    <h2 id="jyPreviewTitle" tabindex="-1">Work in progress</h2>
+  </div>
+</section>
 
 <!-- HERO -->
 <section id="hero" aria-label="Jasper’s digital twin and biomarkers">
@@ -1514,6 +1530,17 @@ function stop(end) { playing = false; if (useTTS) speechSynthesis.cancel(); $("p
 function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("playIcon").innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>'; setTimeout(() => speak(i), 60); }
 $("play").onclick = () => playing ? stop() : seek(si);
 const exampleTools = $("exampleTools");
+const examplePicker = $("examplePicker");
+examplePicker.value = "jasper";
+examplePicker.addEventListener("change", () => {
+  const isJY = examplePicker.value === "jy";
+  document.body.dataset.example = examplePicker.value;
+  $("exampleName").textContent = isJY ? "JY" : "Jasper";
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  window.scrollTo({ top: 0, behavior: "instant" });
+  $("exampleName").closest("summary").focus({ preventScroll: true });
+  if (!wideExample.matches) exampleTools.open = false;
+});
 const wideExample = matchMedia("(min-width:1720px)");
 exampleTools.open = wideExample.matches;
 wideExample.addEventListener("change", event => { exampleTools.open = event.matches; });
@@ -1648,7 +1675,7 @@ const mc = $("mcanvas"), mx = mc.getContext("2d");
 let mIdx = -1;
 function mDraw() {
   const sec = $("model"), r = sec.getBoundingClientRect(), tot = sec.offsetHeight - innerHeight;
-  if (r.bottom < 0 || r.top > innerHeight) return requestAnimationFrame(mDraw);
+  if (!r.height || r.bottom < 0 || r.top > innerHeight) return requestAnimationFrame(mDraw);
   const p = clamp(-r.top / tot, 0, 1), n = STOPS.length - 1, t = p * n, i = Math.min(n - 1, Math.floor(t)), f = t - i;
   const g0 = clamp((f - .4) / .5, 0, 1), g = g0 * g0 * (3 - 2 * g0);
   const A = STOPS[i], B = STOPS[i + 1] || A;
