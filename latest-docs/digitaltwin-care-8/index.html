@@ -817,7 +817,8 @@
   @media (max-width: 800px) { .capture-readings { left: var(--g) !important; right: var(--g); top: auto !important; bottom: 4% !important; width: auto !important; } }
 
   /* ---- How it works, five steps in one pinned section: content left, the twin right ---- */
-  .s3 { height: 532vh !important; }
+  .s3 { height: 370vh !important; height: 370svh !important; }
+  @media (max-width: 800px) { .s3 { height: 400vh !important; height: 400svh !important; } }
   .s3 .stepnav, .s3 .steps::after { display: none !important; }
   .s3 .st-kick { order: -1; margin: 0 0 12px; font: 500 var(--fs-label)/1.3 var(--mono); letter-spacing: var(--ls-l); text-transform: uppercase; color: var(--blue-text); }
   .s3 .st h3 { max-width: 13em; font: 400 var(--fs-h2)/1.08 var(--serif) !important; letter-spacing: var(--ls-h); text-wrap: balance; }
@@ -1027,7 +1028,7 @@
   .story-heading { max-width: 42rem; margin-inline-start: var(--story-focus); margin-bottom: var(--section-heading-gap); }
   .story-heading .kick { margin: 0 0 10px; }
   .story-note { margin: 12px 0 0; color: #59594e; font: 400 14px/1.4 var(--sans); }
-  .story-reel { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+  .story-reel { display: flex; overflow-x: auto; scroll-snap-type: x proximity;
     scroll-padding-inline-start: var(--story-focus); scrollbar-width: none; gap: var(--story-gap);
     padding: 0 max(20px, calc(100% - var(--story-focus) - var(--story-width))) 4px var(--story-focus); }
   .story-reel::-webkit-scrollbar { display: none; }
@@ -2700,7 +2701,8 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return button;
   });
   let places = [], active = buffer, pending = null, settleTimer = 0;
-  let visible = false, hovered = false, focused = false, paused = false, elapsed = 0, lastTime = 0, raf = 0;
+  let visible = false, hovered = false, focused = false, paused = false, gesturing = false;
+  let elapsed = 0, lastTime = 0, raf = 0, gestureTimer = 0;
   const logical = index => (index - buffer + stories.length) % stories.length;
   function mark(index) {
     if (index !== active) elapsed = 0;
@@ -2747,7 +2749,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   }
   function tick(now) {
     raf = 0;
-    if (!visible || paused || hovered || focused || reduced.matches || document.hidden) { lastTime = 0; return; }
+    if (!visible || paused || hovered || focused || gesturing || reduced.matches || document.hidden) { lastTime = 0; return; }
     if (lastTime && pending === null) elapsed += Math.min(100, now - lastTime);
     lastTime = now;
     if (elapsed >= duration) go(active + 1);
@@ -2759,7 +2761,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
     pause.hidden = reduced.matches;
-    if (visible && !paused && !hovered && !focused && !reduced.matches && !document.hidden) raf = requestAnimationFrame(tick);
+    if (visible && !paused && !hovered && !focused && !gesturing && !reduced.matches && !document.hidden) raf = requestAnimationFrame(tick);
   }
   const step = direction => go((pending ?? active) + direction);
   prev.addEventListener("click", () => step(-1));
@@ -2777,6 +2779,17 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   section.addEventListener("focusin", () => { focused = true; refreshPlayback(); });
   section.addEventListener("focusout", event => { if (!section.contains(event.relatedTarget)) { focused = false; refreshPlayback(); } });
   reel.addEventListener("scroll", queueSettle, { passive: true });
+  reel.addEventListener("wheel", event => {
+    if (!gesturing) { gesturing = true; refreshPlayback(); }
+    clearTimeout(gestureTimer);
+    gestureTimer = setTimeout(() => { gesturing = false; refreshPlayback(); }, 850);
+    // Keep mostly vertical trackpad gestures from being captured by the horizontal reel.
+    if (event.cancelable && !event.ctrlKey && !event.shiftKey && event.deltaMode === 0
+      && event.deltaX !== 0 && Math.abs(event.deltaY) > 2 * Math.abs(event.deltaX)) {
+      event.preventDefault();
+      window.scrollBy({ top: event.deltaY, behavior: "instant" });
+    }
+  }, { passive: false });
   reel.addEventListener("keydown", event => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
