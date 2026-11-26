@@ -474,6 +474,19 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   #wear,#train,#lab{overflow-x:clip}
 }
 
+/* Floating example shortcuts */
+.example-tools{position:fixed;top:calc(var(--bar) + 12px);right:var(--edge);width:min(19rem,calc(100% - 2 * var(--g)));z-index:9;font:500 14px var(--sans)}
+.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:12px;width:max-content;margin-left:auto;min-height:44px;padding:0 15px;cursor:pointer;list-style:none;border:var(--hair);border-radius:999px;background:var(--paper);color:var(--action);box-shadow:0 4px 16px #1c1b1710}
+.example-tools summary::-webkit-details-marker{display:none}
+.example-tools summary span{transition:transform .2s}
+.example-tools[open] summary span{transform:rotate(180deg)}
+.example-tools-panel{max-height:calc(100vh - var(--bar) - 76px);max-height:calc(100dvh - var(--bar) - 76px);overflow:auto;margin-top:8px;padding:10px;border:var(--hair);border-radius:12px;background:var(--paper);box-shadow:0 8px 28px #1c1b171c}
+.example-tools-actions{display:grid;gap:2px;padding-bottom:8px;border-bottom:var(--hair-soft)}
+.example-tools-sections{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding-top:8px}
+.example-tools-panel a,.example-tools-panel button{display:flex;align-items:center;min-height:40px;padding:6px 9px;border:0;border-radius:6px;background:none;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
+.example-tools-panel a:hover,.example-tools-panel button:hover{background:#e6f0ef;color:var(--action)}
+.example-tools :focus-visible{outline:2px solid var(--action);outline-offset:2px}
+#hero{padding-top:clamp(76px,6vw,108px)}
 </style>
 </head>
 <body>
@@ -488,6 +501,36 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   </ul>
   <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
 </nav>
+
+<details class="example-tools" id="exampleTools">
+  <summary>Explore &amp; download <span aria-hidden="true">⌄</span></summary>
+  <div class="example-tools-panel">
+    <div class="example-tools-actions" role="group" aria-label="Downloads and playback">
+      <a href="jasper-in-data-report.pdf" download>Download full report · PDF</a>
+      <button type="button" id="quickDownloadData">Download data · JSON</button>
+      <button type="button" id="quickDownloadSummary">Download summary · TXT</button>
+      <button type="button" id="quickListen">Listen to podcast</button>
+    </div>
+    <div class="example-tools-sections" role="group" aria-label="Sections">
+      <a href="#podcast">Podcast</a>
+      <a href="#today">Today</a>
+      <a href="#day">Day explorer</a>
+      <a href="#model">Twin model</a>
+      <a href="#labs">Bloodwork</a>
+      <a href="#wear">Wearables</a>
+      <a href="#cgm">Glucose</a>
+      <a href="#body">Body</a>
+      <a href="#food">Food</a>
+      <a href="#train">Training</a>
+      <a href="#dna">Genetics</a>
+      <a href="#corrsec">Connections</a>
+      <a href="#supp">Supplements</a>
+      <a href="#lab">Data lab</a>
+      <a href="#raw">Raw data</a>
+      <a href="#sources">Sources</a>
+    </div>
+  </div>
+</details>
 
 <!-- HERO -->
 <section id="hero">
@@ -1463,6 +1506,24 @@ function speak(i) {
 function stop(end) { playing = false; if (useTTS) speechSynthesis.cancel(); $("playIcon").innerHTML = '<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>'; if (end) { pos = 0; si = 0; } }
 function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("playIcon").innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/>'; setTimeout(() => speak(i), 60); }
 $("play").onclick = () => playing ? stop() : seek(si);
+const exampleTools = $("exampleTools");
+exampleTools.addEventListener("click", event => {
+  if (event.target.closest(".example-tools-panel a[href^='#']")) exampleTools.open = false;
+});
+document.addEventListener("click", event => {
+  if (!exampleTools.contains(event.target)) exampleTools.open = false;
+});
+exampleTools.addEventListener("keydown", event => {
+  if (event.key !== "Escape" || !exampleTools.open) return;
+  exampleTools.open = false;
+  exampleTools.querySelector("summary").focus();
+});
+$("quickListen").onclick = () => {
+  exampleTools.open = false;
+  $("podcast").scrollIntoView();
+  $("play").focus({ preventScroll: true });
+  if (!playing) $("play").click();
+};
 wave.onclick = e => { const r = wave.getBoundingClientRect(), t = (e.clientX - r.left) / r.width * TOTAL; let i = SENT.findIndex(s => s.t0 + s.d > t); seek(Math.max(0, i)); };
 (function podLoop() { if (playing) { pos = Math.min(SENT[si].t0 + SENT[si].d, SENT[si].t0 + (performance.now() - sStart) / 1000); } $("tNow").textContent = mmss(pos); drawWave(); requestAnimationFrame(podLoop); })();
 
@@ -2595,6 +2656,28 @@ function raw() {
   $("rawtbl").querySelectorAll("[data-p]").forEach(b => b.onclick = () => { const d = fill[+b.dataset.p]; const GB = document.getElementById("gdb"); GB.innerHTML = `<div class="k">${d.src} · ${d.count.toLocaleString("en-GB")} rows</div><h3 style="font-size:36px;margin:6px 50px 14px 0">${d.n}</h3><div style="overflow:auto;max-height:60vh"><table class="gtbl"><thead><tr>${d.r[0].map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${d.r.slice(1, 201).map(r => `<tr>${r.map(v => `<td>${v == null ? "" : v}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="k">${d.count > 200 ? "First 200 rows shown · download the CSV for all " + d.count.toLocaleString("en-GB") : "All rows shown"}</p>`; document.getElementById("gd").classList.add("on"); });
   $("dlpdf").onclick = async e => { if (!dlNS) return; e.preventDefault(); try { const blob = await (await fetch("jasper-in-data-report.pdf")).blob(); await dlNS.save({ filename: "jasper-in-data-report.pdf", data: blob }); } catch (err) { if (err && err.code == "declined") return; window.open("jasper-in-data-report.pdf", "_blank"); } };
   $("dlall").onclick = () => dl("jasper-twin-all-data.json", JSON.stringify(Object.fromEntries(fill.map(d => [d.n, d.r])), null, 0), "application/json");
+  $("quickDownloadData").onclick = $("dlall").onclick;
+  $("quickDownloadSummary").onclick = () => {
+    const [date, weight] = WEIGHT.at(-1);
+    const recentLabs = ["LDL Cholesterol", "Creatinine", "Uric Acid"].map(name => {
+      const [, unit, , , , readings] = LABS.find(([marker]) => marker === name);
+      const [collected, value] = readings.at(-1);
+      return `${name}: ${value} ${unit} (${collected})`;
+    });
+    const summary = [
+      "Jasper, in data — summary",
+      $("asof").textContent,
+      "",
+      "Recorded in N1",
+      ...recentLabs,
+      `Latest recorded weight: ${weight} kg (${date})`,
+      "",
+      "Simulated examples",
+      "Wearables, glucose, detailed exercise logs and genetics include simulated data.",
+      "See Sources in the example for the origin of each dataset."
+    ].join("\n");
+    dl("jasper-twin-summary.txt", summary, "text/plain;charset=utf-8");
+  };
 }
 
 /* ================= boot ================= */
