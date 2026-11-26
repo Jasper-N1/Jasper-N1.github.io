@@ -1014,8 +1014,9 @@
   #s5 h2, #s6 h2, #s7 h2, .twin-bento-title {
     font: 400 var(--section-title)/1.06 var(--serif) !important; letter-spacing: var(--ls-h);
   }
-  #s7 h2 { margin-bottom: var(--section-heading-gap) !important; }
-  #s7 .grid { max-width: 56rem !important; }
+  #s7 > .kick, #s7 > h2 { text-align: center !important; }
+  #s7 > h2 { margin-bottom: var(--section-heading-gap) !important; }
+  #s7 > h2, #s7 > .kick, #s7 .grid { max-width: 56rem !important; margin-inline: auto !important; }
   @media (max-width: 900px) {
     #plat .prow { gap: 26px !important; }
   }
