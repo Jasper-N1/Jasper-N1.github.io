@@ -74,16 +74,13 @@
   .team header p:not(.kick) { margin: 0; max-width: 46ch; font-size: var(--fs-lead); line-height: 1.45; color: var(--muted); }
   .people { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(10px, 1.45vw, 24px); margin: 0; padding: 0; list-style: none; }
   .person { display: block; text-decoration: none; }
-  .person .ph { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--card); }
-  .person .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .45s ease, transform .6s ease; }
-  .person .twin { opacity: 0; transform: scale(1.04); }
-  .person .ph::after { content: ""; position: absolute; left: 0; right: 0; top: -30%; height: 30%; background: linear-gradient(180deg, transparent, #ffffff55 70%, #fff 72%, transparent 74%); opacity: 0; pointer-events: none; }
+  .person .ph { position: relative; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--card); }
+  .person .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .2s ease; }
+  .person .twin { opacity: 0; }
   .person b { display: block; margin-top: 12px; font: 500 clamp(15px, 1.1vw, 17px) var(--sans); }
   .person span { display: block; margin-top: 3px; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--blue-text); }
   a.person:hover b { text-decoration: underline; text-underline-offset: 4px; }
-  .person:hover .twin, .person:focus-visible .twin, .person.on .twin { opacity: 1; transform: scale(1); }
-  .person:hover .ph::after, .person:focus-visible .ph::after, .person.on .ph::after { animation: scan 1s ease-out; }
-  @keyframes scan { 0% { top: -30%; opacity: 1; } 100% { top: 100%; opacity: 0; } }
+  .person:hover .twin, .person:focus-visible .twin, .person.on .twin { opacity: 1; }
   .team .note { margin: 18px 0 0; font: 400 13px/1.5 var(--sans); color: var(--muted); }
 
   /* explore cards */
@@ -145,7 +142,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .person .ph img { transition: none; } .person .ph::after { display: none; }
+    .person .ph img { transition: none; }
   }
 </style>
 </head>
