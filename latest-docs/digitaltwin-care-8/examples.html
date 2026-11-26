@@ -53,10 +53,7 @@ section{position:relative}
 
 /* hero */
 #hero{padding:clamp(40px,5vw,76px) 0 clamp(40px,5vw,72px)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.85fr);align-items:center;column-gap:clamp(24px,5vw,76px)}
-.hero-title h1{font-size:clamp(48px,6vw,88px);line-height:.98;letter-spacing:-.045em}
-.hero-title p{font-size:clamp(17px,1.4vw,21px);line-height:1.5;color:var(--ink2);margin:20px 0 0;max-width:32ch}
-.hero-title .num{flex-wrap:wrap;gap:8px}
+ .hero-grid{max-width:840px}
 .hero-visual{min-width:0;position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(10px,1.6vw,24px);padding:clamp(14px,2.3vw,32px);border:var(--hair-soft);border-radius:8px;background:radial-gradient(ellipse at center,#fafcfa 0%,var(--paper) 76%)}
 #heroTwin{grid-column:2;grid-row:1;min-width:0;display:flex;justify-content:center}
 #heroTwin canvas{display:block;width:100%;height:auto;max-width:190px}
@@ -72,14 +69,7 @@ section{position:relative}
 .tag .v small{font:400 11px var(--sans);color:var(--ink2);margin-left:4px}
 .tag .s{font-size:11.5px;color:var(--ink2);margin-top:4px}
 .tag .s.f{color:#a63d29}
-.hero-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:clamp(28px,4vw,56px);padding-top:20px;border-top:var(--hair)}
-.hero-stats .big{font:400 clamp(28px,3.5vw,48px)/1 var(--serif)}
-.hero-stats .k{margin-top:6px;color:var(--ink2)}
-.scrollcue{grid-column:1/-1;justify-self:start;margin-top:24px;color:var(--action);font-size:14px;text-underline-offset:4px}
-@media(max-width:900px){
-  .hero-grid{grid-template-columns:minmax(0,1fr);row-gap:24px}
-  .hero-stats,.scrollcue{margin-top:0}
-}
+
 @media(max-width:600px){
   .hero-visual{grid-template-columns:repeat(2,minmax(0,1fr))}
   #heroTwin{grid-column:1/-1}
@@ -328,7 +318,6 @@ footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 @media(max-width:900px){
   .sechead{grid-template-columns:1fr}
   .srcs{justify-content:flex-start}
-  .hero-stats{display:none}
   .mdots button{white-space:nowrap}
   .week{grid-template-columns:repeat(4,minmax(0,1fr))}
   .week .act{font-size:17px}
@@ -482,9 +471,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 @media(min-width:1720px){
   .example-tools#exampleTools{left:max(20px,calc(var(--edge) - 248px));width:224px}
 }
-@media(min-width:1050px) and (max-width:1719px){
-  #hero .hero-title{top:13%}
-}
+
 .example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(19rem,calc(100% - 2 * var(--g)));z-index:9;font:500 14px var(--sans)}
 .example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:12px;width:max-content;min-height:44px;padding:0 15px;cursor:pointer;list-style:none;border:var(--hair);border-radius:999px;background:var(--paper);color:var(--action);box-shadow:0 4px 16px #1c1b1710}
 .example-tools summary::-webkit-details-marker{display:none}
@@ -498,26 +485,20 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools :focus-visible{outline:2px solid var(--action);outline-offset:2px}
 #hero{padding-top:clamp(76px,6vw,108px)}
 @media(min-width:1050px){
-  #hero{padding:20px 0 32px;background:radial-gradient(ellipse at 50% 50%,#fff 0%,var(--bg) 68%)}
+  #hero{padding:36px 0 32px;background:radial-gradient(ellipse at 50% 50%,#fff 0%,var(--bg) 68%)}
   .hero-grid{display:block;position:relative;height:clamp(600px,calc(100svh - var(--bar) - 52px),820px)}
-  .hero-title{position:absolute;top:7%;left:0;width:25%}
-  .hero-title h1{font-size:clamp(62px,6vw,100px)}
-  .hero-title p{font-size:clamp(16px,1.2vw,18px)}
   .hero-visual{position:absolute;inset:0;display:block;padding:0;border:0;background:none;pointer-events:none}
-  #heroTwin{position:absolute;top:3%;bottom:3%;left:50%;transform:translateX(-50%);width:24%}
+  #heroTwin{position:absolute;top:3%;bottom:3%;left:50%;transform:translateX(-50%);width:34%}
   #heroTwin canvas{width:auto;height:100%;max-width:100%;object-fit:contain}
   .tags{display:contents}
   .tag{position:absolute;top:var(--tag-top);width:clamp(116px,11.5%,142px);padding:9px 11px;background:#fffdf9;box-shadow:0 9px 24px #19384b15}
-  .tags-left .tag{right:61%}
-  .tags-right .tag{left:61%}
+  .tags-left .tag{right:67%}
+  .tags-right .tag{left:67%}
   .tag::after{content:"";position:absolute;top:50%;width:22px;height:1px;background:#0096d655}
   .tags-left .tag::after{left:100%}
   .tags-right .tag::after{right:100%}
   .tag .v{font-size:clamp(21px,2vw,28px)}
   .tag .s{font-size:11px}
-  .hero-stats{position:absolute;right:0;bottom:4%;display:grid;grid-template-columns:1fr;gap:16px;margin:0;padding:0;border:0;text-align:right}
-  .hero-stats .big{font-size:clamp(34px,3.3vw,52px)}
-  .scrollcue{position:absolute;bottom:4%;left:0;margin:0}
 }
 </style>
 </head>
@@ -572,25 +553,14 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 </details>
 
 <!-- HERO -->
-<section id="hero">
+<section id="hero" aria-label="Jasper’s digital twin and biomarkers">
   <div class="wrap hero-grid">
-    <div class="hero-title">
-      <div class="num"><span class="src">Live from N1</span><span class="mono" id="asof"></span></div>
-      <h1>Jasper,<br><em>in data.</em></h1>
-      <p>Every lab, heartbeat, meal, lift and gene, brought together in one model of one person.</p>
-    </div>
     <div class="hero-visual">
     <div id="heroTwin"><canvas id="htc" width="500" height="1344"></canvas></div>
     <div class="twinload" id="twinLoad"><div class="ring"></div><span>Building your model <b id="tlp">0</b>%</span></div>
     <div class="tags tags-left" id="tagsLeft"></div>
     <div class="tags tags-right" id="tagsRight"></div>
     </div>
-    <div class="hero-stats">
-      <div><div class="big" id="cPoints">0</div><div class="k">data points in this twin</div></div>
-      <div><div class="big" id="cStreams">0</div><div class="k">sources feeding it</div></div>
-      <div><div class="big">18<span style="font-size:.45em"> mo</span></div><div class="k">of history, May 2025 → today</div></div>
-    </div>
-    <a class="scrollcue" href="#podcast">Explore the data ↓</a>
   </div>
 </section>
 
@@ -1398,9 +1368,7 @@ const L = LABS.map(([name, unit, lo, hi, group, pts]) => {
   return { name, unit, lo, hi, group, pts, v, date: last[0], prev, flag };
 });
 const byName = n => L.find(x => x.name === n);
-const realReadings = L.reduce((p, x) => p + x.pts.length, 0) + WEIGHT.length + FAT.length + BP.length * 2 + SUPPS.length + DIAG.length + QUAL.length;
-const simPoints = DAY.length * 24 + hr24.length + hyp.length + W.length * 8 + GENES.length + PRS.length + LIFTLOG.reduce((p, s) => p + s.ex.length * 3, 0);
-$("asof").textContent = "Read 26 Nov 2026";
+const exampleReadDate = "Read 26 Nov 2026";
 
 /* mini range bar */
 function rangeBar(svg, lo, hi, v, w = 200, h = 14, dark) {
@@ -1437,7 +1405,6 @@ const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting
 document.querySelectorAll(".reveal,.sechead,.card,.tile,.spotc,.gene,.meal,.log,.draw").forEach(el => { el.classList.add("reveal"); io.observe(el); });
 
 /* ---------- counters ---------- */
-function count(el, to, dur = 1800) { const t0 = performance.now(); const step = t => { const k = clamp((t - t0) / dur, 0, 1), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(to * e).toLocaleString("en-GB"); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
 
 /* =========================================================
    HERO TWIN (sprite sheets)
@@ -1485,7 +1452,6 @@ TAGS.forEach(t => {
   tile.style.setProperty("--tag-top", tagPositions[t.side][column.childElementCount] + "%");
   column.appendChild(tile);
 });
-setTimeout(() => { count($("cPoints"), realReadings + simPoints); count($("cStreams"), 9, 1200); }, 400);
 
 /* =========================================================
    PODCAST
@@ -2711,7 +2677,7 @@ function raw() {
     });
     const summary = [
       "Jasper, in data — summary",
-      $("asof").textContent,
+      exampleReadDate,
       "",
       "Recorded in N1",
       ...recentLabs,
