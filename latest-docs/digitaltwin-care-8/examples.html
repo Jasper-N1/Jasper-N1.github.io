@@ -16,24 +16,25 @@
   --flag:#E0573C; --amber:#D99A20; --teal:#2E9E8F; --violet:#7C6FE0; --pink:#E06AA6;
   --deep:#3949AB; --core:#5C8DF0; --rem:#A889F5; --awake:#F2A65A;
   --serif:"Newsreader",Georgia,serif; --sans:"DM Sans","Helvetica Neue",Arial,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
-  --g:clamp(20px,3.3vw,64px); --max:1500px; --paper:#fffcf2; --hair:1px solid rgba(28,27,23,.16); --hair-soft:1px solid rgba(28,27,23,.09); --r:6px;
+  --g:clamp(20px,3.3vw,64px); --max:1200px; --edge:max(var(--g),calc((100% - var(--max))/2)); --paper:#fffcf2; --hair:1px solid rgba(28,27,23,.16); --hair-soft:1px solid rgba(28,27,23,.09); --r:6px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar) + 16px)}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
 a{color:inherit}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.wrap{width:calc(100% - 2 * var(--g));max-width:var(--max);margin-inline:auto}
+@media(max-width:800px){:root{--g:20px}}
 h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.03em;margin:0}
-h2{font-size:clamp(40px,5.4vw,84px);line-height:.98}
+h2{font-size:clamp(36px,3.9vw,64px);line-height:1.06}
 h2 em,h1 em{font-style:normal;color:var(--action)}
-h3{font-size:clamp(22px,2vw,30px);line-height:1.1}
-.lede{font-size:clamp(17px,1.35vw,21px);line-height:1.5;color:var(--ink2);max-width:640px;margin:22px 0 0}
+h3{font-size:clamp(23px,1.8vw,30px);line-height:1.1}
+.lede{font-size:clamp(17px,1.4vw,21px);line-height:1.5;color:var(--ink2);max-width:640px;margin:22px 0 0}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
 .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
 section.sec{border-top:var(--hair-soft)}
 section{position:relative}
 .sec{padding:clamp(72px,9vw,150px) 0}
-.sechead{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:clamp(40px,5vw,72px)}
+.sechead{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:clamp(28px,4vw,56px)}
 .num{font:500 11.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;display:flex;gap:12px;align-items:center}
 .num b{font-weight:500;color:var(--ink3)}
 
@@ -51,39 +52,44 @@ section{position:relative}
 
 
 /* hero */
-#hero{overflow:hidden;background:radial-gradient(ellipse 60% 55% at 50% 52%,#fff 0%,var(--bg) 70%)}
-.hero-grid{position:relative;height:calc(100svh - var(--bar));min-height:680px}
-.hero-title{position:absolute;left:var(--g);top:8vh;max-width:520px;z-index:3}
-.hero-title h1{font-size:clamp(56px,7.6vw,124px);line-height:.9}
-.hero-title p{font-size:18px;line-height:1.5;color:var(--ink2);margin:26px 0 0;max-width:380px}
-#heroTwin{position:absolute;left:50%;top:4%;height:92%;transform:translateX(-50%);z-index:2}
-#heroTwin canvas{height:100%;display:block}
-.twinload{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--action);display:flex;flex-direction:column;align-items:center;gap:14px;transition:opacity .5s}
-.twinload .ring{width:46px;height:46px;border-radius:50%;border:2px solid rgba(0,110,156,.15);border-top-color:var(--action);animation:sp 1s linear infinite}
+#hero{padding:clamp(40px,5vw,76px) 0 clamp(40px,5vw,72px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.85fr);align-items:center;column-gap:clamp(24px,5vw,76px)}
+.hero-title h1{font-size:clamp(48px,6vw,88px);line-height:.98;letter-spacing:-.045em}
+.hero-title p{font-size:clamp(17px,1.4vw,21px);line-height:1.5;color:var(--ink2);margin:20px 0 0;max-width:32ch}
+.hero-title .num{flex-wrap:wrap;gap:8px}
+.hero-visual{min-width:0;position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(10px,1.6vw,24px);padding:clamp(14px,2.3vw,32px);border:var(--hair-soft);border-radius:8px;background:radial-gradient(ellipse at center,#fafcfa 0%,var(--paper) 76%)}
+#heroTwin{grid-column:2;grid-row:1;min-width:0;display:flex;justify-content:center}
+#heroTwin canvas{display:block;width:100%;height:auto;max-width:190px}
+.twinload{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:500 11px var(--mono);text-transform:uppercase;color:var(--action);display:grid;justify-items:center;gap:10px;transition:opacity .5s}
+.twinload .ring{width:36px;height:36px;border-radius:50%;border:2px solid #006e9c26;border-top-color:var(--action);animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.tags{position:absolute;inset:0;z-index:3;pointer-events:none}
-.tag{position:absolute;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(28,27,23,.08);border-radius:14px;padding:10px 14px 11px;box-shadow:0 12px 40px -12px rgba(0,60,90,.25);min-width:150px;opacity:0;transform:translateY(10px);transition:opacity .8s,transform .8s}
-.tag.in{opacity:1;transform:none}
-.tag .v{font-family:var(--serif);font-size:30px;line-height:1;margin-top:4px}
-.tag .v small{font-family:var(--sans);font-size:12px;color:var(--ink3);margin-left:4px}
-.tag .s{font-size:11.5px;color:var(--ink3);margin-top:4px}
-.tag .s.f{color:var(--flag)}
-.tag::after{content:"";position:absolute;width:44px;height:1px;background:rgba(0,150,214,.45);top:50%}
-.tag.l::after{right:-44px}.tag.r::after{left:-44px}
-.hero-stats{position:absolute;right:var(--g);bottom:6vh;z-index:3;display:grid;gap:22px;text-align:right}
-.hero-stats .big{font-family:var(--serif);font-size:clamp(40px,4vw,64px);line-height:1}
-.hero-stats .k{margin-top:4px}
-.scrollcue{position:absolute;left:var(--g);bottom:6vh;z-index:3;display:flex;gap:12px;align-items:center}
-.scrollcue span{width:1px;height:44px;background:linear-gradient(var(--ink3),transparent);display:block;animation:cue 2s ease-in-out infinite}
-@keyframes cue{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1)}}
+.tags{grid-row:1;display:grid;gap:10px;min-width:0}
+.tags-left{grid-column:1}
+.tags-right{grid-column:3}
+.tag{min-width:0;padding:10px 12px;border:var(--hair-soft);border-radius:8px;background:#fffdf8}
+.tag .k{color:var(--ink2);letter-spacing:.04em}
+.tag .v{font:400 clamp(22px,2.1vw,30px)/1.05 var(--serif);margin-top:4px}
+.tag .v small{font:400 11px var(--sans);color:var(--ink2);margin-left:4px}
+.tag .s{font-size:11.5px;color:var(--ink2);margin-top:4px}
+.tag .s.f{color:#a63d29}
+.hero-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:clamp(28px,4vw,56px);padding-top:20px;border-top:var(--hair)}
+.hero-stats .big{font:400 clamp(28px,3.5vw,48px)/1 var(--serif)}
+.hero-stats .k{margin-top:6px;color:var(--ink2)}
+.scrollcue{grid-column:1/-1;justify-self:start;margin-top:24px;color:var(--action);font-size:14px;text-underline-offset:4px}
 @media(max-width:900px){
-  .hero-title{top:3vh;right:var(--g)}
-  .hero-title h1{font-size:15vw}.hero-title p{display:none}
-  #heroTwin{top:22%;height:76%}
-  .tag{min-width:118px;padding:8px 10px}.tag .v{font-size:22px}.tag::after{display:none}
-  .hero-stats{gap:12px;bottom:4vh}.hero-stats .big{font-size:30px}
-  .scrollcue{display:none}
+  .hero-grid{grid-template-columns:minmax(0,1fr);row-gap:24px}
+  .hero-stats,.scrollcue{margin-top:0}
 }
+@media(max-width:600px){
+  .hero-visual{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #heroTwin{grid-column:1/-1}
+  #heroTwin canvas{max-width:130px}
+  .tags{grid-row:2;align-self:start}
+  .bar .sign{padding-inline:14px}
+  .tags-right{grid-column:2}
+  .twinload{top:30%}
+}
+@media(prefers-reduced-motion:reduce){.twinload .ring{animation:none}}
 
 /* podcast */
 #podcast{padding:clamp(60px,7vw,110px) 0 clamp(90px,10vw,150px);background:var(--bg)}
@@ -467,12 +473,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   #wear .card,#train .card,#lab .card,.provenance-table{overflow-x:auto}
   #wear,#train,#lab{overflow-x:clip}
 }
-@media(max-width:600px){
-  .hero-grid{min-height:620px}
-  .hero-title h1{font-size:clamp(46px,13vw,78px)}
-  .hero-title p{display:block;font-size:15px;margin-top:14px;max-width:28ch}
-  #heroTwin{top:31%;height:66%}
-}
+
 </style>
 </head>
 <body>
@@ -490,21 +491,24 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-grid">
+  <div class="wrap hero-grid">
     <div class="hero-title">
       <div class="num"><span class="src">Live from N1</span><span class="mono" id="asof"></span></div>
       <h1>Jasper,<br><em>in data.</em></h1>
       <p>Every lab, heartbeat, meal, lift and gene, brought together in one model of one person.</p>
     </div>
+    <div class="hero-visual">
     <div id="heroTwin"><canvas id="htc" width="500" height="1344"></canvas></div>
     <div class="twinload" id="twinLoad"><div class="ring"></div><span>Building your model <b id="tlp">0</b>%</span></div>
-    <div class="tags" id="tags"></div>
+    <div class="tags tags-left" id="tagsLeft"></div>
+    <div class="tags tags-right" id="tagsRight"></div>
+    </div>
     <div class="hero-stats">
       <div><div class="big" id="cPoints">0</div><div class="k">data points in this twin</div></div>
       <div><div class="big" id="cStreams">0</div><div class="k">sources feeding it</div></div>
       <div><div class="big">18<span style="font-size:.45em"> mo</span></div><div class="k">of history, May 2025 → today</div></div>
     </div>
-    <div class="scrollcue"><span></span><div class="k">Scroll into the data</div></div>
+    <a class="scrollcue" href="#podcast">Explore the data ↓</a>
   </div>
 </section>
 
@@ -1367,7 +1371,7 @@ function loadSheets() {
     im.src = "walk36-" + String(i).padStart(2, "0") + ".webp"; };
   chain(); chain(); chain();
 }
-function ready() { twinReady = true; $("twinLoad").style.opacity = 0; setTimeout(() => { $("twinLoad").style.display = "none"; }, 600); placeTags(); }
+function ready() { twinReady = true; $("twinLoad").style.opacity = 0; setTimeout(() => { $("twinLoad").style.display = "none"; }, 600); }
 let heroVisible = true;
 new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe($("hero"));
 function heroLoop(t) {
@@ -1383,29 +1387,19 @@ loadSheets(); requestAnimationFrame(heroLoop);
 const ldl = byName("LDL Cholesterol"), cre = byName("Creatinine"), ua = byName("Uric Acid"), vd = byName("25-Hydroxyvitamin D");
 const hrv7 = Math.round(avg(DAY.slice(-7).map(d => d.hrv))), rhr7 = Math.round(avg(DAY.slice(-7).map(d => d.rhr)));
 const TAGS = [
-  { side: "l", y: .095, k: "Sleep · last night", v: T.sleep, u: "h", s: "Whoop · simulated" },
-  { side: "l", y: .245, k: "Resting heart rate", v: rhr7, u: "bpm", s: "7-day avg · simulated" },
-  { side: "l", y: .43, k: "Creatinine", v: cre.v, u: cre.unit, s: "Above " + cre.hi + " · 18 Nov", f: 1 },
-  { side: "l", y: .66, k: "VO₂ max", v: T.vo2, u: "ml/kg/min", s: "Apple Watch · simulated" },
-  { side: "r", y: .2, k: "LDL cholesterol", v: ldl.v, u: ldl.unit, s: "Above " + ldl.hi + " · 18 Nov", f: 1 },
-  { side: "r", y: .33, k: "HRV", v: hrv7, u: "ms", s: "7-day avg · simulated" },
-  { side: "r", y: .49, k: "Uric acid", v: ua.v, u: ua.unit, s: "Above " + ua.hi + " · 18 Nov", f: 1 },
-  { side: "r", y: .62, k: "Weight", v: 81.9, u: "kg", s: "−6.2 kg since 1 Sep" }
+  { side: "l", k: "Sleep · last night", v: T.sleep, u: "h", s: "Whoop · simulated" },
+  { side: "l", k: "Resting heart rate", v: rhr7, u: "bpm", s: "7-day avg · simulated" },
+  { side: "l", k: "Creatinine", v: cre.v, u: cre.unit, s: "Above " + cre.hi + " · 18 Nov", f: 1 },
+  { side: "l", k: "VO₂ max", v: T.vo2, u: "ml/kg/min", s: "Apple Watch · simulated" },
+  { side: "r", k: "LDL cholesterol", v: ldl.v, u: ldl.unit, s: "Above " + ldl.hi + " · 18 Nov", f: 1 },
+  { side: "r", k: "HRV", v: hrv7, u: "ms", s: "7-day avg · simulated" },
+  { side: "r", k: "Uric acid", v: ua.v, u: ua.unit, s: "Above " + ua.hi + " · 18 Nov", f: 1 },
+  { side: "r", k: "Weight", v: 81.9, u: "kg", s: "−6.2 kg since 1 Sep" }
 ];
-const tagsEl = $("tags");
-TAGS.forEach((t, i) => { const d = H("div", { class: "tag " + t.side }, `<div class="k">${t.k}</div><div class="v">${t.v}<small>${t.u}</small></div><div class="s${t.f ? " f" : ""}">${t.s}</div>`); tagsEl.appendChild(d); t.el = d; });
-function placeTags() {
-  const host = $("hero").getBoundingClientRect(), c = htc.getBoundingClientRect();
-  const mob = innerWidth < 900;
-  TAGS.forEach((t, i) => {
-    const y = c.top - host.top + c.height * t.y;
-    const bodyL = c.left - host.left + c.width * .2, bodyR = c.left - host.left + c.width * .8;
-    if (mob) { t.el.style.top = (y - 30) + "px"; t.el.style.left = t.side == "l" ? "12px" : "auto"; t.el.style.right = t.side == "r" ? "12px" : "auto"; t.el.style.display = i % 2 && i > 3 ? "none" : ""; }
-    else { t.el.style.top = (y - 38) + "px"; if (t.side == "l") { t.el.style.left = "auto"; t.el.style.right = (host.width - bodyL + 50) + "px"; } else { t.el.style.right = "auto"; t.el.style.left = (bodyR + 50) + "px"; } }
-    setTimeout(() => t.el.classList.add("in"), 300 + i * 140);
-  });
-}
-addEventListener("resize", placeTags);
+TAGS.forEach(t => {
+  const tile = H("div", { class: "tag" }, `<div class="k">${t.k}</div><div class="v">${t.v}<small>${t.u}</small></div><div class="s${t.f ? " f" : ""}">${t.s}</div>`);
+  $(t.side === "l" ? "tagsLeft" : "tagsRight").appendChild(tile);
+});
 setTimeout(() => { count($("cPoints"), realReadings + simPoints); count($("cStreams"), 9, 1200); }, 400);
 
 /* =========================================================
