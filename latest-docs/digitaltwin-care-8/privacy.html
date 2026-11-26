@@ -40,6 +40,8 @@ p{margin:12px 0 0;color:var(--muted)}
 .rows div{padding:13px 0;border-bottom:1px solid var(--line)}
 .rows dt{font-weight:600}
 .rows dd{margin:4px 0 0;color:var(--muted)}
+.data-use{max-width:780px;margin:auto;padding-top:var(--space)}
+.data-use h2{margin-bottom:22px}
 .questions{max-width:780px;margin:auto;padding:var(--space) 0}
 .questions h2{margin-bottom:22px}
 details{border-top:1px solid var(--line)}
@@ -69,8 +71,8 @@ footer span{margin-right:auto}
 <main class="wrap">
   <header class="intro">
     <p class="kick">Privacy</p>
-    <h1>Your health data. <em>Your choices.</em></h1>
-    <p class="lead">From the records you add to the reports you share, here’s what happens to your information and how to manage it.</p>
+    <h1>What happens to <em>your health data?</em></h1>
+    <p class="lead">When you upload a lab report, N1 reads it to build your health record. Your doctor doesn’t automatically get access, and we don’t sell patient data or use it to train general-purpose AI models.</p>
     <div class="hero-links">
       <a class="button" href="https://n1.care/privacy">Read the full Privacy Notice</a>
       <a href="https://trust.n1.care/">Visit the N1 Trust Centre ↗</a>
@@ -78,16 +80,16 @@ footer span{margin-right:auto}
   </header>
   <section class="cards" aria-label="Privacy at a glance">
     <article class="card">
-      <h3>We protect your records</h3>
-      <p>Health records are encrypted during transfer and storage. Access requires an authorized account or a sharing link for the report you choose.</p>
+      <h3>Who can see your records?</h3>
+      <p>People you authorize can see what you share. A limited group of N1 staff may access records for support, maintenance, or security incidents. If your clinic manages the record, it sets the access rules.</p>
     </article>
     <article class="card">
-      <h3>Health data stays out of ads</h3>
-      <p>We don’t sell patient data, give it to data brokers, or use it for targeted advertising.</p>
+      <h3>What does AI see?</h3>
+      <p>AI providers may receive relevant records or excerpts to answer a question or draft a report. Our providers process that information for us. They can’t use patient data to train general-purpose models.</p>
     </article>
     <article class="card">
-      <h3>AI helps you read your records</h3>
-      <p>AI can organize your records and draft reports. Our AI providers receive the information needed for the task. Neither we nor those providers use patient data to train general-purpose models.</p>
+      <h3>What happens if you delete?</h3>
+      <p>You can remove individual files or delete your account in Settings. Account deletion stops sign-in access. Deletion from backups can take longer, and legal or security records may be retained where required or permitted.</p>
     </article>
   </section>
   <section class="controls" aria-labelledby="controls-title">
@@ -99,16 +101,24 @@ footer span{margin-right:auto}
       <div><dt>What you remove</dt><dd>Delete individual files or request account deletion from Settings. Some copies may remain temporarily in backups, and some information may need to be kept for legal or security reasons.</dd></div>
     </dl>
   </section>
+  <section class="data-use" aria-labelledby="data-use-title">
+    <h2 id="data-use-title">From upload to report</h2>
+    <dl class="rows">
+      <div><dt>When you upload a file</dt><dd>We read the document to organize information such as results, dates, and units, and connect findings to their source when available. Records are encrypted as they travel and while they’re stored.</dd></div>
+      <div><dt>When you use the app</dt><dd>We collect account, device, sign-in, and activity information to run the service, manage billing, and investigate security problems. We don’t sell patient data, disclose it to data brokers, or use it for targeted ads.</dd></div>
+      <div><dt>When you share a report</dt><dd>You share the report you choose. For example, you can send a password-protected link that expires after an appointment. Turning the link off stops future access through that link. Anyone who already saved a copy can still have it.</dd></div>
+      <div><dt>Where your information goes</dt><dd>The Trust Centre describes six possible regions for uploaded files and says databases and logs are hosted in the US. File storage, databases, and AI processing can be in different places. <a href="https://trust.n1.care/#regions">See storage regions</a> or contact N1 to confirm what applies to your account.</dd></div>
+    </dl>
+  </section>
   <section class="questions" aria-labelledby="privacy-questions">
     <h2 id="privacy-questions">Common privacy questions</h2>
-    <details><summary>What information do you collect?</summary><p>We collect what you provide, such as account details, uploaded records, and support messages. We also collect technical information, such as device and sign-in activity, to run and secure the service.</p></details>
-    <details><summary>Can my doctor see my uploads?</summary><p>Uploads to your personal account aren’t automatically visible to your doctor. You can choose to share a report. If a clinic created or manages the record, its access rules apply.</p></details>
-    <details><summary>Where is my information stored?</summary><p>The <a href="https://trust.n1.care/#regions">Trust Centre</a> lists where uploaded files, databases, and logs are hosted and explains the difference between them.</p></details>
-    <details><summary>What if I connect an outside AI assistant?</summary><p>Connecting an assistant allows it to request information within the access you grant. The assistant’s provider handles what it receives under its own privacy terms. You can disconnect it in the assistant’s settings. See the <a href="https://n1.care/privacy">Privacy Notice</a> for details.</p></details>
+    <details><summary>Does deleting an uploaded file also delete the information extracted from it?</summary><p>Your original upload and the information extracted into your record are separate. Check the deletion options for each, or contact N1 if you want help removing both.</p></details>
+    <details><summary>What happens if I connect an outside AI assistant?</summary><p>The assistant can request information within the permissions you grant. Its provider handles what it receives under its own privacy terms. You can disconnect N1 in the assistant’s settings.</p></details>
+    <details><summary>How do I get a copy or correct a record?</summary><p>Use the export options in your personal account, or contact N1 for help accessing or correcting your information. If a clinic manages your record, start with that clinic.</p></details>
   </section>
   <section class="contact" aria-labelledby="privacy-contact">
     <h2 id="privacy-contact">Questions about your data?</h2>
-    <p>Contact N1 to ask about privacy or request access, a correction, or deletion. Please keep lab reports and other health records out of ordinary email.</p>
+    <p>N1 Research, LLC handles privacy questions and requests for personal accounts. You can ask for access, a correction, or deletion. Please keep lab reports and other health records out of ordinary email.</p>
     <div class="hero-links">
       <a class="button" href="https://n1.care/contact">Contact N1</a>
       <a href="mailto:security@n1.care">security@n1.care</a>
