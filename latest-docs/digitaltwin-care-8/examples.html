@@ -489,7 +489,11 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools :focus-visible{outline:2px solid var(--action);outline-offset:-2px}
 @media(pointer:coarse){.example-tools-sections a,.example-tool-action{min-height:44px}}
 @media(min-width:1780px){.example-tools{left:max(20px,calc(var(--edge) - 276px));width:224px}}
- .example-picker{width:100%;max-width:none;min-height:38px;margin-bottom:12px;padding:6px 9px;border-radius:6px;background:#fffdf8}
+.example-switch{display:grid;width:100%;margin-bottom:12px;text-align:left}
+.example-switch strong{font:600 15px var(--sans)}
+#day{width:min(1220px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:26px 0;border:var(--hair);border-radius:12px;background:var(--paper);color:var(--ink)}
+#day::backdrop{background:#14232b70}
+#day .sechead{margin-bottom:20px}
 #jyPreview{display:none;min-height:60vh;padding:clamp(96px,12vw,180px) 0}
 body[data-example="jy"] > section:not(#jyPreview),body[data-example="jy"] > footer,body[data-example="jy"] .jasper-tools{display:none}
 body[data-example="jy"] #jyPreview{display:block}
@@ -560,26 +564,24 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 <details class="example-tools" id="exampleTools">
   <summary><span id="exampleName">Jasper</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="example-tools-panel">
-    <select id="examplePicker" class="example-picker" aria-label="Select an example twin">
-      <option value="jasper">Jasper</option>
-      <option value="jy">JY</option>
-    </select>
+    <button class="example-tool-action example-switch" id="examplePicker" type="button" aria-label="Switch to JY">
+      <span>Switch twin</span><strong id="otherExample">JY</strong>
+    </button>
     <div class="jasper-tools">
-    <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
+    <p class="example-tools-label" id="exampleIndexLabel">Body systems</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
-      <li><a href="#report">Body systems</a></li>
-      <li><a href="#today">Today</a></li>
-      <li><a href="#day">Day explorer</a></li>
-      <li><a href="#model">Twin model</a></li>
+      <li><a href="#report">Body systems overview</a></li>
+      <li><a href="#model">Explore the twin</a></li>
       <li><a href="#labs">Bloodwork</a></li>
-      <li><a href="#wear">Wearables</a></li>
+      <li><a href="#body">Weight and body composition</a></li>
       <li><a href="#cgm">Glucose</a></li>
-      <li><a href="#body">Body</a></li>
-      <li><a href="#food">Food</a></li>
+      <li><a href="#wear">Sleep and recovery</a></li>
       <li><a href="#train">Training</a></li>
+      <li><a href="#food">Nutrition</a></li>
       <li><a href="#dna">Genetics</a></li>
-      <li><a href="#corrsec">Connections</a></li>
       <li><a href="#supp">Supplements</a></li>
+      <li><a href="#today">Daily signals</a></li>
+      <li><a href="#corrsec">Connections</a></li>
       <li><a href="#lab">Data lab</a></li>
       <li><a href="#raw">Raw data</a></li>
       <li><a href="#sources">Sources</a></li>
@@ -780,11 +782,12 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- DAY EXPLORER -->
-<section id="day" class="sec">
+<!-- Linked day detail -->
+<dialog id="day" aria-labelledby="dayDetailTitle">
+  <form method="dialog" class="pod-close"><button type="submit" aria-label="Close day details">×</button></form>
   <div class="wrap">
     <div class="sechead">
-      <div><div class="num"><b>00</b> Day explorer</div><h2>Any day.<br><em>Any minute.</em></h2>
+      <div><h2 id="dayDetailTitle">Day details</h2>
       <p class="lede">Pick a day from the last 90. Every stream lines up on one timeline: sleep stages, heart rate by the minute, glucose every five minutes, each meal, each session, steps by the hour. Scroll or pinch on the timeline to zoom, drag to pan, and click a meal or session for its full detail.</p></div>
       <div class="srcs"><span class="src sim">Wearables, CGM, meals · simulated</span><span class="src">N1 weight, BP</span></div>
     </div>
@@ -802,7 +805,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       <div class="card c6"><div class="lab"><div><div class="k">Training this day</div><h4 id="dsh"></h4></div></div><div id="dsess" class="dlist"></div></div>
     </div>
   </div>
-</section>
+</dialog>
 
 <!-- MODEL ZOOM -->
 <section id="model">
@@ -1678,11 +1681,12 @@ function seek(i) { if (useTTS) speechSynthesis.cancel(); playing = true; $("play
 $("play").onclick = () => playing ? stop() : seek(si);
 const exampleTools = $("exampleTools");
 const examplePicker = $("examplePicker");
-examplePicker.value = "jasper";
-examplePicker.addEventListener("change", () => {
-  const isJY = examplePicker.value === "jy";
-  document.body.dataset.example = examplePicker.value;
+examplePicker.addEventListener("click", () => {
+  const isJY = document.body.dataset.example !== "jy";
+  document.body.dataset.example = isJY ? "jy" : "jasper";
   $("exampleName").textContent = isJY ? "JY" : "Jasper";
+  $("otherExample").textContent = isJY ? "Jasper" : "JY";
+  examplePicker.setAttribute("aria-label", "Switch to " + $("otherExample").textContent);
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
   window.scrollTo({ top: 0, behavior: "instant" });
   $("exampleName").closest("summary").focus({ preventScroll: true });
@@ -2247,6 +2251,7 @@ const macroBar = (p, c, f) => { const s = p * 4 + c * 4 + f * 9 || 1; return `<d
 
 /* ================= MEAL DRAWER ================= */
 window.openMeal = function (id) {
+  if ($("day").open) $("day").close();
   const m = mealById(id); if (!m) return;
   const k = MEALS.indexOf(m);
   const g = openG(`<div class="k">${m.slot} · ${hm(m.t)} · ${fd(m.d, 1)}</div><h3 style="font-size:clamp(28px,3vw,42px);margin:6px 50px 8px 0">${m.name}</h3>
@@ -2273,6 +2278,7 @@ window.openMeal = function (id) {
 
 /* ================= SESSION DRAWER ================= */
 window.openSession = function (id) {
+  if ($("day").open) $("day").close();
   const s = sessById(id); if (!s) return;
   const k = SESS.indexOf(s), tc = TYPEC[s.type[0]];
   const g = openG(`<div class="k">${hm(s.t0)}–${hm(s.t1)} · ${fd(s.d, 1)}</div><h3 style="font-size:clamp(28px,3vw,42px);margin:6px 50px 8px 0">${s.type}</h3><span class="src sim">Apple Watch Ultra · simulated</span>
@@ -2301,7 +2307,13 @@ const strip = $("dstrip");
 DAY.forEach((d, i) => { const b = H("button", { "aria-label": fd(d.d, 1) }, `<i style="height:${18 + d.strain * 2.2}px;background:${recC(d.rec)};opacity:${.45 + d.rec / 180}"></i>${d.wd == 1 ? `<span>${fd(d.d)}</span>` : ""}`); b.onclick = () => setDay(i); tipOn(b, () => `<b>${fd(d.d, 1)}</b> · recovery ${d.rec}% · strain ${d.strain} · ${d.meals.length} meals${d.sess.length ? " · " + d.sess.map(s => s.type).join(", ") : ""}`); strip.appendChild(b); });
 $("dprev").onclick = () => setDay(Math.max(0, di - 1)); $("dnext").onclick = () => setDay(Math.min(LAST, di + 1));
 document.querySelectorAll(".zoombar button").forEach(b => b.onclick = () => { const span = +b.dataset.z, c = span >= 24 ? 12 : (v0 + v1) / 2; setView(c - span / 2, c + span / 2); });
-window.openDay = function (i, h) { setDay(i, h); const el = $("day"); scrollTo({ top: el.offsetTop + 60, behavior: "smooth" }); };
+window.openDay = function (i, h) {
+  const dialog = $("day");
+  $("gd").classList.remove("on");
+  if (!dialog.open) dialog.showModal();
+  setDay(i, h);
+  dialog.scrollTop = 0;
+};
 function setDay(i, focusH) {
   di = i; [...strip.children].forEach((b, k) => b.classList.toggle("on", k == i));
   { const w = strip.parentNode, c = strip.children[i]; w.scrollLeft = c.offsetLeft - w.clientWidth / 2; }
