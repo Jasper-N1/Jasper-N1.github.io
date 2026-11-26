@@ -487,6 +487,28 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools-panel a:hover,.example-tools-panel button:hover{background:#e6f0ef;color:var(--action)}
 .example-tools :focus-visible{outline:2px solid var(--action);outline-offset:2px}
 #hero{padding-top:clamp(76px,6vw,108px)}
+@media(min-width:1050px){
+  #hero{padding:20px 0 32px;background:radial-gradient(ellipse at 50% 50%,#fff 0%,var(--bg) 68%)}
+  .hero-grid{display:block;position:relative;height:clamp(600px,calc(100svh - var(--bar) - 52px),820px)}
+  .hero-title{position:absolute;top:7%;left:0;width:25%}
+  .hero-title h1{font-size:clamp(62px,6vw,100px)}
+  .hero-title p{font-size:clamp(16px,1.2vw,18px)}
+  .hero-visual{position:absolute;inset:0;display:block;padding:0;border:0;background:none;pointer-events:none}
+  #heroTwin{position:absolute;top:3%;bottom:3%;left:50%;transform:translateX(-50%);width:24%}
+  #heroTwin canvas{width:auto;height:100%;max-width:100%;object-fit:contain}
+  .tags{display:contents}
+  .tag{position:absolute;top:var(--tag-top);width:clamp(116px,11.5%,142px);padding:9px 11px;background:#fffdf9;box-shadow:0 9px 24px #19384b15}
+  .tags-left .tag{right:61%}
+  .tags-right .tag{left:61%}
+  .tag::after{content:"";position:absolute;top:50%;width:22px;height:1px;background:#0096d655}
+  .tags-left .tag::after{left:100%}
+  .tags-right .tag::after{right:100%}
+  .tag .v{font-size:clamp(21px,2vw,28px)}
+  .tag .s{font-size:11px}
+  .hero-stats{position:absolute;right:0;bottom:4%;display:grid;grid-template-columns:1fr;gap:16px;margin:0;padding:0;border:0;text-align:right}
+  .hero-stats .big{font-size:clamp(34px,3.3vw,52px)}
+  .scrollcue{position:absolute;bottom:4%;left:0;margin:0}
+}
 </style>
 </head>
 <body>
@@ -1439,9 +1461,12 @@ const TAGS = [
   { side: "r", k: "Uric acid", v: ua.v, u: ua.unit, s: "Above " + ua.hi + " · 18 Nov", f: 1 },
   { side: "r", k: "Weight", v: 81.9, u: "kg", s: "−6.2 kg since 1 Sep" }
 ];
+const tagPositions = { l: [8, 24, 43, 68], r: [19, 33, 50, 64] };
 TAGS.forEach(t => {
   const tile = H("div", { class: "tag" }, `<div class="k">${t.k}</div><div class="v">${t.v}<small>${t.u}</small></div><div class="s${t.f ? " f" : ""}">${t.s}</div>`);
-  $(t.side === "l" ? "tagsLeft" : "tagsRight").appendChild(tile);
+  const column = $(t.side === "l" ? "tagsLeft" : "tagsRight");
+  tile.style.setProperty("--tag-top", tagPositions[t.side][column.childElementCount] + "%");
+  column.appendChild(tile);
 });
 setTimeout(() => { count($("cPoints"), realReadings + simPoints); count($("cStreams"), 9, 1200); }, 400);
 
