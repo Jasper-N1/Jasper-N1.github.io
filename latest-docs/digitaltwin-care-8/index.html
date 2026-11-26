@@ -1019,19 +1019,23 @@
   @media (max-width: 900px) {
     #plat .prow { gap: 26px !important; }
   }
-  #s5.story-section { --story-edge: var(--showcase-edge); --story-gap: clamp(16px, 2vw, 32px);
+  #s5.story-section { --story-edge: var(--showcase-edge); --story-gap: clamp(20px, 3vw, 66px);
+    --story-focus: clamp(32px, 23vw, 455px); --story-width: clamp(360px, 28.5vw, 620px);
     padding-inline: 0 !important; background: #edece2; scroll-margin-top: calc(var(--bar) + 12px); }
   .story-heading, .story-navigation { margin-inline: var(--story-edge); }
-  .story-heading { max-width: 42rem; margin-bottom: var(--section-heading-gap); }
+  .story-heading { max-width: 42rem; margin-inline-start: var(--story-focus); margin-bottom: var(--section-heading-gap); }
   .story-heading .kick { margin: 0 0 10px; }
   .story-note { margin: 12px 0 0; color: #59594e; font: 400 14px/1.4 var(--sans); }
   .story-reel { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--story-edge); scrollbar-width: none; gap: var(--story-gap); padding: 0 var(--story-edge) 4px; }
+    scroll-padding-inline-start: var(--story-focus); scrollbar-width: none; gap: var(--story-gap);
+    padding: 0 max(20px, calc(100% - var(--story-focus) - var(--story-width))) 4px var(--story-focus); }
   .story-reel::-webkit-scrollbar { display: none; }
   .story-reel:focus-visible { outline: 2px solid var(--blue-text); outline-offset: -2px; }
-  .story { flex: 0 0 clamp(320px, 35vw, 620px); margin: 0; min-width: 0; scroll-snap-align: start; }
-  .story:last-child { scroll-snap-align: end; }
-  .story-photo { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; background: #e1dfd4; }
+  .story { flex: 0 0 var(--story-width); margin: 0; min-width: 0; scroll-snap-align: start; }
+  .story-photo { display: block; width: 100%; aspect-ratio: 1.62; object-fit: cover; border-radius: 5px; background: #e1dfd4;
+    opacity: .46; transition: opacity .45s ease; }
+  .story.is-current .story-photo { opacity: 1; }
+  .story:not(.is-current) figcaption { opacity: .77; }
   .story figcaption { padding: 17px 0 0; }
   .story-topic { margin: 0; color: var(--blue-text); font: 500 11px/1.35 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
   .story blockquote { margin: 10px 0 16px; color: var(--ink); font: 400 clamp(19px, 1.65vw, 29px)/1.24 var(--serif); }
@@ -1042,19 +1046,26 @@
   .story-person span, .story-metric span { color: #59594e; }
   .story-metric { text-align: end; }
   .story-metric strong { font: 500 14px var(--mono); color: var(--blue-text); }
-  .story-navigation { display: flex; gap: 10px; align-items: center; margin-top: 22px; }
-  .story-progress { width: clamp(48px, 22vw, 330px); height: 2px; background: #d3d2c7; }
-  .story-progress span { display: block; height: 100%; width: calc(100% / 7); background: var(--blue-text); }
-  .story-count { color: #59594e; font: 500 12px var(--mono); margin-right: 6px; white-space: nowrap; }
-  .story-navigation button { width: 44px; height: 44px; border: 1px solid #b3b4a8; border-radius: 50%;
-    color: var(--ink); background: transparent; font: 500 20px var(--sans); cursor: pointer; }
-  .story-navigation button:disabled { opacity: .35; cursor: default; }
-  .story-navigation button:not(:disabled):hover { background: #fffdf2; }
-  .story-navigation button:focus-visible { outline: 2px solid var(--blue-text); outline-offset: 3px; }
+  .story-navigation { display: flex; gap: 10px; align-items: center; margin: 24px var(--story-edge) 0 var(--story-focus); }
+  .story-progress { display: flex; gap: 5px; width: min(30vw, 520px); }
+  .story-navigation button { min-width: 44px; height: 44px; padding: 0 10px; border: 1px solid #b3b4a8; border-radius: 22px;
+    color: var(--ink); background: transparent; font: 500 14px var(--sans); cursor: pointer; }
+  .story-navigation button:hover { background: #fffdf2; }
+  .story-navigation button:focus-visible { outline: 2px solid var(--blue-text); outline-offset: 2px; }
+  .story-navigation .story-segment { flex: 1; position: relative; min-width: 0; padding: 0; border: 0; background: none; }
+  .story-segment::before, .story-segment::after { content: ""; display: block; position: absolute; left: 0; top: 21px; height: 3px; border-radius: 2px; }
+  .story-segment::before { width: 100%; background: #c6c8bd; }
+  .story-segment::after { width: var(--story-played, 0%); background: #006d91; }
+  .story-segment[aria-current="true"] { flex-grow: 2.1; }
+  .story-segment[aria-current="true"]::before { background: #91acaa; }
+  .story-count { color: #59594e; font: 500 12px var(--mono); white-space: nowrap; }
+  .story-navigation .story-prev, .story-navigation .story-next { font-size: 18px; }
   @media (max-width: 800px) {
-    .story { flex-basis: min(84vw, 550px); }
-    .story-reel { gap: 15px; }
+    #s5.story-section { --story-focus: 20px; --story-width: min(81vw, 550px); --story-gap: 14px; }
+    .story-navigation { flex-wrap: wrap; }
+    .story-progress { flex: 1 1 100%; width: auto; }
   }
+  @media (prefers-reduced-motion: reduce) { .story-photo { transition: none; } }
 
   .twin-bento { display: block; height: auto; min-height: 0; cursor: auto; position: relative; z-index: 3; padding: var(--marketing-space) var(--showcase-edge);
     background: var(--bg); scroll-margin-top: calc(var(--bar) + 12px); }
@@ -1277,11 +1288,11 @@
 <section class="s5 story-section" id="s5" aria-labelledby="s5h">
   <header class="story-heading">
     <p class="kick">In practice</p>
-    <h2 id="s5h">How people are using their twin</h2>
+    <h2 id="s5h">What people learn from their twin</h2>
     <p class="story-note">Illustrative stories and stock photos.</p>
   </header>
-  <div class="story-reel" id="story-reel" role="region" aria-label="Testimonial stories" tabindex="0">
-      <figure class="story">
+  <div class="story-reel" id="story-reel" role="region" aria-label="Illustrative stories" tabindex="0">
+      <figure class="story is-current">
         <img class="story-photo" src="t-plunge.webp" alt="A man sitting in an outdoor ice bath" loading="lazy" decoding="async" style="object-position:30% 40%">
         <figcaption>
           <p class="story-topic">Cold exposure · HRV</p>
@@ -1360,9 +1371,10 @@
       </figure>
   </div>
   <div class="story-navigation" aria-label="Testimonial navigation">
-    <div class="story-progress" aria-hidden="true"><span></span></div>
-    <span class="story-count" aria-live="polite">1 / 7</span>
-    <button type="button" class="story-prev" aria-label="Previous story" aria-controls="story-reel" disabled>←</button>
+    <div class="story-progress" role="group" aria-label="Choose a story"></div>
+    <span class="story-count">1 / 7</span>
+    <button type="button" class="story-pause" aria-label="Pause story autoplay" aria-pressed="false">Pause</button>
+    <button type="button" class="story-prev" aria-label="Previous story" aria-controls="story-reel">←</button>
     <button type="button" class="story-next" aria-label="Next story" aria-controls="story-reel">→</button>
   </div>
 </section>
@@ -2603,50 +2615,120 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const stories = [...reel.querySelectorAll(".story")];
   const nav = document.querySelector(".story-navigation");
   const prev = nav.querySelector(".story-prev"), next = nav.querySelector(".story-next");
-  const count = nav.querySelector(".story-count"), progress = nav.querySelector(".story-progress span");
+  const pause = nav.querySelector(".story-pause"), count = nav.querySelector(".story-count");
+  const progress = nav.querySelector(".story-progress");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-  let current = 0, pending = null, scheduled = false, positions = [];
-  function setPositions() {
-    const start = stories[0].offsetLeft;
-    const end = reel.scrollWidth - reel.clientWidth;
-    positions = stories.map(story => Math.min(end, story.offsetLeft - start));
-    updateNavigation();
+  const duration = 5800, buffer = 2;
+  function copy(story) {
+    const clone = story.cloneNode(true);
+    clone.classList.remove("is-current");
+    clone.setAttribute("aria-hidden", "true");
+    clone.inert = true;
+    return clone;
   }
-  function updateNavigation() {
-    const x = reel.scrollLeft, end = reel.scrollWidth - reel.clientWidth;
-    current = x >= end - 2 && end > 2 ? stories.length - 1 :
-      positions.reduce((best, pos, i) => Math.abs(pos - x) < Math.abs(positions[best] - x) ? i : best, 0);
-    const label = (current + 1) + " / " + stories.length;
-    if (count.textContent !== label) count.textContent = label;
-    progress.style.width = ((current + 1) / stories.length * 100) + "%";
-    prev.disabled = x <= 2;
-    next.disabled = x >= end - 2;
-    if (pending !== null && Math.abs(x - positions[pending]) < 2) pending = null;
+  reel.prepend(...stories.slice(-buffer).map(copy));
+  reel.append(...stories.slice(0, buffer).map(copy));
+  const track = [...reel.querySelectorAll(".story")];
+  const dots = stories.map((_, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "story-segment";
+    button.setAttribute("aria-label", "Go to story " + (index + 1));
+    button.addEventListener("click", () => go(index + buffer));
+    progress.append(button);
+    return button;
+  });
+  let places = [], active = buffer, pending = null, settleTimer = 0;
+  let visible = false, hovered = false, focused = false, paused = false, elapsed = 0, lastTime = 0, raf = 0;
+  const logical = index => (index - buffer + stories.length) % stories.length;
+  function mark(index) {
+    if (index !== active) elapsed = 0;
+    active = index;
+    const story = logical(index);
+    track.forEach((el, i) => el.classList.toggle("is-current", i === index));
+    dots.forEach((dot, i) => {
+      if (i === story) dot.setAttribute("aria-current", "true");
+      else { dot.removeAttribute("aria-current"); dot.style.removeProperty("--story-played"); }
+    });
+    count.textContent = (story + 1) + " / " + stories.length;
+    dots[story].style.setProperty("--story-played", elapsed / duration * 100 + "%");
+    track[index].querySelector("img").loading = "eager";
+    if (track[index + 1]) track[index + 1].querySelector("img").loading = "eager";
   }
-  function move(direction) {
-    const x = pending === null ? reel.scrollLeft : positions[pending];
-    const destination = direction > 0 ? positions.findIndex(pos => pos > x + 2) :
-      positions.findLastIndex(pos => pos < x - 2);
-    if (destination < 0) return;
-    pending = destination;
-    reel.scrollTo({ left: positions[destination], behavior: reduced.matches ? "instant" : "smooth" });
+  function place() {
+    const focus = parseFloat(getComputedStyle(reel).paddingLeft);
+    const origin = reel.getBoundingClientRect().left;
+    places = track.map(slide => slide.getBoundingClientRect().left - origin + reel.scrollLeft - focus);
+    active = logical(active) + buffer;
+    pending = null;
+    reel.scrollTo({ left: places[active], behavior: "instant" });
+    mark(active);
   }
-  prev.addEventListener("click", () => move(-1));
-  next.addEventListener("click", () => move(1));
-  reel.addEventListener("scroll", () => {
-    if (scheduled) return;
-    scheduled = true;
-    requestAnimationFrame(() => { scheduled = false; updateNavigation(); });
-  }, { passive: true });
-  reel.addEventListener("pointerdown", () => { pending = null; });
-  reel.addEventListener("wheel", () => { pending = null; }, { passive: true });
+  function go(index) {
+    if (index < 0 || index >= track.length) return;
+    pending = index;
+    elapsed = 0;
+    mark(index);
+    reel.scrollTo({ left: places[index], behavior: reduced.matches ? "instant" : "smooth" });
+    queueSettle();
+  }
+  function settle() {
+    const nearest = places.reduce((best, pos, i) =>
+      Math.abs(pos - reel.scrollLeft) < Math.abs(places[best] - reel.scrollLeft) ? i : best, 0);
+    const actual = logical(nearest) + buffer;
+    if (nearest !== actual) reel.scrollTo({ left: places[actual], behavior: "instant" });
+    pending = null;
+    mark(actual);
+  }
+  function queueSettle() {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(settle, 140);
+  }
+  function tick(now) {
+    raf = 0;
+    if (!visible || paused || hovered || focused || reduced.matches || document.hidden) { lastTime = 0; return; }
+    if (lastTime && pending === null) elapsed += Math.min(100, now - lastTime);
+    lastTime = now;
+    if (elapsed >= duration) go(active + 1);
+    else dots[logical(active)].style.setProperty("--story-played", elapsed / duration * 100 + "%");
+    raf = requestAnimationFrame(tick);
+  }
+  function refreshPlayback() {
+    lastTime = 0;
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    pause.hidden = reduced.matches;
+    if (visible && !paused && !hovered && !focused && !reduced.matches && !document.hidden) raf = requestAnimationFrame(tick);
+  }
+  const step = direction => go((pending ?? active) + direction);
+  prev.addEventListener("click", () => step(-1));
+  next.addEventListener("click", () => step(1));
+  pause.addEventListener("click", () => {
+    paused = !paused;
+    pause.textContent = paused ? "Play" : "Pause";
+    pause.setAttribute("aria-label", paused ? "Play story autoplay" : "Pause story autoplay");
+    pause.setAttribute("aria-pressed", String(paused));
+    refreshPlayback();
+  });
+  const section = reel.closest("section");
+  reel.addEventListener("pointermove", event => { if (!hovered && event.pointerType === "mouse") { hovered = true; refreshPlayback(); } });
+  reel.addEventListener("pointerleave", () => { if (hovered) { hovered = false; refreshPlayback(); } });
+  section.addEventListener("focusin", () => { focused = true; refreshPlayback(); });
+  section.addEventListener("focusout", event => { if (!section.contains(event.relatedTarget)) { focused = false; refreshPlayback(); } });
+  reel.addEventListener("scroll", queueSettle, { passive: true });
   reel.addEventListener("keydown", event => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
-    move(event.key === "ArrowRight" ? 1 : -1);
+    step(event.key === "ArrowRight" ? 1 : -1);
   });
-  new ResizeObserver(setPositions).observe(reel);
-  setPositions();
+  document.addEventListener("visibilitychange", refreshPlayback);
+  reduced.addEventListener("change", refreshPlayback);
+  new ResizeObserver(place).observe(reel);
+  new IntersectionObserver(([entry]) => {
+    visible = entry.intersectionRatio >= .35;
+    refreshPlayback();
+  }, { threshold: .35 }).observe(reel);
+  place();
 })();
 </script>
 
