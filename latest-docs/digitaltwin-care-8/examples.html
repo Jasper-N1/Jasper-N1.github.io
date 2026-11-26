@@ -53,7 +53,6 @@ section{position:relative}
 
 /* hero */
 #hero{padding:clamp(40px,5vw,76px) 0 clamp(40px,5vw,72px)}
-.hero-grid{max-width:840px}
 .hero-visual{min-width:0;position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(10px,1.6vw,24px);padding:clamp(14px,2.3vw,32px);border:var(--hair-soft);border-radius:8px;background:radial-gradient(ellipse at center,#fafcfa 0%,var(--paper) 76%)}
 #heroTwin{grid-column:2;grid-row:1;min-width:0;display:flex;justify-content:center}
 #heroTwin canvas{display:block;width:100%;height:auto;max-width:190px}
@@ -123,7 +122,7 @@ section{position:relative}
 .ringcard .lab{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .ringcard .sub{font-size:13px;color:var(--ink2);margin-top:10px;line-height:1.45}
 .clockwrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;margin-top:70px;align-items:center}
-#clock{width:100%;max-width:640px;margin:0 auto;display:block}
+#clock{width:100%;margin:0 auto;display:block}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink2);margin-top:18px}
 .legend span{display:inline-flex;align-items:center;gap:7px}
 .legend i{width:10px;height:10px;border-radius:3px;display:block}
@@ -137,8 +136,8 @@ section{position:relative}
 #model{height:820vh;background:var(--bg);border-top:var(--hair-soft)}
 .mstick{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(ellipse 50% 60% at 42% 52%,#fff 0%,rgba(243,242,233,0) 70%)}
 #mcanvas{position:absolute;inset:0;width:100%;height:100%}
-.mhead{position:absolute;left:var(--g);top:110px;z-index:3;max-width:460px;transition:opacity .5s}
-.mpanel{position:absolute;right:var(--g);top:50%;transform:translateY(-50%);width:min(440px,40vw);z-index:4}
+.mhead{position:absolute;left:0;top:110px;z-index:3;max-width:460px;transition:opacity .5s}
+.mpanel{position:absolute;right:0;top:50%;transform:translateY(-50%);width:min(440px,40%);z-index:4}
 .mcard{position:absolute;inset:auto 0 auto 0;top:0;transform:translateY(-50%);opacity:0;pointer-events:none;transition:opacity .55s,transform .55s;background:rgba(247,246,240,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:var(--hair-soft);border-radius:var(--r);box-shadow:0 30px 70px -40px rgba(0,60,90,.3);padding:26px 26px 22px}
 .mcard.on{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
 .mcard h3{font-size:34px;margin:6px 0 4px}
@@ -151,15 +150,15 @@ section{position:relative}
 .mrow .r svg{flex:1;height:14px}
 .mrow .val.f{color:var(--flag)}
 .mrow .badge{font-family:var(--mono);font-size:10px;color:var(--flag);letter-spacing:.06em}
-.mdots{position:absolute;left:var(--g);bottom:44px;z-index:4;display:flex;gap:10px;flex-wrap:wrap;max-width:50vw}
+.mdots{position:absolute;left:0;bottom:44px;z-index:4;display:flex;gap:10px;flex-wrap:wrap;right:0}
 .mdots button{font:inherit;font-size:12.5px;background:rgba(243,242,233,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink2);border:var(--hair);border-radius:99px;padding:7px 13px;cursor:pointer;transition:all .3s}
 .mdots button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 @media(max-width:900px){
-  .mpanel{left:var(--g);right:var(--g);width:auto;top:auto;bottom:90px;transform:none}
+  .mpanel{left:0;right:0;width:auto;top:auto;bottom:90px;transform:none}
   .mcard{top:auto;bottom:0;transform:translateY(20px)}.mcard.on{transform:none}
   .mcard h3{font-size:26px}.mcard .why{display:none}.mrow{padding:8px 0}.mrow .val{font-size:19px}
   .mhead{top:88px}.mhead h2{font-size:38px}.mhead .lede{display:none}
-  .mdots{bottom:20px;max-width:none;right:var(--g);overflow-x:auto;flex-wrap:nowrap}
+  .mdots{bottom:20px;overflow-x:auto;flex-wrap:nowrap}
 }
 
 /* labs */
@@ -495,8 +494,8 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   #heroTwin canvas{width:auto;height:100%;max-width:100%;object-fit:contain}
   .tags{display:contents}
   .tag{position:absolute;top:var(--tag-top);width:clamp(116px,11.5%,142px);padding:9px 11px;background:#fffdf9;box-shadow:0 9px 24px #19384b15}
-  .tags-left .tag{right:67%}
-  .tags-right .tag{left:67%}
+  .tags-left .tag{right:calc(50% + min(17%, 143px))}
+  .tags-right .tag{left:calc(50% + min(17%, 143px))}
   .tag::after{content:"";position:absolute;top:50%;width:22px;height:1px;background:#0096d655}
   .tags-left .tag::after{left:100%}
   .tags-right .tag::after{right:100%}
@@ -641,7 +640,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 
 <!-- MODEL ZOOM -->
 <section id="model">
-  <div class="mstick">
+  <div class="wrap mstick">
     <canvas id="mcanvas"></canvas>
     <div class="mhead" id="mhead">
       <div class="num"><b>03</b> Inside the model</div>
@@ -1643,10 +1642,10 @@ function mDraw() {
   const z = A.z + (B.z - A.z) * g, fx = A.fx + (B.fx - A.fx) * g, fy = A.fy + (B.fy - A.fy) * g;
   const active = f < .65 ? i : i + 1;
   if (active != mIdx) { mIdx = active; STOPS.forEach((s, k) => { s.card && s.card.classList.toggle("on", k == active); s.btn.classList.toggle("on", k == active); }); $("mhead").style.opacity = active == 0 || active == n ? 1 : 0; }
-  const dpr = Math.min(2, devicePixelRatio || 1), W = innerWidth, Hh = innerHeight;
+  const dpr = Math.min(2, devicePixelRatio || 1), W = mc.clientWidth, Hh = mc.clientHeight;
   if (mc.width != W * dpr || mc.height != Hh * dpr) { mc.width = W * dpr; mc.height = Hh * dpr; }
   mx.setTransform(dpr, 0, 0, dpr, 0, 0); mx.clearRect(0, 0, W, Hh);
-  const mob = W < 900;
+  const mob = matchMedia("(max-width:900px)").matches;
   const bodyH = (Hh - 80) * (mob ? .66 : .9) * z, bodyW = bodyH * FW / FH;
   const ax = mob ? W * .5 : W * .42, ay = mob ? 70 + (Hh - 70) * .4 : 74 + (Hh - 74) * .5;
   // focus point maps to anchor (blend towards body centre at z=1)
