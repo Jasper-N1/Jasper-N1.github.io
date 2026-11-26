@@ -464,27 +464,28 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 }
 
 /* Example navigation */
-.example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(240px,calc(100% - 2 * var(--g)));z-index:9;font:500 13px var(--sans);color:var(--ink)}
-.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:14px;width:max-content;min-height:44px;padding:0 14px;cursor:pointer;list-style:none;border:var(--hair);border-radius:8px;background:var(--paper)}
+.example-tools{position:fixed;top:calc(var(--bar) + 12px);left:var(--edge);width:min(240px,calc(100% - 2 * var(--g)));z-index:9;color:var(--ink);font:500 13px var(--sans)}
+.example-tools summary{display:flex;align-items:center;justify-content:space-between;gap:16px;width:max-content;min-height:48px;padding:8px 14px;cursor:pointer;list-style:none;border:var(--hair);border-radius:8px;background:var(--paper);font:400 28px/1 var(--serif)}
 .example-tools summary::-webkit-details-marker{display:none}
-.example-tools summary span{color:var(--action);transition:transform .2s}
-.example-tools[open] summary{width:100%;border-radius:10px 10px 0 0;font-weight:600}
-.example-tools[open] summary span{transform:rotate(180deg)}
-.example-tools-panel{max-height:calc(100vh - var(--bar) - 66px);max-height:calc(100dvh - var(--bar) - 66px);overflow:auto;padding:12px;border:var(--hair);border-top:0;border-radius:0 0 10px 10px;background:var(--paper);box-shadow:0 10px 24px #1c1b1710}
-.example-profile{display:grid;gap:5px;margin-bottom:14px}
-.example-tools-label{margin:0;font:500 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
-.example-profile select{width:100%;min-height:36px;padding:4px 8px;border:var(--hair);border-radius:6px;background:#fffdf8;color:var(--ink);font:inherit}
-.example-tools-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px 4px;margin-top:5px}
-.example-tools-actions{display:grid;gap:2px;margin-top:12px;padding-top:12px;border-top:var(--hair-soft)}
-.example-tools-panel a,.example-tools-panel button{display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:30px;padding:5px 6px;border:0;border-radius:5px;background:none;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
-.example-tools-panel a:hover,.example-tools-panel button:hover{background:#e6f0ef;color:var(--action)}
-.example-tools-actions small{font:500 10px var(--mono);color:var(--ink2)}
-.example-tools-actions #quickListen{justify-content:center;gap:8px;margin-top:6px;min-height:36px;background:#dceef1;color:#005d7d}
-.example-tools :focus-visible{outline:2px solid var(--action);outline-offset:1px}
-@media(pointer:coarse){.example-tools-panel a,.example-tools-panel button{min-height:38px}}
-@media(min-width:1720px){
-  .example-tools{left:max(20px,calc(var(--edge) - 248px));width:224px}
-}
+.example-tools summary svg{color:var(--action)}
+.example-tools[open] summary{width:100%;border-radius:10px 10px 0 0}
+.example-tools[open] summary svg{transform:rotate(180deg)}
+.example-tools svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.example-tools-panel{max-height:calc(100vh - var(--bar) - 74px);max-height:calc(100dvh - var(--bar) - 74px);overflow:auto;padding:12px;border:var(--hair);border-top:0;border-radius:0 0 10px 10px;background:var(--paper);box-shadow:0 10px 24px #1c1b1710}
+.example-tools-label{margin:0 0 6px;font:500 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
+.example-tools-sections{list-style:none;margin:0;padding:0;counter-reset:example-section;max-height:min(36dvh,290px);overflow:auto;scrollbar-width:thin}
+.example-tools-sections li{counter-increment:example-section;border-bottom:var(--hair-soft)}
+.example-tools-sections a{display:flex;align-items:center;gap:9px;min-height:34px;padding:5px 6px;color:var(--ink);text-decoration:none}
+.example-tools-sections a::before{content:counter(example-section,decimal-leading-zero);color:var(--action);font:500 10px var(--mono)}
+.example-tools-actions{display:grid;gap:5px;margin-top:12px;padding-top:12px;border-top:var(--hair-soft)}
+.example-tool-action{display:flex;align-items:center;gap:8px;width:100%;min-height:36px;padding:6px 8px;border:var(--hair);border-radius:6px;background:#fffdf8;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
+.example-tool-action svg{color:var(--action)}
+.example-tool-action small{margin-left:auto;font:500 10px var(--mono);color:var(--ink2)}
+.example-tools-sections a:hover,.example-tool-action:hover{background:#e6f0ef;color:var(--action)}
+.example-tools-actions #quickListen{background:#dceef1;color:#005d7d;border-color:transparent}
+.example-tools :focus-visible{outline:2px solid var(--action);outline-offset:-2px}
+@media(pointer:coarse){.example-tools-sections a,.example-tool-action{min-height:44px}}
+@media(min-width:1720px){.example-tools{left:max(20px,calc(var(--edge) - 248px));width:224px}}
 #hero{padding-top:clamp(76px,6vw,108px)}
 @media(min-width:1050px){
   #hero{padding:36px 0 32px;background:radial-gradient(ellipse at 50% 50%,#fff 0%,var(--bg) 68%)}
@@ -518,39 +519,33 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 </nav>
 
 <details class="example-tools" id="exampleTools">
-  <summary>Explore this twin <span aria-hidden="true">⌄</span></summary>
+  <summary>Jasper <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="example-tools-panel">
-    <div class="example-profile">
-      <label class="example-tools-label" for="exampleProfile">Example twin</label>
-      <select id="exampleProfile">
-        <option value="examples.html">Jasper</option>
-      </select>
-    </div>
-    <p class="example-tools-label">On this page</p>
-    <div class="example-tools-sections" role="group" aria-label="Sections">
-      <a href="#podcast">Podcast</a>
-      <a href="#today">Today</a>
-      <a href="#day">Day explorer</a>
-      <a href="#model">Twin model</a>
-      <a href="#labs">Bloodwork</a>
-      <a href="#wear">Wearables</a>
-      <a href="#cgm">Glucose</a>
-      <a href="#body">Body</a>
-      <a href="#food">Food</a>
-      <a href="#train">Training</a>
-      <a href="#dna">Genetics</a>
-      <a href="#corrsec">Connections</a>
-      <a href="#supp">Supplements</a>
-      <a href="#lab">Data lab</a>
-      <a href="#raw">Raw data</a>
-      <a href="#sources">Sources</a>
-    </div>
+    <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
+    <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
+      <li><a href="#podcast">Podcast</a></li>
+      <li><a href="#today">Today</a></li>
+      <li><a href="#day">Day explorer</a></li>
+      <li><a href="#model">Twin model</a></li>
+      <li><a href="#labs">Bloodwork</a></li>
+      <li><a href="#wear">Wearables</a></li>
+      <li><a href="#cgm">Glucose</a></li>
+      <li><a href="#body">Body</a></li>
+      <li><a href="#food">Food</a></li>
+      <li><a href="#train">Training</a></li>
+      <li><a href="#dna">Genetics</a></li>
+      <li><a href="#corrsec">Connections</a></li>
+      <li><a href="#supp">Supplements</a></li>
+      <li><a href="#lab">Data lab</a></li>
+      <li><a href="#raw">Raw data</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
     <div class="example-tools-actions" role="group" aria-label="Downloads and playback">
       <p class="example-tools-label">Downloads</p>
-      <a href="jasper-in-data-report.pdf" download>Full report <small>PDF</small></a>
-      <button type="button" id="quickDownloadData">Raw data <small>JSON</small></button>
-      <button type="button" id="quickDownloadSummary">Summary <small>TXT</small></button>
-      <button type="button" id="quickListen"><span aria-hidden="true">▶</span> Listen to podcast</button>
+      <a class="example-tool-action" href="jasper-in-data-report.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z M14 3v5h4 M10 12h5 M10 16h5"/></svg> Full report <small>PDF</small></a>
+      <button class="example-tool-action" type="button" id="quickDownloadData"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6-6 6 6 6 M15 6l6 6-6 6"/></svg> Raw data <small>JSON</small></button>
+      <button class="example-tool-action" type="button" id="quickDownloadSummary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7z M10 9h4 M10 13h4 M10 17h2"/></svg> Summary <small>TXT</small></button>
+      <button class="example-tool-action" type="button" id="quickListen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg> Listen to podcast</button>
     </div>
   </div>
 </details>
