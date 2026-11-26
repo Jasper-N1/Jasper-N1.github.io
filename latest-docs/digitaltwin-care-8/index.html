@@ -1090,10 +1090,10 @@
     background: linear-gradient(145deg, #10242de8 0%, #10242d82 41%, transparent 76%), linear-gradient(0deg, #10242dcc, transparent 42%); }
   .bento-capture img { object-fit: contain; object-position: 95% top; transform: scale(1.16); transform-origin: right top; }
   .bento-model { background: #c8e5eb; color: #173641; }
-  .bento-twin { position: absolute; inset: 32% 1% 0 auto; z-index: -1; pointer-events: none;
-    width: clamp(136px, 17vw, 225px); }
-  .bento-twin :is(canvas, img) { display: block; position: absolute; inset: 0 auto auto 0;
-    width: 100%; height: auto; aspect-ratio: 500 / 1344; }
+  .bento-twin { position: absolute; inset: 28% 7% 5% auto; z-index: -1; pointer-events: none;
+    aspect-ratio: 500 / 1344; }
+  .bento-twin :is(canvas, img) { display: block; position: absolute; inset: 0;
+    width: 100%; height: 100%; }
   .bento-record-art { position: absolute; z-index: -1; width: clamp(106px, 12vw, 155px); height: clamp(112px, 16vh, 140px); bottom: 6%; right: 8%; }
   .bento-record-art div { position: absolute; inset: 0 8px 2px 0; border: 1px solid #749daa; border-radius: 6px; background: #d8edf0; transform: rotate(13deg) translateX(9px); }
   .bento-record-art div:nth-child(2) { background: #edf6f3; transform: rotate(-11deg) translate(-9px, 0); }
@@ -1122,7 +1122,7 @@
     .twin-bento-grid { grid-template-columns: minmax(0, 1fr); }
     .bento-feature, .bento-life, .bento-details { grid-column: auto; }
     .bento-feature { min-height: 275px; }
-    .bento-twin { width: 151px; }
+    .bento-twin { right: 7%; }
   }
 
 
@@ -1598,7 +1598,7 @@ if (LITE) document.documentElement.classList.add("lite");
     clipTop = 0; clipBot = Math.min(height, stage.bottom);
     if (blue.bottom < height) both.forEach(v => v.classList.add("is-scrub"));
     video.classList.toggle("ghost", blue.bottom < height * .98 && stage.top > height * .55);
-    base = { px, top, size: pSize, H: height, photoScroll };
+    base = { px, top, size: pSize, H: height, photoScroll, stageBottom: stage.bottom };
     impOn = inSteps && index === 3 && stage.bottom > height - 4 && !document.hidden;
     if (impOn) both.forEach(v => v.classList.add("is-scrub"));
     if (!heroRaf && (capture || (inSteps && index === 1))) { heroLast = 0; heroRaf = requestAnimationFrame(heroLoop); }
@@ -1687,7 +1687,7 @@ if (LITE) document.documentElement.classList.add("lite");
       glow.style.opacity = imp.z * (.75 + .25 * Math.sin(performance.now() / 380));
     } else glow.style.opacity = 0;
     both.forEach(v => { v.style.left = px + "%"; v.style.top = top + "px"; v.style.height = size + "px"; });
-    cur = { px, top, size, photoScroll: base.photoScroll };
+    cur = { px, top, size, photoScroll: base.photoScroll, stageBottom: base.stageBottom };
   }
   // ---- Build: a higher-resolution twin is laid down over the line model, from the feet up; once it is
   // complete it replaces the line model for the rest of the page. Drawn with WebGL so the clip's black
@@ -1704,6 +1704,7 @@ if (LITE) document.documentElement.classList.add("lite");
   hiWrap.style.cssText = floatingTwinStyle;
   hiImg.after(hiWrap);
   const bentoTwin = document.querySelector(".bento-twin");
+  const bentoTile = bentoTwin.parentElement;
   let bentoVisible = false, inBento = false;
   function moveTwin(toBento) {
     if (toBento === inBento) return;
@@ -1715,7 +1716,7 @@ if (LITE) document.documentElement.classList.add("lite");
   new IntersectionObserver(([entry]) => {
     bentoVisible = entry.isIntersecting;
     scheduleModel();
-  }).observe(bentoTwin);
+  }).observe(bentoTile);
   let hiVidOK = false, hiImgOK = false;
   let frame = 0, lastFrame = -1, nextFrameAt = 0;
   const sheets = new Map(), downloads = new Map(), sheetCount = 47, frameCount = 186, frameTime = 1000 / 36;
@@ -1920,17 +1921,40 @@ if (LITE) document.documentElement.classList.add("lite");
   }
   let hiBuild = 0;
   function hiLoop(now) {
-    if (!hiShow || !cur) {
-      if (bentoVisible && !document.hidden) {
-        moveTwin(true);
+    if (bentoVisible && !document.hidden) {
+      const tile = bentoTile.getBoundingClientRect(), viewport = innerHeight;
+      const progress = Math.max(0, Math.min(1, (.98 * viewport - tile.top) / (.46 * viewport)));
+      if (progress > 0 || !hiShow) {
+        const docked = progress === 1 || motion.matches || !cur;
+        moveTwin(docked);
         if (!motion.matches) drawFrame(now);
         else if (sheets.size) clearWalk();
-        hiWrap.style.display = hiVidOK ? "block" : "none";
-        hiImg.style.display = hiVidOK ? "none" : "block";
+        const el = hiVidOK ? hiWrap : hiImg, other = hiVidOK ? hiImg : hiWrap;
+        el.style.display = "block";
+        other.style.display = "none";
+        if (!docked) {
+          const target = bentoTwin.getBoundingClientRect();
+          const stageBottom = steps.getBoundingClientRect().bottom;
+          const offset = Math.min(0, stageBottom - viewport) - Math.min(0, cur.stageBottom - viewport);
+          const sourceHeight = cur.size * .936 / .956;
+          const sourceWidth = sourceHeight * 500 / 1344;
+          const sourceX = cur.px / 100 * innerWidth - sourceWidth / 2 - sourceHeight * 6 / 1344;
+          const sourceY = cur.top + offset - .47 * cur.size - .019 * sourceHeight;
+          const t = progress * progress * (3 - 2 * progress);
+          const blend = (start, end) => start + (end - start) * t;
+          el.style.position = "fixed";
+          el.style.width = blend(sourceWidth, target.width) + "px";
+          el.style.height = blend(sourceHeight, target.height) + "px";
+          el.style.transform = `translate(${blend(sourceX, target.left)}px, ${blend(sourceY, target.top)}px)`;
+          el.style.maskImage = el.style.webkitMaskImage = el.style.clipPath = "none";
+        }
+        both.forEach(v => v.classList.add("is-swapped"));
         bmL.style.display = "none";
         hiRaf = requestAnimationFrame(hiLoop);
         return;
       }
+    }
+    if (!hiShow || !cur) {
       clearWalk();
       hiRaf = 0;
       hiCv.style.display = hiImg.style.display = hiWrap.style.display = bmL.style.display = "none";
