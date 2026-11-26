@@ -607,7 +607,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       <p class="example-tools-label">Downloads</p>
       <a class="example-tool-action" href="Digital Twin Care Health Assessment - 2026.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z M14 3v5h4 M10 12h5 M10 16h5"/></svg> Full report <small>PDF</small></a>
       <button class="example-tool-action" type="button" id="quickDownloadData"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6-6 6 6 6 M15 6l6 6-6 6"/></svg> Raw data <small>JSON</small></button>
-      <button class="example-tool-action" type="button" id="quickDownloadSummary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7z M10 9h4 M10 13h4 M10 17h2"/></svg> Summary <small>TXT</small></button>
+      <a class="example-tool-action" id="quickDownloadSummary" href="Jasper Digital Twin Summary - 2026.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7z M10 9h4 M10 13h4 M10 17h2"/></svg> Summary <small>PDF</small></a>
       <button class="example-tool-action" type="button" id="quickListen" aria-haspopup="dialog" aria-controls="podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg> Listen to podcast</button>
     </div>
     </div>
@@ -2970,27 +2970,6 @@ function raw() {
   $("dlpdf").onclick = async e => { if (!dlNS) return; e.preventDefault(); try { const blob = await (await fetch("Digital Twin Care Health Assessment - 2026.pdf")).blob(); await dlNS.save({ filename: "Digital Twin Care Health Assessment - 2026.pdf", data: blob }); } catch (err) { if (err && err.code == "declined") return; window.open("Digital Twin Care Health Assessment - 2026.pdf", "_blank"); } };
   $("dlall").onclick = () => dl("jasper-twin-all-data.json", JSON.stringify(Object.fromEntries(fill.map(d => [d.n, d.r])), null, 0), "application/json");
   $("quickDownloadData").onclick = $("dlall").onclick;
-  $("quickDownloadSummary").onclick = () => {
-    const [date, weight] = WEIGHT.at(-1);
-    const recentLabs = ["LDL Cholesterol", "Creatinine", "Uric Acid"].map(name => {
-      const [, unit, , , , readings] = LABS.find(([marker]) => marker === name);
-      const [collected, value] = readings.at(-1);
-      return `${name}: ${value} ${unit} (${collected})`;
-    });
-    const summary = [
-      "Jasper, in data — summary",
-      "Read 26 Nov 2026",
-      "",
-      "Recorded in N1",
-      ...recentLabs,
-      `Latest recorded weight: ${weight} kg (${date})`,
-      "",
-      "Simulated examples",
-      "Wearables, glucose, detailed exercise logs and genetics include simulated data.",
-      "See Sources in the example for the origin of each dataset."
-    ].join("\n");
-    dl("jasper-twin-summary.txt", summary, "text/plain;charset=utf-8");
-  };
 }
 
 /* ================= boot ================= */
