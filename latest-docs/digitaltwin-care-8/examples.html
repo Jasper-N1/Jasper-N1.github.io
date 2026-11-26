@@ -511,6 +511,20 @@ body[data-example="jy"] #jyPreview{display:block}
   .tag .v{font-size:clamp(21px,2vw,28px)}
   .tag .s{font-size:11px}
 }
+/* Report highlights */
+.report-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.report-grid article{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.report-grid article p,.report-method p{margin:0;color:var(--ink2);line-height:1.55}
+.report-grid .report-result{font:400 clamp(23px,2vw,31px)/1.12 var(--serif);color:var(--ink)}
+.report-source{color:var(--action);font-size:13px;text-underline-offset:3px}
+.report-grid .report-source{margin-top:auto;padding-top:6px}
+.report-method{margin-top:24px;background:#e4eff0}
+.report-method h3{margin-bottom:12px}
+.report-method ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0 0 18px;padding-left:22px}
+.report-method li{padding-left:4px}
+.report-method li p{margin-top:4px}
+@media(max-width:940px){.report-grid,.report-method ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.report-grid,.report-method ol{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -536,6 +550,7 @@ body[data-example="jy"] #jyPreview{display:block}
     <div class="jasper-tools">
     <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
+      <li><a href="#report">Report highlights</a></li>
       <li><a href="#today">Today</a></li>
       <li><a href="#day">Day explorer</a></li>
       <li><a href="#model">Twin model</a></li>
@@ -612,6 +627,67 @@ body[data-example="jy"] #jyPreview{display:block}
       </div>
     </div>
 </dialog>
+
+<section id="report" class="sec" aria-labelledby="reportTitle">
+  <div class="wrap">
+    <header class="sechead">
+      <div>
+        <div class="num"><b>01</b> Health report · 26 Nov 2026</div>
+        <h2 id="reportTitle">What the report <em>highlights.</em></h2>
+        <p class="lede">In the 18 November draw, 57 of 62 numeric markers were within the laboratory’s reference ranges. These highlights show where the report goes deeper, comparing results over time and explaining what the record can support.</p>
+      </div>
+      <a class="cta" href="jasper-in-data-report.pdf" download>Download full report · PDF</a>
+    </header>
+    <div class="report-grid">
+      <article class="card">
+        <span class="k">Kidneys and uric acid</span>
+        <h3 class="report-result">Two markers above range</h3>
+        <p>Creatinine was 119.4 µmol/L and uric acid was 541 µmol/L. Both were high in the first draw, in range in May, and high again in November. Estimated kidney filtration stayed within the lab’s range. The report notes recent training and fasting as context, with the cause unresolved.</p>
+        <a class="report-source" href="jasper-in-data-report.pdf#page=11">Kidneys and uric acid · p. 11</a>
+      </article>
+      <article class="card">
+        <span class="k">Cholesterol</span>
+        <h3 class="report-result">LDL fell to 2.98 mmol/L</h3>
+        <p>LDL came down from 3.61 mmol/L in May to the lowest of the three draws. It was still above this lab’s limit of 2.58 mmol/L. Total cholesterol returned to range.</p>
+        <a class="report-source" href="jasper-in-data-report.pdf#page=13">Heart and cholesterol · p. 13</a>
+      </article>
+      <article class="card">
+        <span class="k">Blood sugar</span>
+        <h3 class="report-result">A low snapshot, an in-range average</h3>
+        <p>Fasting glucose was 3.77 mmol/L, just below the lab’s lower limit of 3.9. HbA1c, which reflects blood sugar over roughly two to three months, was within range at 35.63 mmol/mol.</p>
+        <a class="report-source" href="jasper-in-data-report.pdf#page=15">Blood sugar · p. 15</a>
+      </article>
+      <article class="card">
+        <span class="k">Vitamins</span>
+        <h3 class="report-result">Vitamin D returned to range</h3>
+        <p>Vitamin D rose from 71.06 to 97.59 nmol/L between May and November, crossing the lab’s threshold of 74.88 nmol/L. The record also lists a vitamin D supplement. The readings alone leave the cause open.</p>
+        <a class="report-source" href="jasper-in-data-report.pdf#page=21">Vitamins and nutrients · p. 21</a>
+      </article>
+      <article class="card">
+        <span class="k">Immunity</span>
+        <h3 class="report-result">Hepatitis B antibody stayed below the lab threshold</h3>
+        <p>The latest surface antibody reading was 38.0 IU/L against this lab’s threshold of 50. All three draws were below that threshold. Vaccination history comes from the health note.</p>
+        <a class="report-source" href="jasper-in-data-report.pdf#page=25">Immunity · p. 25</a>
+      </article>
+      <article class="card">
+        <span class="k">Body composition</span>
+        <h3 class="report-result">88.1 kg to 81.9 kg</h3>
+        <p>Weight fell between the first logged reading on 1 September and the 26 November reading. The report separates morning and evening measurements to show how timing affects the comparison.</p>
+        <a class="report-source" href="jasper-in-data-report.pdf#page=33">Body composition · p. 33</a>
+      </article>
+    </div>
+    <aside class="card report-method" aria-labelledby="reportMethodTitle">
+      <h3 id="reportMethodTitle">How the report is written</h3>
+      <ol>
+        <li><strong>Explain the marker.</strong><p>Start in plain language with what it measures and how to read the figure.</p></li>
+        <li><strong>Show the evidence.</strong><p>Put dated readings next to the lab’s own range and prior results. The report says N1 checked the numbers in the marked lab paragraphs against cited readings.</p></li>
+        <li><strong>Say what’s uncertain.</strong><p>Flag missing tests and possible explanations. Label simulated wearable, glucose, and genetics data, and collect open questions for follow-up.</p></li>
+      </ol>
+      <a class="report-source" href="jasper-in-data-report.pdf#page=4">Read the report guide · p. 4</a>
+      · <a class="report-source" href="jasper-in-data-report.pdf#page=107">See gaps and follow-up questions · p. 107</a>
+    </aside>
+  </div>
+</section>
 
 <!-- TODAY -->
 <section id="today">
