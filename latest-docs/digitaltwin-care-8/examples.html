@@ -1863,8 +1863,9 @@ exampleOptions.addEventListener("keydown", event => {
   exampleChoices[next].focus();
 });
 const exampleChoice = examplePicker.parentElement;
-exampleChoice.addEventListener("focusout", event => {
-  if (!exampleChoice.contains(event.relatedTarget)) setExamplePicker(false);
+// Safari can blur a focused button before its click without focusing the clicked option.
+document.addEventListener("focusin", event => {
+  if (!exampleChoice.contains(event.target)) setExamplePicker(false);
 });
 document.addEventListener("pointerdown", event => {
   if (!exampleChoice.contains(event.target)) setExamplePicker(false);
