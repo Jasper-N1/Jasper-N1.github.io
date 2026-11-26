@@ -36,11 +36,21 @@
   .skip:focus { top: 12px; }
   :focus-visible { outline: 2px solid var(--deep); outline-offset: 3px; }
 
-  /* hero */
-  .hero { padding-top: clamp(48px, 7vw, 120px); }
-  .hero h1 { max-width: 14ch; font-size: clamp(46px, 7vw, 124px); line-height: .98; letter-spacing: -.045em; }
-  .hero h1 em { display: block; }
-  .hero .lead { max-width: 36ch; margin: clamp(22px, 2.4vw, 36px) 0 0; font-size: var(--fs-lead); line-height: 1.45; color: var(--muted); }
+  /* About opening */
+  .hero { position: relative; isolation: isolate; display: flex; align-items: flex-start; min-height: clamp(440px, 72svh, 760px); padding-top: clamp(55px, 8vw, 120px); overflow: hidden; background: #172421; color: #fff; }
+  .hero .wrap { width: 100%; max-width: 1200px; z-index: 1; }
+  .hero h1 { max-width: 15ch; font-size: clamp(46px, 6.8vw, 106px); line-height: .98; letter-spacing: -.045em; }
+  .hero .kick { color: #d9eff7; }
+  .hero-media, .hero-media img, .hero-media video { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-media img, .hero-media video { object-fit: cover; object-position: center 58%; }
+  .hero-media video { opacity: 0; }
+  .hero-media video.is-playing { opacity: 1; }
+  .hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg,#071712bd 0%,#07171277 44%,transparent 80%); }
+  .hero-playback { position: absolute; z-index: 2; bottom: 20px; right: var(--edge); min-height: 44px; padding: 0 16px; border: 1px solid #fff9; border-radius: 999px; background: #12251fd9; color: #fff; font: 500 14px var(--sans); cursor: pointer; }
+  @media (max-width: 640px) {
+    .hero { align-items: flex-end; min-height: 68svh; padding-bottom: 85px; }
+    .hero-media::after { background: linear-gradient(0deg,#071712e6,transparent 85%); }
+  }
 
   /* mission */
   .mission p:not(.kick) { max-width: 26ch; margin: 0; font: 400 var(--fs-h2)/1.08 var(--serif); letter-spacing: -.03em; }
@@ -161,17 +171,24 @@
 
 <main id="main">
   <section class="hero" aria-labelledby="h1">
+    <div class="hero-media" aria-hidden="true">
+      <picture>
+        <source media="(max-width: 640px)" srcset="about/log-crossing-portrait-first-frame.webp">
+        <img src="about/log-crossing-wide-first-frame.webp" alt="" fetchpriority="high">
+      </picture>
+      <video id="aboutVideo" muted loop playsinline preload="none"></video>
+    </div>
     <div class="wrap">
       <p class="kick">About us</p>
-      <h1 id="h1">We build tools to help you <em>understand your health.</em></h1>
-      <p class="lead">Your health data can be scattered across lab reports, apps and devices. We bring it together in a digital twin so you can see how your health changes over time.</p>
+      <h1 id="h1">Built by people who understand the stakes.</h1>
     </div>
+    <button class="hero-playback" id="aboutPlayback" type="button" hidden>Play video</button>
   </section>
 
   <section class="mission" aria-label="Our mission">
     <div class="wrap">
       <p class="kick">Our mission</p>
-      <p>Make it easier for everyone to understand their own health. <span>See what changed, check where it came from and decide what to explore next.</span></p>
+      <p>Our mission is to give everyone AI they can trust with their health. <span>Better decisions, more human care, and longer, healthier lives.</span></p>
     </div>
   </section>
 
@@ -186,8 +203,8 @@
 
   <section class="quote" aria-labelledby="qh">
     <div class="wrap card">
-      <div><p class="kick">Our principle</p><h2 id="qh">AI you can check</h2></div>
-      <blockquote>You should be able to see <em>where an insight comes from</em> and where your data leaves questions open.</blockquote>
+      <div><p class="kick">Our principle</p><h2 id="qh">What we call trusted AI</h2></div>
+      <blockquote>AI earns a place in health when its work is useful, its limits are clear, and <em>you can check what it says.</em></blockquote>
     </div>
   </section>
 
@@ -196,11 +213,11 @@
       <img src="about/n1-founder-workshop.webp" width="1200" height="676" alt="Jean-Yves Sireau presents the product to the team" loading="lazy" decoding="async">
       <div>
         <p class="kick">How we work</p>
-        <h2 id="hh">From scattered data to <em>a clearer picture.</em></h2>
+        <h2 id="hh">AI should support <em>better health conversations.</em></h2>
         <ol class="steps">
-          <li><span class="n">01 · Record</span><h3>Bring your data together</h3><p>Keep lab results, health records and wearable readings together so you can see them in context.</p></li>
-          <li><span class="n">02 · Evidence</span><h3>See where each finding comes from</h3><p>Open the original record whenever you want to check the details.</p></li>
-          <li><span class="n">03 · Change</span><h3>See what changes over time</h3><p>Compare past and recent results, see which measurements are missing and identify questions you want to follow up on.</p></li>
+          <li><span class="n">01 · Record</span><h3>Bring your health history together</h3><p>See your lab results, scans, notes, medicines, and wearable readings in one place.</p></li>
+          <li><span class="n">02 · Evidence</span><h3>Keep every source close</h3><p>Follow each finding back to the record it came from and check the details yourself.</p></li>
+          <li><span class="n">03 · Review</span><h3>Review what matters to you</h3><p>Review changes, spot gaps in your records, and bring your questions to your next health conversation.</p></li>
         </ol>
       </div>
     </div>
@@ -210,7 +227,7 @@
     <div class="wrap">
       <header>
         <div><p class="kick">The team</p><h2 id="th">Meet the people <em>behind your twin.</em></h2></div>
-        <p>We bring together experience in healthcare, engineering and research to make personal health data easier to use.</p>
+        <p>Our team works to turn fragmented health information into a record you can understand and use.</p>
       </header>
       <ul class="people">
         <li><a class="person" href="https://hk.linkedin.com/in/jeanyvessireau" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/jean-yves-sireau.webp" width="500" height="500" alt="Jean-Yves Sireau" loading="lazy"><img class="twin" src="about/team/jean-yves-sireau-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Jean-Yves Sireau</b><span>LinkedIn ↗</span></a></li>
@@ -245,7 +262,7 @@
     <div class="wrap panel">
       <div class="intro">
         <p class="kick">Get started</p>
-        <h2 id="ch">Get to know your health. <em>Start for free.</em></h2>
+        <h2 id="ch">AI that makes health more human. <em>Start for free.</em></h2>
         <div class="actions">
           <a class="action" href="index.html#s6">Build my free twin <span aria-hidden="true">→</span></a>
           <a class="text-link" href="https://n1.care/contact">Talk to the team</a>
@@ -287,6 +304,33 @@
       }
     });
   });
+</script>
+<script>
+  const aboutVideo = document.getElementById("aboutVideo");
+  const aboutPlayback = document.getElementById("aboutPlayback");
+  const portraitVideo = matchMedia("(max-width: 640px)");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+  function playAboutVideo() {
+    if (!aboutVideo.getAttribute("src")) {
+      aboutVideo.src = portraitVideo.matches ? "about/log-crossing-portrait.mp4" : "about/log-crossing-wide.mp4";
+    }
+    aboutVideo.muted = true;
+    aboutVideo.play().catch(() => {});
+  }
+
+  aboutVideo.addEventListener("playing", () => {
+    aboutVideo.classList.add("is-playing");
+    aboutPlayback.textContent = "Pause video";
+  });
+  aboutVideo.addEventListener("pause", () => { aboutPlayback.textContent = "Play video"; });
+  aboutPlayback.addEventListener("click", () => {
+    if (aboutVideo.paused) playAboutVideo();
+    else aboutVideo.pause();
+  });
+  reducedMotion.addEventListener("change", event => { if (event.matches) aboutVideo.pause(); });
+  aboutPlayback.hidden = false;
+  if (!reducedMotion.matches) playAboutVideo();
 </script>
 <script src="site-menu.js" defer></script>
 </body>
