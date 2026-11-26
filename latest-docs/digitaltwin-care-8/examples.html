@@ -511,7 +511,14 @@ body[data-example="jy"] #jyPreview{display:block}
   .tag .v{font-size:clamp(21px,2vw,28px)}
   .tag .s{font-size:11px}
 }
-/* Report highlights */
+/* Body systems */
+.report-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.report-stat{min-width:0;padding:clamp(14px,2vw,24px);border:var(--hair-soft);border-radius:8px;background:var(--paper)}
+.report-stat dt{font-size:14px;line-height:1.35;color:var(--ink)}
+.report-stat dd{margin:0}
+.report-stat .report-value{display:block;font:400 clamp(30px,4vw,52px)/1 var(--serif);color:var(--action);margin-bottom:8px}
+.report-stat .report-period{margin-top:6px;font:400 12px/1.4 var(--sans);color:var(--ink2)}
+@media(max-width:650px){.report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .report-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .report-chapter{display:grid;gap:5px;margin:clamp(30px,5vw,52px) 0 16px}
 .report-chapter p{margin:0}
@@ -557,7 +564,7 @@ body[data-example="jy"] #jyPreview{display:block}
     <div class="jasper-tools">
     <p class="example-tools-label" id="exampleIndexLabel">On this page</p>
     <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
-      <li><a href="#report">Visual report</a></li>
+      <li><a href="#report">Body systems</a></li>
       <li><a href="#today">Today</a></li>
       <li><a href="#day">Day explorer</a></li>
       <li><a href="#model">Twin model</a></li>
@@ -640,15 +647,33 @@ body[data-example="jy"] #jyPreview{display:block}
     <header class="sechead">
       <div>
         <div class="num"><b>01</b> Health report · 26 Nov 2026</div>
-        <h2 id="reportTitle">Jasper’s health <em>at a glance.</em></h2>
-        <p class="lede">In the 18 November draw, 57 of 62 numeric markers were within the laboratory’s reference ranges. Explore the main findings, the ideas behind the measurements, and the gaps the report leaves open.</p>
+        <h2 id="reportTitle">Jasper’s <em>body systems.</em></h2>
+        <p class="lede">See the key numbers first, then explore what each system’s measurements show and what’s still unknown.</p>
       </div>
       <a class="cta" href="jasper-in-data-report.pdf" download>Download full report · PDF</a>
     </header>
+    <dl class="report-stats" aria-label="Jasper’s report at a glance">
+      <div class="report-stat">
+        <dt><span class="report-value">57 of 62</span> Markers in range</dt>
+        <dd class="report-period">18 Nov 2026 lab draw</dd>
+      </div>
+      <div class="report-stat">
+        <dt><span class="report-value">5</span> Markers outside range</dt>
+        <dd class="report-period">18 Nov 2026 lab draw</dd>
+      </div>
+      <div class="report-stat">
+        <dt><span class="report-value">3</span> Lab draws compared</dt>
+        <dd class="report-period">May 2025 to Nov 2026</dd>
+      </div>
+      <div class="report-stat">
+        <dt><span class="report-value">52</span> Weight measurements</dt>
+        <dd class="report-period">Sep to Nov 2026</dd>
+      </div>
+    </dl>
     <p class="report-art-note">The illustrations explain general health concepts. Patient measurements appear in the accompanying text.</p>
     <div class="report-chapter">
       <p class="k">The clinical record</p>
-      <h3>What the bloodwork shows</h3>
+      <h3>Bloodwork by system</h3>
     </div>
     <div class="report-grid">
       <article class="card report-story">
