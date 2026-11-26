@@ -998,6 +998,44 @@
     .fs-bg { width: 114% !important; margin-left: -11.6% !important; }
     .fs-slot { left: 48.5% !important; width: 22.9% !important; }
   }
+
+  #s5.story-section { --story-edge: clamp(20px, 6vw, 108px); --story-gap: clamp(16px, 2vw, 32px);
+    padding-inline: 0 !important; background: #edece2; scroll-margin-top: var(--bar); }
+  .story-heading, .story-navigation { margin-inline: var(--story-edge); }
+  .story-heading { max-width: 38rem; margin-bottom: clamp(26px, 4vw, 52px); }
+  .story-heading .kick { margin: 0 0 10px; }
+  .story-note { margin: 12px 0 0; color: #59594e; font: 400 14px/1.4 var(--sans); }
+  .story-reel { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--story-edge); scrollbar-width: none; gap: var(--story-gap); padding: 0 var(--story-edge) 4px; }
+  .story-reel::-webkit-scrollbar { display: none; }
+  .story-reel:focus-visible { outline: 2px solid var(--blue-text); outline-offset: -2px; }
+  .story { flex: 0 0 clamp(320px, 35vw, 620px); margin: 0; min-width: 0; scroll-snap-align: start; }
+  .story:last-child { scroll-snap-align: end; }
+  .story-photo { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; background: #e1dfd4; }
+  .story figcaption { padding: 17px 0 0; }
+  .story-topic { margin: 0; color: var(--blue-text); font: 500 11px/1.35 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+  .story blockquote { margin: 10px 0 16px; color: var(--ink); font: 400 clamp(19px, 1.65vw, 29px)/1.24 var(--serif); }
+  .story-caption { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 6px 18px;
+    justify-content: space-between; padding: 12px 0 0; border-top: 1px solid #d3d2c7; }
+  .story-caption p { margin:0; font: 400 12px/1.45 var(--sans); }
+  .story-caption span, .story-caption strong { display: block; }
+  .story-person span, .story-metric span { color: #59594e; }
+  .story-metric { text-align: end; }
+  .story-metric strong { font: 500 14px var(--mono); color: var(--blue-text); }
+  .story-navigation { display: flex; gap: 10px; align-items: center; margin-top: 22px; }
+  .story-progress { width: clamp(48px, 22vw, 330px); height: 2px; background: #d3d2c7; }
+  .story-progress span { display: block; height: 100%; width: calc(100% / 7); background: var(--blue-text); }
+  .story-count { color: #59594e; font: 500 12px var(--mono); margin-right: 6px; white-space: nowrap; }
+  .story-navigation button { width: 44px; height: 44px; border: 1px solid #b3b4a8; border-radius: 50%;
+    color: var(--ink); background: transparent; font: 500 20px var(--sans); cursor: pointer; }
+  .story-navigation button:disabled { opacity: .35; cursor: default; }
+  .story-navigation button:not(:disabled):hover { background: #fffdf2; }
+  .story-navigation button:focus-visible { outline: 2px solid var(--blue-text); outline-offset: 3px; }
+  @media (max-width: 800px) {
+    .story { flex-basis: min(84vw, 550px); }
+    .story-reel { gap: 15px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1094,60 +1132,96 @@
   <pattern id="hzB" width="8" height="3.4" patternUnits="userSpaceOnUse"><rect width="8" height=".9" fill="#0096D6"/></pattern></defs></svg>
 
 
-<section class="s5" id="s5" aria-labelledby="s5h">
-  <div class="tst tst5">
-    <div class="tsh"><div class="kick" data-bounce>In practice</div><h2 id="s5h" data-bounce>How people are using their twin</h2><p class="note" data-bounce>Placeholder stories and stock photos. Replace before launch.</p></div>
-    <div class="tw5">
-      <figure class="t5 ph a5" data-bounce>
-        <img class="bg" src="t-plunge.webp" alt="A man sitting in an outdoor ice bath" loading="lazy" decoding="async" style="object-position:30% 40%">
-        <span class="tag">Cold exposure · HRV</span>
-        <blockquote>“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.”</blockquote>
-        <div class="chip"><span class="cl">HRV</span><span class="cv">+18%</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,30 L18,27 L34,28 L50,22 L66,20 L82,14 L98,12 L118,6"/><circle cx="118" cy="6" r="3"/></svg></div>
-        <figcaption class="who"><img class="av" src="t-plunge.webp" alt="" loading="lazy" decoding="async" style="object-position:22% 30%"><span><b>Lorem I., 44</b><i>Founder · Amsterdam</i></span></figcaption>
-        <button class="play" type="button" aria-label="Play Lorem I.’s story"></button>
+<section class="s5 story-section" id="s5" aria-labelledby="s5h">
+  <header class="story-heading">
+    <p class="kick">In practice</p>
+    <h2 id="s5h">How people are using their twin</h2>
+    <p class="story-note">Illustrative stories and stock photos.</p>
+  </header>
+  <div class="story-reel" id="story-reel" role="region" aria-label="Testimonial stories" tabindex="0">
+      <figure class="story">
+        <img class="story-photo" src="t-plunge.webp" alt="A man sitting in an outdoor ice bath" loading="lazy" decoding="async" style="object-position:30% 40%">
+        <figcaption>
+          <p class="story-topic">Cold exposure · HRV</p>
+          <blockquote>“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.”</blockquote>
+          <div class="story-caption">
+            <p class="story-person"><strong>Lorem I., 44</strong><span>Founder · Amsterdam</span></p>
+            <p class="story-metric"><span>HRV</span><strong>+18%</strong></p>
+          </div>
+        </figcaption>
       </figure>
-      <figure class="t5 tx b5" data-bounce>
-        <span class="tag">Cholesterol · ApoB</span>
-        <blockquote>“Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.”</blockquote>
-        <div class="chip"><span class="cl">ApoB</span><span class="cv">1.21 → 0.84</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,6 L18,9 L34,8 L50,15 L66,17 L82,22 L98,25 L118,29"/><circle cx="118" cy="29" r="3"/></svg></div>
-        <figcaption class="who"><img class="av" src="t-beard.webp" alt="" loading="lazy" decoding="async" style="object-position:20% 30%"><span><b>Dolor S., 41</b><i>Engineer · Berlin</i></span></figcaption>
+      <figure class="story">
+        <img class="story-photo" src="t-beard.webp" alt="" loading="lazy" decoding="async" style="object-position:20% 30%">
+        <figcaption>
+          <p class="story-topic">Cholesterol · ApoB</p>
+          <blockquote>“Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.”</blockquote>
+          <div class="story-caption">
+            <p class="story-person"><strong>Dolor S., 41</strong><span>Engineer · Berlin</span></p>
+            <p class="story-metric"><span>ApoB</span><strong>1.21 → 0.84</strong></p>
+          </div>
+        </figcaption>
       </figure>
-      <figure class="t5 ph c5" data-bounce>
-        <img class="bg" src="t-vo2.webp" alt="A woman running with a VO2 max testing mask" loading="lazy" decoding="async" style="object-position:45% 30%">
-        <span class="tag">Endurance · VO₂ max</span>
-        <blockquote>“Duis aute irure dolor in reprehenderit in voluptate.”</blockquote>
-        <div class="chip"><span class="cl">VO₂ max</span><span class="cv">38 → 44</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,30 L18,27 L34,28 L50,22 L66,20 L82,14 L98,12 L118,6"/><circle cx="118" cy="6" r="3"/></svg></div>
-        <figcaption class="who"><img class="av" src="t-vo2.webp" alt="" loading="lazy" decoding="async" style="object-position:45% 20%"><span><b>Amet C., 39</b><i>Physio · Copenhagen</i></span></figcaption>
+      <figure class="story">
+        <img class="story-photo" src="t-vo2.webp" alt="A woman running with a VO2 max testing mask" loading="lazy" decoding="async" style="object-position:45% 30%">
+        <figcaption>
+          <p class="story-topic">Endurance · VO₂ max</p>
+          <blockquote>“Duis aute irure dolor in reprehenderit in voluptate.”</blockquote>
+          <div class="story-caption">
+            <p class="story-person"><strong>Amet C., 39</strong><span>Physio · Copenhagen</span></p>
+            <p class="story-metric"><span>VO₂ max</span><strong>38 → 44</strong></p>
+          </div>
+        </figcaption>
       </figure>
-      <figure class="t5 tx d5" data-bounce>
-        <span class="tag">Sleep · Recovery</span>
-        <blockquote>“Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.”</blockquote>
-        <div class="chip"><span class="cl">Deep sleep</span><span class="cv">11% → 18%</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,30 L18,27 L34,28 L50,22 L66,20 L82,14 L98,12 L118,6"/><circle cx="118" cy="6" r="3"/></svg></div>
-        <figcaption class="who"><img class="av" src="t-tree.webp" alt="" loading="lazy" decoding="async" style="object-position:38% 25%"><span><b>Consect A., 46</b><i>Designer · Singapore</i></span></figcaption>
+      <figure class="story">
+        <img class="story-photo" src="t-tree.webp" alt="" loading="lazy" decoding="async" style="object-position:38% 25%">
+        <figcaption>
+          <p class="story-topic">Sleep · Recovery</p>
+          <blockquote>“Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.”</blockquote>
+          <div class="story-caption">
+            <p class="story-person"><strong>Consect A., 46</strong><span>Designer · Singapore</span></p>
+            <p class="story-metric"><span>Deep sleep</span><strong>11% → 18%</strong></p>
+          </div>
+        </figcaption>
       </figure>
-      <figure class="t5 ph e5" data-bounce>
-        <img class="bg" src="t-portrait.webp" alt="A woman in a black tank top after a workout" loading="lazy" decoding="async" style="object-position:42% 25%">
-        <span class="tag">Strength · Bone density</span>
-        <blockquote>“Sed ut perspiciatis unde omnis iste natus error sit.”</blockquote>
-        <div class="chip"><span class="cl">T-score</span><span class="cv">−2.1 → −1.4</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,30 L18,27 L34,28 L50,22 L66,20 L82,14 L98,12 L118,6"/><circle cx="118" cy="6" r="3"/></svg></div>
-        <figcaption class="who"><img class="av" src="t-portrait.webp" alt="" loading="lazy" decoding="async" style="object-position:42% 22%"><span><b>Elit S., 42</b><i>Lawyer · London</i></span></figcaption>
+      <figure class="story">
+        <img class="story-photo" src="t-portrait.webp" alt="A woman in a black tank top after a workout" loading="lazy" decoding="async" style="object-position:42% 25%">
+        <figcaption>
+          <p class="story-topic">Strength · Bone density</p>
+          <blockquote>“Sed ut perspiciatis unde omnis iste natus error sit.”</blockquote>
+          <div class="story-caption">
+            <p class="story-person"><strong>Elit S., 42</strong><span>Lawyer · London</span></p>
+            <p class="story-metric"><span>T-score</span><strong>−2.1 → −1.4</strong></p>
+          </div>
+        </figcaption>
       </figure>
-      <figure class="t5 sp f5" data-bounce>
-        <div class="sp-img"><img class="bg" src="t-forest.webp" alt="A man running on a forest path in autumn" loading="lazy" decoding="async" style="object-position:50% 45%"></div>
-        <div class="sp-tx">
-          <span class="tag">Metabolic health · HbA1c</span>
+      <figure class="story">
+        <img class="story-photo" src="t-forest.webp" alt="A man running on a forest path in autumn" loading="lazy" decoding="async" style="object-position:50% 45%">
+        <figcaption>
+          <p class="story-topic">Metabolic health · HbA1c</p>
           <blockquote>“Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.”</blockquote>
-          <div class="chip"><span class="cl">HbA1c</span><span class="cv">5.9% → 5.4%</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,6 L18,9 L34,8 L50,15 L66,17 L82,22 L98,25 L118,29"/><circle cx="118" cy="29" r="3"/></svg></div>
-          <figcaption class="who"><img class="av" src="t-forest.webp" alt="" loading="lazy" decoding="async" style="object-position:50% 38%"><span><b>Tempor I., 48</b><i>Investor · Zürich</i></span></figcaption>
-        </div>
+          <div class="story-caption">
+            <p class="story-person"><strong>Tempor I., 48</strong><span>Investor · Zürich</span></p>
+            <p class="story-metric"><span>HbA1c</span><strong>5.9% → 5.4%</strong></p>
+          </div>
+        </figcaption>
       </figure>
-      <figure class="t5 tx g5" data-bounce>
-        <span class="tag">Blood pressure</span>
-        <blockquote>“Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.”</blockquote>
-        <div class="chip"><span class="cl">Systolic</span><span class="cv">138 → 121</span><svg class="spk" viewBox="0 0 120 36" aria-hidden="true"><path pathLength="1" d="M2,6 L18,9 L34,8 L50,15 L66,17 L82,22 L98,25 L118,29"/><circle cx="118" cy="29" r="3"/></svg></div>
-        <figcaption class="who"><img class="av" src="t-rail.webp" alt="" loading="lazy" decoding="async" style="object-position:40% 25%"><span><b>Magna A., 37</b><i>Product lead · Shanghai</i></span></figcaption>
+      <figure class="story">
+        <img class="story-photo" src="t-rail.webp" alt="" loading="lazy" decoding="async" style="object-position:40% 25%">
+        <figcaption>
+          <p class="story-topic">Blood pressure</p>
+          <blockquote>“Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.”</blockquote>
+          <div class="story-caption">
+            <p class="story-person"><strong>Magna A., 37</strong><span>Product lead · Shanghai</span></p>
+            <p class="story-metric"><span>Systolic</span><strong>138 → 121</strong></p>
+          </div>
+        </figcaption>
       </figure>
-    </div>
+  </div>
+  <div class="story-navigation" aria-label="Testimonial navigation">
+    <div class="story-progress" aria-hidden="true"><span></span></div>
+    <span class="story-count" aria-live="polite">1 / 7</span>
+    <button type="button" class="story-prev" aria-label="Previous story" aria-controls="story-reel" disabled>←</button>
+    <button type="button" class="story-next" aria-label="Next story" aria-controls="story-reel">→</button>
   </div>
 </section>
 <section class="s6" id="s6" aria-labelledby="s6h"><canvas aria-hidden="true"></canvas>
@@ -2344,6 +2418,59 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
 (() => { const mo = matchMedia("(prefers-reduced-motion: reduce)");
   setInterval(() => { if (mo.matches || document.hidden) return;
     document.querySelectorAll("#body-video, #body-video-light").forEach(v => { if (!v.src || v.hidden) return; if (v.readyState === 0 && v.networkState !== 2) { v.preload = "auto"; v.load(); } if (v.paused) v.play().catch(() => {}); }); }, 900); })();
+</script>
+
+<script>
+(() => {
+  const reel = document.getElementById("story-reel");
+  const stories = [...reel.querySelectorAll(".story")];
+  const nav = document.querySelector(".story-navigation");
+  const prev = nav.querySelector(".story-prev"), next = nav.querySelector(".story-next");
+  const count = nav.querySelector(".story-count"), progress = nav.querySelector(".story-progress span");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  let current = 0, pending = null, scheduled = false, positions = [];
+  function setPositions() {
+    const start = stories[0].offsetLeft;
+    const end = reel.scrollWidth - reel.clientWidth;
+    positions = stories.map(story => Math.min(end, story.offsetLeft - start));
+    updateNavigation();
+  }
+  function updateNavigation() {
+    const x = reel.scrollLeft, end = reel.scrollWidth - reel.clientWidth;
+    current = x >= end - 2 && end > 2 ? stories.length - 1 :
+      positions.reduce((best, pos, i) => Math.abs(pos - x) < Math.abs(positions[best] - x) ? i : best, 0);
+    const label = (current + 1) + " / " + stories.length;
+    if (count.textContent !== label) count.textContent = label;
+    progress.style.width = ((current + 1) / stories.length * 100) + "%";
+    prev.disabled = x <= 2;
+    next.disabled = x >= end - 2;
+    if (pending !== null && Math.abs(x - positions[pending]) < 2) pending = null;
+  }
+  function move(direction) {
+    const x = pending === null ? reel.scrollLeft : positions[pending];
+    const destination = direction > 0 ? positions.findIndex(pos => pos > x + 2) :
+      positions.findLastIndex(pos => pos < x - 2);
+    if (destination < 0) return;
+    pending = destination;
+    reel.scrollTo({ left: positions[destination], behavior: reduced.matches ? "instant" : "smooth" });
+  }
+  prev.addEventListener("click", () => move(-1));
+  next.addEventListener("click", () => move(1));
+  reel.addEventListener("scroll", () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => { scheduled = false; updateNavigation(); });
+  }, { passive: true });
+  reel.addEventListener("pointerdown", () => { pending = null; });
+  reel.addEventListener("wheel", () => { pending = null; }, { passive: true });
+  reel.addEventListener("keydown", event => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    move(event.key === "ArrowRight" ? 1 : -1);
+  });
+  new ResizeObserver(setPositions).observe(reel);
+  setPositions();
+})();
 </script>
 </body>
 </html>
