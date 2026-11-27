@@ -1930,7 +1930,15 @@ if (LITE) document.documentElement.classList.add("lite");
   const wirePainted = [null, null];
   (function wireLoop(now) {
     // the wire twin is made from the blue twin's own frames, so both show the same frame: perfectly in step
-    const f = motion.matches ? 0 : Math.floor((lastFrame >= 0 ? lastFrame : Math.floor(now / 1000 * 36) % 186) * 124 / 186), k = f % 30, sx = (k % 6) * 360, sy = ((k / 6) | 0) * 738;
+    const capturing = steps.classList.contains("capture-in-view") && !motion.matches && !document.hidden;
+    // Advance the colour sprite here so both layers paint the same walking frame.
+    if (capturing) {
+      const upcoming = Math.floor(frame * 124 / 186);
+      const sheet = wireSheet(0, Math.floor(upcoming / 30));
+      wireSheet(0, Math.floor(((upcoming + 9) % 124) / 30));
+      if (sheet.complete && sheet.naturalWidth) drawFrame(now);
+    }
+    const f = motion.matches || (capturing && lastFrame < 0) ? 0 : Math.floor((lastFrame >= 0 ? lastFrame : Math.floor(now / 1000 * 36) % 186) * 124 / 186), k = f % 30, sx = (k % 6) * 360, sy = ((k / 6) | 0) * 738;
     both.forEach((v, i) => { const c = wireCv[i], g = wireG[i];
       if (v.hidden) { if (c.style.display !== "none") c.style.display = "none"; return; }
       const r = v.getBoundingClientRect(), cs = getComputedStyle(v), op = +cs.opacity;
@@ -2043,8 +2051,11 @@ if (LITE) document.documentElement.classList.add("lite");
     const bandBot = stT > H * .55 || hiBuild <= 0 ? Math.max(stT, top + Hh + 20) : top + (1 - hiBuild) * Hh * .99;
     const onScreen = Math.max(top, clipTop, 0) < Math.min(top + Hh, clipBot, H);
     const covered = bandTop <= top + .015 * Hh && bandBot >= top + .985 * Hh;
-    if (hiMode === "img" && onScreen && !covered && !motion.matches && !document.hidden) drawFrame(now);
-    else if (sheets.size) clearWalk();
+    // The wire render loop owns sprite playback during Capture.
+    if (!steps.classList.contains("capture-in-view")) {
+      if (hiMode === "img" && onScreen && !covered && !motion.matches && !document.hidden) drawFrame(now);
+      else if (sheets.size) clearWalk();
+    }
     const hiOK = GLM ? !!(glp && glp.has) : hiVidOK || hiImgOK;
     lineBot = hiOK && si0 === 1 && hiBuild > 0 ? bandBot : null;
     const ct = (bandTop - top) / Hh, cvv = (bandBot - top) / Hh, lineVisible = !hiOK || (bandTop < bandBot && ct < .985 && cvv > .015), full = !lineVisible;
@@ -2179,6 +2190,12 @@ if (LITE) document.documentElement.classList.add("lite");
     bones:[[.46,.51,.24,.07],[.41,.65,.085,.11],[.61,.68,.085,.11]],
     legs:[[.41,.72,.145,.19],[.62,.75,.13,.17]]
   };
+  const captureAnchor = {heart:0,nerves:2,lungs:1,kidneys:6,metabolic:4,knee:8,gut:4,liver:9,bones:8,legs:8};
+  function captureOffset(region) {
+    const frame = Math.max(0,Math.floor(lastFrame * 124 / 186));
+    const [x,y] = BMT[captureAnchor[region]]?.[frame] || [0,0];
+    return [x / 1000 * 768 / 500,y / 1000];
+  }
   const capturePoster = new Image(); capturePoster.decoding = "async"; capturePoster.src = "twin-f0.webp";
   const reveal = document.createElement("canvas"); reveal.width = 250; reveal.height = 672;
   const revealG = reveal.getContext("2d");
@@ -2215,7 +2232,8 @@ if (LITE) document.documentElement.classList.add("lite");
     if (captureFlight && cur) {
       const {start,row,region} = captureFlight, body = captureBody();
       const [u,v] = captureRegions[region][0], reading = row.cells[2].getBoundingClientRect();
-      const x1 = body.left + u * body.width - cr.left, y1 = body.top + v * body.height - cr.top;
+      const [dx,dy] = captureOffset(region);
+      const x1 = body.left + (u + dx) * body.width - cr.left, y1 = body.top + (v + dy) * body.height - cr.top;
       const x0 = Math.min(reading.right + 4 - cr.left, x1 - 26), y0 = reading.top + reading.height * .28 - cr.top;
       const progress = Math.min(1,(now-start)/580);
       const position = p => [x0 + (x1-x0)*p, y0 + (y1-y0)*p*p*(3-2*p)];
@@ -2232,20 +2250,21 @@ if (LITE) document.documentElement.classList.add("lite");
     capRaf = requestAnimationFrame(capLoop);
   }
   function revealCaptureRegion(now, body) {
-    if (!captureFocus || !capturePoster.naturalWidth) return;
+    if (!captureFocus || (!hiVidOK && !capturePoster.naturalWidth)) return;
     const age = (now - captureFocus.start) / 1000;
     const strength = Math.min(1,age * 9) * Math.max(0,1 - Math.max(0,age-.64)/.31);
     if (strength <= 0) return;
     const {width,height} = reveal;
     revealG.clearRect(0,0,width,height);
+    const [dx,dy] = captureOffset(captureFocus.region);
     for (const [u,v,rx,ry] of captureRegions[captureFocus.region]) {
-      revealG.save(); revealG.translate(u*width,v*height); revealG.scale(rx*width,ry*height);
+      revealG.save(); revealG.translate((u+dx)*width,(v+dy)*height); revealG.scale(rx*width,ry*height);
       const mask = revealG.createRadialGradient(0,0,.30,0,0,1);
       mask.addColorStop(0,"#fff"); mask.addColorStop(.58,"rgba(255,255,255,.94)"); mask.addColorStop(1,"rgba(255,255,255,0)");
       revealG.fillStyle = mask; revealG.fillRect(-1,-1,2,2); revealG.restore();
     }
     revealG.save(); revealG.globalCompositeOperation = "source-in";
-    revealG.drawImage(capturePoster,0,0,width,height); revealG.restore();
+    revealG.drawImage(hiVidOK ? hiWrap : capturePoster,0,0,width,height); revealG.restore();
     gg.save(); gg.globalAlpha = strength;
     gg.drawImage(reveal,body.left,body.top,body.width,body.height); gg.restore();
   }
