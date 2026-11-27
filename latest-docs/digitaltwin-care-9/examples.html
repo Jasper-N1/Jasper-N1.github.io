@@ -196,10 +196,16 @@ section{position:relative}
 .bctrl{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-top:10px}
 .bctrl label{display:inline-flex;gap:7px;align-items:center;cursor:pointer}
 .bctrl i{width:10px;height:10px;border-radius:50%;display:block}
-.omron{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-top:6px}
-.omron div{background:var(--bg);padding:14px}
-.omron .v{font-family:var(--serif);font-size:24px;margin-top:4px;white-space:nowrap}
-.omron .v small{font-size:12px;color:var(--ink3);font-family:var(--sans);margin-left:6px}
+#wt .body-point,#bf .body-point{cursor:pointer}
+.body-point:focus-visible,.body-point[aria-pressed="true"]{outline:none;stroke:var(--ink);stroke-width:2.7}
+.body-detail{margin-top:12px;padding:14px;border:var(--hair-soft);border-radius:10px;background:var(--bg);min-height:112px}
+.body-detail-title{margin:5px 0 2px;font:400 30px/1.15 var(--serif)}
+.body-detail-meta{margin:0;color:var(--ink2);font-size:13px}
+.body-related{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0 0}
+.body-related div{padding:7px 8px;background:var(--paper);border-radius:5px}
+.body-related dt{font:500 10px/1.25 var(--mono);color:var(--ink2)}
+.body-related dd{margin:4px 0 0;font-size:13px}
+.body-detail-note{margin:9px 0 0;font-size:12px;color:var(--ink2)}
 
 /* nutrition */
 .mealriver{position:relative;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin}
@@ -891,9 +897,9 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       <div class="srcs"><span class="src">N1 · 52 weights</span><span class="src note">Health note · context</span><span class="src">N1 · 9 body-fat</span></div>
     </div>
     <div class="wgrid">
-      <div class="card c8"><div class="lab"><div><div class="k">Weight · kg</div><h4>29 Aug → 26 Nov</h4></div><div style="text-align:right"><div class="stat">81.9<small>kg</small></div><div class="k">26 Nov, morning</div></div></div><svg id="wt" viewBox="0 0 800 380"></svg><div class="bctrl" id="wctrl"></div></div>
-      <div class="card c4"><div class="lab"><div><div class="k">Body fat · Omron estimate</div><h4>Toward 15%</h4></div></div><svg id="bf" viewBox="0 0 400 220"></svg>
-        <div class="k" style="margin:18px 0 8px">Omron detail · 10 Nov / 11 Nov</div><div class="omron" id="omron"></div></div>
+      <div class="card c8"><div class="lab"><div><div class="k">Weight · kg</div><h4>29 Aug → 26 Nov</h4></div><div style="text-align:right"><div class="stat">81.9<small>kg</small></div><div class="k">26 Nov, morning</div></div></div><svg id="wt" viewBox="0 0 800 380" role="group" aria-label="Weight readings, select a point to see its details"></svg><div class="bctrl" id="wctrl"></div></div>
+      <div class="card c4"><div class="lab"><div><div class="k">Body fat · Omron estimate</div><h4>Toward 15%</h4></div></div><svg id="bf" viewBox="0 0 400 220" role="group" aria-label="Body fat readings, select a point to see its details"></svg>
+        <div id="bodyDetail" class="body-detail" aria-live="polite" aria-atomic="true"></div></div>
       <div class="card c6"><div class="lab"><div><div class="k">Blood pressure · N1</div><h4>This week</h4></div><div style="text-align:right"><div class="stat">132/62<small>mmHg</small></div><div class="k">26 Nov</div></div></div><svg id="bp" viewBox="0 0 600 220"></svg></div>
       <div class="card c6"><div class="lab"><div><div class="k">Goal tracker</div><h4>Distance to 12 December</h4></div></div><div id="goals"></div></div>
     </div>
@@ -1990,6 +1996,88 @@ const ctxMap = { "2026-09-10|85.7": "m", "2026-09-11|86.4": "m", "2026-09-27|85.
   "2026-09-01|88.1": "e", "2026-09-03|87.8": "e", "2026-09-03|87.4": "e", "2026-09-08|87.6": "e", "2026-09-10|87.4": "e", "2026-09-11|87.2": "e", "2026-09-14|86.8": "e", "2026-09-15|86.8": "e", "2026-09-17|87": "e", "2026-09-18|85.9": "e", "2026-09-21|85.8": "e", "2026-09-24|85.4": "e", "2026-09-24|86.1": "e", "2026-09-29|85.2": "e", "2026-10-01|85.6": "e", "2026-10-13|87.5": "e", "2026-10-15|85.8": "e", "2026-10-20|85.4": "e", "2026-10-22|84.5": "e", "2026-11-04|84": "e", "2026-11-11|84.8": "e", "2026-11-13|84.4": "e", "2026-11-16|84.4": "e" };
 const WT = WEIGHT.map(([d, v]) => ({ d, v, c: ctxMap[d + "|" + v] || "o" }));
 const show = { m: 1, e: 1, p: 1, o: 1 };
+const bodyWeight = WT.map((p,i)=>({...p,key:"w"+i,type:"Weight",unit:"kg",context:CTX[p.c].n}));
+const bodyFat = FAT.map(([d,v],i)=>({d,v,key:"f"+i,type:"Body fat",unit:"%",context:"Omron estimate"}));
+const bodyStart = {d:"2026-08-29",v:89,key:"start",type:"Starting weight",unit:"kg",context:"Approximate, from the health note"};
+const bodyGoal = {d:"2026-12-12",v:80,key:"goal",type:"Weight goal",unit:"kg",context:"Target date"};
+let bodySelected = bodyWeight.reduce((latest,p)=>p.d>=latest.d?p:latest);
+const newestBodyKey = bodySelected.key;
+let detailAnimation;
+const bodyDetail = $("bodyDetail");
+const readingValue = p => (p.key==="start" ? "≈" : "") + Number(p.v).toFixed(p.unit==="%" ? 1 : Number.isInteger(p.v) ? 0 : 1) + (p.unit==="%" ? "%" : " kg");
+const pointGroups = ["wt","bf"].map($);
+function paintReading(animate) {
+  const p=bodySelected, related=[];
+  if (p.type==="Weight" || p.type==="Body fat") {
+    const sameDay=(p.type==="Weight"?bodyFat:bodyWeight).filter(r=>r.d===p.d);
+    if (sameDay.length) related.push([p.type==="Weight"?"Body fat that day":"Weight that day",sameDay.map(readingValue).join(" · ")]);
+    const omronDay=["2026-11-10","2026-11-11"].indexOf(p.d);
+    if (omronDay>=0) NOTE.omron.forEach(([name,...values])=>related.push([name,values[omronDay]]));
+  }
+  bodyDetail.innerHTML="";
+  bodyDetail.append(H("div",{class:"k"},p.key===newestBodyKey?"Latest reading":p.type),
+    H("div",{class:"body-detail-title"},readingValue(p)),
+    H("p",{class:"body-detail-meta"},fd(p.d,true)+" · "+p.context));
+  if(related.length){
+    const list=H("dl",{class:"body-related"});
+    related.forEach(([name,v])=>list.append(H("div",{},`<dt>${name}</dt><dd>${v}</dd>`)));
+    bodyDetail.append(list);
+    if(p.d==="2026-11-11") bodyDetail.append(H("p",{class:"body-detail-note"},"The additional Omron details are from the morning entry on this date."));
+  }
+  if(animate&&!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    detailAnimation?.cancel();
+    detailAnimation=bodyDetail.animate([{opacity:.42,transform:"translateY(4px)"},{opacity:1,transform:"translateY(0)"}],{duration:280,easing:"ease-out"});
+  }
+}
+function markBodyPoints() {
+  pointGroups.forEach(svg=>{
+    const points=[...svg.querySelectorAll(".body-point")];
+    const current=points.find(point=>point.dataset.key===bodySelected.key);
+    points.forEach(point=>{
+      point.setAttribute("aria-pressed",String(point===current));
+      point.setAttribute("tabindex",point===(current||points.at(-1))?"0":"-1");
+    });
+  });
+}
+function selectBodyPoint(point,focus=false) {
+  if (bodySelected.key!==point.reading.key) {
+    bodySelected=point.reading;
+    paintReading(true);
+  }
+  markBodyPoints();
+  if(focus) point.focus();
+}
+function addBodyPoint(svg,p,attrs) {
+  const point=S("circle",{...attrs,class:"body-point",role:"button",tabindex:"-1","data-key":p.key,
+    "aria-label":p.type+", "+readingValue(p)+", "+fd(p.d,true)+", "+p.context},svg);
+  point.reading=p;
+  S("title",{},point).textContent=point.getAttribute("aria-label");
+}
+pointGroups.forEach(svg=>{
+  svg.addEventListener("click",event=>{
+    const clicked=event.target.closest?.(".body-point");
+    if(clicked){selectBodyPoint(clicked);return;}
+    const ctm=svg.getScreenCTM();
+    if(!ctm)return;
+    let nearest=null,distance=14;
+    for(const point of svg.querySelectorAll(".body-point")){
+      const center=new DOMPoint(+point.getAttribute("cx"),+point.getAttribute("cy")).matrixTransform(ctm);
+      const d=Math.hypot(center.x-event.clientX,center.y-event.clientY);
+      if(d<distance){distance=d;nearest=point;}
+    }
+    if(nearest)selectBodyPoint(nearest);
+  });
+  svg.addEventListener("keydown",event=>{
+    const point=event.target.closest?.(".body-point");
+    if(!point)return;
+    const points=[...svg.querySelectorAll(".body-point")].sort((a,b)=>a.reading.d.localeCompare(b.reading.d));
+    const i=points.indexOf(point);
+    const next={ArrowLeft:Math.max(0,i-1),ArrowRight:Math.min(points.length-1,i+1),Home:0,End:points.length-1}[event.key];
+    if(event.key==="Enter"||event.key===" "){event.preventDefault();selectBodyPoint(point,true);}
+    else if(next!==undefined){event.preventDefault();selectBodyPoint(points[next],true);}
+  });
+});
+
 function drawWeight() {
   const svg = $("wt"); svg.innerHTML = ""; const w = 800, h = 380, x = lin(pd("2026-08-27"), pd("2026-12-14"), 40, w - 14), y = lin(79, 89.5, h - 30, 14);
   [80, 82, 84, 86, 88].forEach(v => { S("line", { x1: 40, x2: w - 14, y1: y(v), y2: y(v), stroke: "#ECE9DC" }, svg); S("text", { x: 0, y: y(v) + 4, "font-size": 11, fill: "#8F8C7F", "font-family": "DM Mono" }, svg).textContent = v; });
@@ -1999,15 +2087,16 @@ function drawWeight() {
   S("text", { x: x(pd("2026-09-10")), y: 42, "text-anchor": "middle", "font-size": 10, fill: "#006E9C", "font-family": "DM Mono" }, svg).textContent = "TRAVEL";
   // goal path
   S("line", { x1: x(pd("2026-08-29")), y1: y(89), x2: x(pd("2026-12-12")), y2: y(80), stroke: "#1C1B17", "stroke-dasharray": "4 5", opacity: .4 }, svg);
-  S("circle", { cx: x(pd("2026-12-12")), cy: y(80), r: 6, fill: "none", stroke: "#1C1B17", "stroke-width": 2 }, svg);
+  addBodyPoint(svg,bodyGoal,{cx:x(pd(bodyGoal.d)),cy:y(bodyGoal.v),r:6,fill:"var(--paper)",stroke:"#1C1B17","stroke-width":2});
   S("text", { x: x(pd("2026-12-12")) - 10, y: y(80) + 22, "text-anchor": "end", "font-size": 11, fill: "#1C1B17", "font-family": "DM Mono" }, svg).textContent = "GOAL 80 KG · 12 DEC";
-  S("circle", { cx: x(pd("2026-08-29")), cy: y(89), r: 4, fill: "none", stroke: "#8F8C7F" }, svg);
+  addBodyPoint(svg,bodyStart,{cx:x(pd(bodyStart.d)),cy:y(bodyStart.v),r:4,fill:"var(--paper)",stroke:"#8F8C7F"});
   S("text", { x: x(pd("2026-08-29")) - 4, y: y(89) + 18, "font-size": 10, fill: "#8F8C7F", "font-family": "DM Mono" }, svg).textContent = "≈89 START (NOTE)";
   // rolling 7-day trend over all points
   const days = []; for (let t = pd("2026-09-01"); t <= pd("2026-11-26"); t += 864e5) { const pts = WT.filter(p => Math.abs(pd(p.d) - t) <= 5 * 864e5); if (pts.length > 2) days.push([t, avg(pts.map(p => p.v))]); }
   S("path", { d: days.map((p, i) => (i ? "L" : "M") + x(p[0]) + "," + y(p[1])).join(""), fill: "none", stroke: "#1C1B17", "stroke-width": 2.5, opacity: .8 }, svg);
-  WT.forEach(p => { if (!show[p.c]) return; const c = S("circle", { cx: x(pd(p.d)), cy: y(p.v), r: 5, fill: CTX[p.c].c, stroke: "#fff", "stroke-width": 1.5 }, svg); tipOn(c, `<b>${fd(p.d)}</b> · ${p.v} kg · ${CTX[p.c].n}`); });
+  bodyWeight.forEach(p=>{if(show[p.c])addBodyPoint(svg,p,{cx:x(pd(p.d)),cy:y(p.v),r:5,fill:CTX[p.c].c,stroke:"#fff","stroke-width":1.5});});
   axisDates(svg, x, h, false, ["2026-09-01", "2026-10-01", "2026-11-01", "2026-12-01"]);
+  markBodyPoints();
 }
 const wc = $("wctrl"); Object.entries(CTX).forEach(([k, o]) => { const l = H("label", {}, `<i style="background:${o.c}"></i>${o.n} · ${WT.filter(p => p.c == k).length}`); l.onclick = () => { show[k] = !show[k]; l.style.opacity = show[k] ? 1 : .35; drawWeight(); }; wc.appendChild(l); });
 wc.appendChild(H("span", {}, "— 7-day trend"));
@@ -2017,9 +2106,9 @@ drawWeight();
   [15, 16, 17, 18].forEach(v => { S("line", { x1: 30, x2: w - 10, y1: y(v), y2: y(v), stroke: "#ECE9DC" }, svg); S("text", { x: 0, y: y(v) + 4, "font-size": 11, fill: "#8F8C7F", "font-family": "DM Mono" }, svg).textContent = v + "%"; });
   S("line", { x1: 30, x2: w - 10, y1: y(15), y2: y(15), stroke: "#E0573C", "stroke-dasharray": "4 4" }, svg);
   S("text", { x: w - 10, y: y(15) + 16, "text-anchor": "end", "font-size": 10, fill: "#E0573C", "font-family": "DM Mono" }, svg).textContent = "GOAL 15% · 12 DEC";
-  FAT.forEach(([d, v]) => { const c = S("circle", { cx: x(pd(d)), cy: y(v), r: 5.5, fill: "#0096D6", stroke: "#fff", "stroke-width": 1.5 }, svg); tipOn(c, `<b>${fd(d)}</b> · ${v}% · Omron`); });
+  bodyFat.forEach(p=>addBodyPoint(svg,p,{cx:x(pd(p.d)),cy:y(p.v),r:5.5,fill:"#0096D6",stroke:"#fff","stroke-width":1.5}));
   ["2026-11-10", "2026-11-20", "2026-12-01", "2026-12-12"].forEach(d => S("text", { x: x(pd(d)), y: h - 4, "text-anchor": "middle", "font-size": 11, fill: "#8F8C7F", "font-family": "DM Mono" }, svg).textContent = fd(d));
-  $("omron").innerHTML = NOTE.omron.map(([n, a, b]) => `<div><div class="k">${n}</div><div class="v">${a}<small>${b}</small></div></div>`).join("");
+  markBodyPoints(); paintReading(false);
 })();
 (function bp() {
   const svg = $("bp"), w = 600, h = 220, y = lin(50, 145, h - 26, 10), bw = (w - 60) / BP.length;
