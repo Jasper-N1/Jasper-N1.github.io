@@ -373,7 +373,7 @@
   .plat .reasoning-viz { background:#edf1ec; }
   .plat .reasoning-viz canvas { top:0; height:100%; }
   .plat .sensing-scan { background: rgba(250,241,231,.44); border-color: #9eaaa7; }
-  .sensing-scan .ph2 { background: rgba(247,250,246,.90); border-bottom-color: #83aeb84d; }
+  .plat .sensing-scan canvas { top:0; height:100%; }
   .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:transparent; border-color:#a1b9b7; }
   .intervention-viz .ph2 { background:transparent; }
   .plat .intervention-viz .intervention-heat { height:calc(100% - 84px); }
@@ -1245,7 +1245,7 @@
   <div class="pin2">
 
     <div class="prow"><div class="ptx" data-bounce><h3>Continuous data</h3><p class="pbody">Your twin automatically brings in new readings from connected sensors and wearables alongside your lab results and other health records. It shows what’s missing, why it matters, and what information could fill the gap.</p></div>
-      <div class="pviz sensing-scan" data-bounce><div class="ph2"><span>Sensing layer</span><span>Live</span></div><canvas data-viz="stream" role="img" aria-label="Illustrative CT-style anatomy aligned with the moving digital twin, with incoming sample records on the right"></canvas></div></div>
+      <div class="pviz sensing-scan" data-bounce><canvas data-viz="stream" role="img" aria-label="An anatomical illustration beside ten stylized health data traces that draw from left to right"></canvas></div></div>
     <div class="prow rev"><div class="pviz reasoning-viz" data-bounce>
       <canvas data-viz="base" aria-hidden="true"></canvas>
     </div>
@@ -2632,20 +2632,30 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     g.drawImage(source,box.x+(box.w-width)/2,box.y+box.h*.03-height*.019,width,height);
   }
 
-  const scanFeeds = [
-    ["LAB · LDL","2.98 mmol/L",.55,.28,"#267caa"],
-    ["WATCH · RESTING HR","53 bpm",.55,.29,"#008b86"],
-    ["MRI · KNEE","Meniscus",.43,.72,"#75609e"],
-    ["PHARMACY","Medication record",.45,.39,"#4f759d"],
-    ["GP LETTER","BP follow-up",.54,.45,"#008b86"],
-    ["GENETIC REPORT","APOE E3 / E3",.50,.11,"#75609e"]
+  // Stylized traces for ECG, breathing, pulse, glucose, sleep stages,
+  // blood pressure, activity, temperature, HRV, and lung airflow.
+  const sensingTraces = [
+    [.56,.56,.48,.56,.62,.15,.82,.56,.54,.40,.43,.56,.56,.56,.48,.56,.62,.15,.82,.56,.53,.42,.56,.56],
+    [.61,.37,.24,.3,.48,.69,.78,.68,.45,.27,.24,.38,.6,.76,.72,.52,.31,.24,.34,.55,.72,.77,.65,.47],
+    [.76,.76,.24,.15,.38,.47,.43,.53,.63,.71,.76,.76,.25,.16,.38,.47,.43,.53,.63,.71,.76,.76],
+    [.74,.73,.72,.73,.68,.53,.33,.24,.26,.39,.51,.59,.64,.65,.60,.48,.43,.49,.56,.62,.68,.7],
+    [.24,.24,.45,.45,.67,.67,.79,.79,.56,.56,.32,.32,.57,.57,.75,.75,.49,.49,.28,.28,.46,.46],
+    [.77,.72,.27,.19,.3,.35,.4,.45,.49,.54,.58,.61,.65,.67,.69,.71,.73,.75,.76,.77],
+    [.8,.8,.61,.79,.77,.42,.78,.76,.27,.8,.78,.37,.8,.79,.48,.79,.8,.3,.79,.78,.67,.8],
+    [.58,.61,.62,.64,.63,.61,.58,.55,.5,.46,.48,.43,.41,.38,.37,.4,.42,.45,.43,.47,.52,.56],
+    [.59,.4,.57,.27,.36,.71,.47,.64,.45,.31,.61,.49,.68,.27,.44,.51,.33,.63,.53,.68,.46,.5],
+    [.8,.4,.18,.22,.31,.41,.51,.59,.65,.7,.74,.76,.77,.78,.79,.79,.8,.8,.8,.8]
   ];
+  const sensingColors = ["#2784a3","#398c84","#7863a2","#487da2"];
   const stream = (v, t, dt) => {
     const {g,W,H,st} = v, still = reducedMotion.matches;
-    const interval = 1.05;
-    st.elapsed = still ? 2.7 : (st.elapsed || 0) + dt;
-    const index = Math.floor(st.elapsed / interval), phase = (st.elapsed % interval) / interval;
-    const box = imagingBox(v), {x,y,w,h} = box;
+    if (!W || !H) return;
+    const interval = 2.15, cycle = interval * sensingTraces.length;
+    if (!still) st.elapsed = ((st.elapsed || 0) + dt) % cycle;
+    const elapsed = still ? 1.4 : st.elapsed;
+    const index = Math.floor(elapsed / interval), phase = (elapsed % interval) / interval;
+    const trace = sensingTraces[index];
+    const box = imagingBox(v), {w,h} = box;
     const source = !still && scanColourFrame?.hasAttribute("data-frame") ? scanColourFrame : panelModel;
     if (w > 0 && h > 0 && (source === scanColourFrame || panelModel.naturalWidth)) {
       g.save();
@@ -2655,40 +2665,36 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       g.restore();
     }
 
-    const left = W * .56, right = W - 18, top = H * .17, bottom = H * .74;
-    const columns = Math.max(8,Math.floor((right-left)/12));
-    const rows = Math.max(7,Math.floor((bottom-top)/12));
-    const [name,value,,,color] = scanFeeds[index % scanFeeds.length];
-    const waveRow = (col,packet) => (rows-1)*(.5 + .32*Math.sin(col*.36 + packet*1.74));
-    label(g,"INCOMING DATA",right,top-15,BL,"right");
-    for (let col=0;col<columns;col++) {
-      const px=left+col*(right-left)/(columns-1);
-      for (let row=0;row<rows;row++) {
-        const py=top+row*(bottom-top)/(rows-1);
-        const distance = Math.abs(row-waveRow(col,index)) + Math.abs(col-(1-phase)*(columns-1))*.49;
-        const signal = Math.max(0,1-distance/2.6);
-        g.fillStyle = signal ? color : "#215367";
-        g.globalAlpha = signal ? .20 + signal*.8 : .16;
-        g.beginPath(); g.arc(px,py,1+signal*1.6,0,2*Math.PI); g.fill();
+    const left=W*.56, right=W-17, top=H*.24, bottom=H*.76;
+    const columns=Math.max(15,Math.floor((right-left)/7.6));
+    const rows=Math.max(13,Math.floor((bottom-top)/8));
+    if (!st.grid) {
+      st.grid=new Path2D();
+      for (let col=0;col<columns;col++) {
+        const x=left+col*(right-left)/(columns-1);
+        for (let row=0;row<rows;row++) {
+          const y=top+row*(bottom-top)/(rows-1);
+          st.grid.moveTo(x+.8,y);
+          st.grid.arc(x,y,.8,0,2*Math.PI);
+        }
       }
     }
-    g.globalAlpha=1;
-    const previous = (index + scanFeeds.length - 1) % scanFeeds.length;
-    const [, , prevU, prevZ, prevColor] = scanFeeds[previous];
-    const targetX=x+prevU*w, targetY=y+prevZ*h;
-    if (targetX>12 && targetX<left && targetY>12 && targetY<H-12 && phase<.62) {
-      const startY=top+waveRow(0,index-1)*(bottom-top)/(rows-1);
-      g.strokeStyle=prevColor;
-      g.globalAlpha=.62*(1-phase/.62);
-      g.beginPath();g.moveTo(left,startY);g.bezierCurveTo(left-24,startY,targetX+23,targetY,targetX,targetY);g.stroke();
-      g.beginPath();g.arc(targetX,targetY,3+phase*15,0,2*Math.PI);g.stroke();
-      g.globalAlpha=1;
+    g.fillStyle="rgba(33,83,103,.17)";
+    g.fill(st.grid);
+
+    // Keep the full trace visible briefly before the next sweep.
+    const head=phase/.66*(columns-1), fade=still ? 1 : Math.min(1,(1-phase)/.15);
+    g.fillStyle=sensingColors[index%sensingColors.length];
+    for (let col=0;col<columns && col<=head;col++) {
+      const step=col*(trace.length-1)/(columns-1), low=Math.floor(step);
+      const value=trace[low]+((trace[low+1] ?? trace[low])-trace[low])*(step-low);
+      const row=Math.round(value*(rows-1)), x=left+col*(right-left)/(columns-1);
+      const y=top+row*(bottom-top)/(rows-1);
+      const radius=1.55+Math.max(0,1-(head-col)/4)*.85;
+      g.globalAlpha=.85*fade;
+      g.beginPath();g.arc(x,y,radius,0,2*Math.PI);g.fill();
     }
-    label(g,"CT-STYLE ANATOMY",16,H-32,BL);
-    label(g,"ILLUSTRATION",16,H-17);
-    g.fillStyle="rgba(248,248,239,.82)";g.fillRect(left-8,H-49,right-left+12,37);
-    label(g,name,right,H-35,color,"right");
-    label(g,value,right,H-19,undefined,"right");
+    g.globalAlpha=1;
   };
   const thermalRegions = [
     [[.49,.51],[.43,.69],[.59,.72]], [[.55,.27],[.48,.38]], [[.50,.105],[.55,.28]]
