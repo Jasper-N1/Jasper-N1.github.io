@@ -370,7 +370,25 @@
   .plat .pviz { position: relative; aspect-ratio: 718 / 470; background: #F7F6F0; border: 1px solid rgba(28,27,23,.16); border-radius: 6px; overflow: hidden; }
   .plat .ph2 { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid rgba(28,27,23,.09); background: #F7F6F0; font: 500 var(--fs-label) var(--mono); letter-spacing: var(--ls-l); color: #66645D; } .plat .ph2 span:first-child { color: var(--blue-text); }
   .plat .pviz canvas { position: absolute; left: 0; right: 0; bottom: 0; top: 41px; width: 100%; height: calc(100% - 41px); }
-  .plat .reasoning-viz, .reasoning-viz .ph2 { background:transparent; }
+  .plat .reasoning-viz { background:#edf1ec; }
+  .reasoning-viz .ph2 { background:transparent; }
+  .reasoning-chat { position:absolute; z-index:1; left:50%; top:calc(55% + 15px); transform:translate(-50%,-50%);
+    width:min(84%,450px); display:grid; grid-template-columns:minmax(0,1fr) 38px; align-items:center;
+    gap:clamp(8px,1.4vw,16px); padding:clamp(10px,1.6vw,20px);
+    border:1px solid #a9c6c7; border-left:3px solid #238797; border-radius:9px;
+    background:#fafbf5; box-shadow:0 8px 24px rgba(30,69,72,.10); }
+  .reasoning-label { font:500 10px var(--mono); letter-spacing:.07em; text-transform:uppercase; color:#306677; }
+  .plat .reasoning-prompt p { margin:5px 0 0; min-height:2.65em; color:#20383d;
+    font:400 clamp(14px,1.7vw,21px)/1.32 var(--sans); }
+  .reasoning-next { width:38px; height:38px; border:1px solid #a9c6c7; border-radius:50%;
+    background:#eaf3ee; color:#245e69; font:500 20px var(--sans); cursor:pointer; }
+  .reasoning-next:hover { background:#dcece8; }
+  .reasoning-next:focus-visible { outline:2px solid #238797; outline-offset:2px; }
+  .reasoning-announcement { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+  @media(prefers-reduced-motion:no-preference) {
+    .reasoning-prompt p { animation:reasoning-question-in .3s ease-out; }
+    @keyframes reasoning-question-in { from { opacity:0; translate:0 4px; } to { opacity:1; translate:0; } }
+  }
   .plat .sensing-scan { background: rgba(250,241,231,.44); border-color: #9eaaa7; }
   .sensing-scan .ph2 { background: rgba(247,250,246,.90); border-bottom-color: #83aeb84d; }
   .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:transparent; border-color:#a1b9b7; }
@@ -1253,7 +1271,18 @@
 
     <div class="prow"><div class="ptx" data-bounce><h3>Continuous data</h3><p class="pbody">Your twin automatically brings in new readings from connected sensors and wearables alongside your lab results and other health records. It shows what’s missing, why it matters, and what information could fill the gap.</p></div>
       <div class="pviz sensing-scan" data-bounce><div class="ph2"><span>Sensing layer</span><span>Live</span></div><canvas data-viz="stream" role="img" aria-label="Illustrative CT-style anatomy aligned with the moving digital twin, with incoming sample records on the right"></canvas></div></div>
-    <div class="prow rev"><div class="pviz reasoning-viz" data-bounce><div class="ph2"><span>Reasoning layer</span><span>Updated continuously</span></div><canvas data-viz="base" role="img" aria-label="Illustration of readings, personal baseline, and population range coming together for a personal range check"></canvas></div>
+    <div class="prow rev"><div class="pviz reasoning-viz" data-bounce>
+      <div class="ph2"><span>Reasoning layer</span><span>Updated continuously</span></div>
+      <canvas data-viz="base" aria-hidden="true"></canvas>
+      <div class="reasoning-chat">
+        <div class="reasoning-prompt">
+          <span class="reasoning-label">Example health question</span>
+          <p id="reasoning-question">My LDL fell, but it’s still above the lab range. What should I ask at my next checkup?</p>
+        </div>
+        <button class="reasoning-next" type="button" aria-label="Show next example health question" aria-controls="reasoning-question">→</button>
+      </div>
+      <span class="reasoning-announcement" role="status"></span>
+    </div>
       <div class="ptx" data-bounce><h3>Deep medically validated intelligence</h3><p class="pbody">Continuous data lets the AI learn an individual baseline and normal range, then flag a deviation well before a population-based reference range would register an issue.</p></div></div>
     <div class="prow"><div class="ptx" data-bounce><h3>Actionable insights tailored to you</h3><p class="pbody">The system acts on the live data stream. Because it keeps monitoring, it tracks the response to every intervention and adjusts continuously.</p></div>
       <div class="pviz intervention-viz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Closed loop</span></div>
@@ -2725,60 +2754,49 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     label(g,"AREAS OF FOCUS",15,36);
   };
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-  const reasoningLayers = [
-    ["NEW READINGS","#e3eff8","#3b708c",[.64,.54,.62,.39,.49,.32]],
-    ["PERSONAL BASELINE","#e2efe9","#367364",[.53,.46,.54,.45,.49,.45]],
-    ["POPULATION RANGE","#f2ecd8","#806830",[.51,.51,.51,.51,.51,.51]],
-    ["RANGE CHECK","#f9f8f0","#365851",[]]
+  const questionNode = document.querySelector("#reasoning-question");
+  const questionText = [
+    questionNode.textContent,
+    "My blood pressure is higher at the clinic than at home. Which readings should we look at?",
+    "I’m losing weight and getting stronger. How can I tell whether I’m keeping muscle?",
+    "My resting heart rate is up. Could it be poor sleep, training load, or something else?",
+    "Two kidney tests changed after I started lifting. What context would help interpret them?",
+    "My glucose spikes after some meals. How can I tell which patterns are worth discussing?"
   ];
-  const ease = (value,start,end) => {
-    const p=Math.max(0,Math.min(1,(value-start)/(end-start)));
-    return p*p*(3-2*p);
-  };
+  const reasoningChat = questionNode.closest(".reasoning-chat");
+  const nextQuestion = reasoningChat.querySelector(".reasoning-next");
+  const announcement = document.querySelector(".reasoning-announcement");
+  let questionIndex = 0, questionElapsed = 0, question = questionNode;
+  function advanceQuestion(manual = false) {
+    questionElapsed = 0;
+    questionIndex = (questionIndex + 1) % questionText.length;
+    const replacement = question.cloneNode();
+    replacement.textContent = questionText[questionIndex];
+    question.replaceWith(replacement);
+    question = replacement;
+    if (manual) announcement.textContent = question.textContent;
+  }
+  nextQuestion.addEventListener("click", () => advanceQuestion(true));
   const reasoning = (v,t,dt) => {
-    const {g,W,H,st}=v;
-    if (!W || !H) return;
-    const still=reducedMotion.matches;
-    const time=st.elapsed=still ? 4.1 : ((st.elapsed || 0)+dt)%8.2;
-    const width=Math.min(280,W*.57), height=Math.min(158,H*.57);
-    const spread=Math.min(W*.155,100), rise=Math.min(H*.105,32);
-    const compactX=Math.min(14,W*.025), compactY=Math.min(10,H*.045);
-    reasoningLayers.forEach(([name,fill,ink,trace],i)=>{
-      const lane=i-1.5;
-      const gather=ease(time,1+i*.18,3.35+i*.18)-ease(time,6.25+i*.10,7.95+i*.05);
-      const x=(W-width)/2+lane*(spread+(compactX-spread)*gather);
-      const y=(H-height)/2+lane*(-rise+(compactY+rise)*gather);
-      g.save();
-      g.shadowColor="rgba(36,67,63,.13)";g.shadowBlur=14;g.shadowOffsetY=5;
-      g.fillStyle=fill;g.beginPath();g.roundRect(x,y,width,height,8);g.fill();
-      g.shadowColor="transparent";
-      g.strokeStyle=ink+"45";g.lineWidth=1;g.stroke();
-      const pad=Math.max(9,Math.min(16,width*.075));
-      if (trace.length) {
-        const [first,second]=name.split(" ");
-        label(g,first,x+pad,y+20,ink);
-        label(g,second,x+pad,y+33,ink);
-        const top=y+height*.36, depth=height*.5;
-        g.fillStyle=ink+"1c";g.fillRect(x+pad,top+depth*.33,width-pad*2,depth*.35);
-        g.strokeStyle=ink;g.lineWidth=1.5;g.beginPath();
-        trace.forEach((value,j)=>{
-          const px=x+pad+j*(width-pad*2)/(trace.length-1), py=top+value*depth;
-          if(j)g.lineTo(px,py);else g.moveTo(px,py);
-        });
-        g.stroke();
-      } else {
-        label(g,name,x+pad,y+21,ink);
-        const reveal=ease(time,3.05,4)-ease(time,6.23,6.9);
-        g.globalAlpha=1-reveal;
-        label(g,"Comparing readings",x+pad,y+height*.69,ink);
-        g.globalAlpha=reveal;
-        g.font=`400 ${Math.min(25,width*.104)}px Georgia, serif`;
-        g.textAlign="left";g.fillStyle="#21433b";
-        g.fillText("Outside your range",x+pad,y+height*.58,width-pad*2);
-        label(g,"Within population range",x+pad,y+height*.81,ink);
+    const {g,W,H}=v, still=reducedMotion.matches;
+    if (!still && !reasoningChat.matches(":hover, :focus-within")) {
+      questionElapsed += dt;
+      if (questionElapsed >= 5.5) advanceQuestion();
+    }
+    const time=still ? 0 : t;
+    for (let lane=0; lane<10; lane++) {
+      const offset=(lane-4.5)/9;
+      g.beginPath();
+      for (let x=0; x<=W+5; x+=5) {
+        const u=x/W, pinch=.27+.73*Math.abs(2*u-1)**1.4;
+        const y=H*(.56 + .15*Math.sin(u*5.7-1.6-time*.46)
+          + offset*.57*pinch + .045*Math.sin(11*u+lane*.36-time*.71));
+        if (x) g.lineTo(x,y); else g.moveTo(x,y);
       }
-      g.restore();
-    });
+      g.lineWidth=1;
+      g.strokeStyle=lane<5 ? "rgba(36,126,166,.46)" : "rgba(62,140,108,.52)";
+      g.stroke();
+    }
   };
   // 3. a dashboard for recovery and recorded follow-up measurements
   const scoreViews = [
