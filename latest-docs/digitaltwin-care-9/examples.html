@@ -90,33 +90,38 @@ section{position:relative}
 @media(max-width:1000px){.rings{grid-template-columns:1fr 1fr}.clockwrap{grid-template-columns:1fr}}
 
 /* model zoom */
-#model{height:820vh;background:var(--bg);border-top:var(--hair-soft)}
-.mstick{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(ellipse 50% 60% at 42% 52%,#fff 0%,rgba(243,242,233,0) 70%)}
-#mcanvas{position:absolute;inset:0;width:100%;height:100%}
-.mhead{position:absolute;left:0;top:110px;z-index:3;max-width:460px;transition:opacity .5s}
-.mpanel{position:absolute;right:0;top:50%;transform:translateY(-50%);width:min(440px,40%);z-index:4}
-.mcard{position:absolute;inset:auto 0 auto 0;top:0;transform:translateY(-50%);opacity:0;pointer-events:none;transition:opacity .55s,transform .55s;background:rgba(247,246,240,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:var(--hair-soft);border-radius:var(--r);box-shadow:0 30px 70px -40px rgba(0,60,90,.3);padding:26px 26px 22px}
-.mcard.on{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
-.mcard h3{font-size:34px;margin:6px 0 4px}
-.mcard .why{font-size:13.5px;color:var(--ink2);line-height:1.5;margin-bottom:16px}
-.mrow{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:11px 0;border-top:var(--hair-soft);align-items:center}
-.mrow .n{font-size:14px}
-.mrow .val{font-family:var(--serif);font-size:24px;text-align:right;line-height:1}
-.mrow .val small{font-family:var(--sans);font-size:11px;color:var(--ink3);margin-left:3px}
-.mrow .r{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11.5px;color:var(--ink3)}
-.mrow .r svg{flex:1;height:14px}
-.mrow .val.f{color:var(--flag)}
-.mrow .badge{font-family:var(--mono);font-size:10px;color:var(--flag);letter-spacing:.06em}
-.mdots{position:absolute;left:0;bottom:44px;z-index:4;display:flex;gap:10px;flex-wrap:wrap;right:0}
-.mdots button{font:inherit;font-size:12.5px;background:rgba(243,242,233,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink2);border:var(--hair);border-radius:99px;padding:7px 13px;cursor:pointer;transition:all .3s}
-.mdots button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-@media(max-width:900px){
-  .mpanel{left:0;right:0;width:auto;top:auto;bottom:90px;transform:none}
-  .mcard{top:auto;bottom:0;transform:translateY(20px)}.mcard.on{transform:none}
-  .mcard h3{font-size:26px}.mcard .why{display:none}.mrow{padding:8px 0}.mrow .val{font-size:19px}
-  .mhead{top:88px}.mhead h2{font-size:38px}.mhead .lede{display:none}
-  .mdots{bottom:20px;overflow-x:auto;flex-wrap:nowrap}
-}
+.model-controls{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 15px}
+#model button{font:inherit;cursor:pointer}
+.model-controls button{padding:8px 17px;background:var(--paper);border:1px solid var(--model-border);border-radius:999px;color:var(--ink)}
+.model-controls [aria-pressed=true]{background:var(--model-action);color:white;border-color:var(--model-action)}
+#model button:focus-visible{outline:2px solid var(--model-action);outline-offset:3px}
+.model-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(270px,1fr);gap:18px;align-items:start}
+.model-stage{position:relative;overflow:hidden;isolation:isolate;height:clamp(420px,58vw,630px);border:1px solid var(--model-border);border-radius:13px;background:transparent}
+.model-frame{opacity:0;transition:opacity .15s ease}
+.model-frame[data-active]{opacity:1}
+.model-images{opacity:.64}
+.model-stage[data-view=body] .model-images{opacity:.52}
+@media(prefers-reduced-motion:reduce){.model-frame{transition:none}}
+.model-stage svg{position:relative;display:block;width:100%;height:100%}
+.model-hotspot{position:absolute;left:calc(50% + 36px);top:27%;border:1px solid #8cb5be;background:#fffcf3;color:var(--model-action);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.model-hotspot::before{content:"";display:inline-block;width:7px;height:7px;background:var(--model-action);border-radius:50%;margin-right:7px}
+.model-viewport-label{position:absolute;bottom:12px;left:14px;font-size:12px;color:var(--ink2);background:#f9fbf4e8;padding:4px 8px;border-radius:4px}
+.model-cards{display:grid;gap:12px}.model-card{padding:20px;border:1px solid var(--model-border);border-radius:10px;background:var(--paper)}
+.model-card p:not(.model-kicker){margin-top:8px}.model-card strong{color:var(--model-action)}
+.model-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.model-metric span{display:block;color:var(--ink2);font-size:12px}
+.model-metric b{font:400 32px/1.2 var(--serif);color:var(--model-action)}
+.model-metric span:last-child{margin-top:3px}.model-metrics{margin-top:10px}.model-card a{color:var(--model-action);text-underline-offset:4px}
+.model-metric small{font:500 13px var(--sans)}
+#model [hidden]{display:none!important}
+@media(max-width:690px){.model-layout{grid-template-columns:1fr}.model-stage{height:430px}}
+
+#model{--model-border:#d5dad1;--model-action:#006d91;scroll-margin-top:70px}
+#model .sechead{margin-bottom:0}
+.model-card h2,.model-card h3{margin:0;font-weight:400;line-height:1.1}
+.model-card h2{font-size:34px}.model-card h3{font-size:24px}
+.model-kicker{margin:0 0 9px;color:var(--model-action);font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.model-card p:not(.model-kicker){color:var(--ink2)}
 
 /* labs */
 .spot{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:46px}
@@ -280,7 +285,6 @@ footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 @media(max-width:900px){
   .sechead{grid-template-columns:1fr}
   .srcs{justify-content:flex-start}
-  .mdots button{white-space:nowrap}
   .week{grid-template-columns:repeat(4,minmax(0,1fr))}
   .week .act{font-size:17px}
   .week>div{min-height:96px;padding:10px}
@@ -815,16 +819,86 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 </dialog>
 
 <!-- MODEL ZOOM -->
-<section id="model">
-  <div class="wrap mstick">
-    <canvas id="mcanvas"></canvas>
-    <div class="mhead" id="mhead">
-      <div class="num"><b>03</b> Inside the model</div>
+<section id="model" class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>03</b> Inside the model</div>
       <h2>Zoom into<br><em>the twin.</em></h2>
-      <p class="lede">Each system holds its own data. Scroll to move through the body.</p>
+      <p class="lede">Choose a system to see its anatomy and the readings linked to it.</p></div>
     </div>
-    <div class="mpanel" id="mpanel"></div>
-    <div class="mdots" id="mdots"></div>
+<nav class="model-controls" aria-label="Model view">
+<button type="button" data-view="body" aria-pressed="true">Full body</button>
+<button type="button" data-view="lungs" aria-pressed="false">Lungs</button>
+<button type="button" data-view="heart" aria-pressed="false">Heart</button>
+<button type="button" data-view="liver" aria-pressed="false">Liver</button>
+<button type="button" data-view="kidneys" aria-pressed="false">Kidneys</button>
+<button type="button" data-view="gut" aria-pressed="false">Gut &amp; metabolism</button>
+<button type="button" data-view="blood" aria-pressed="false">Blood &amp; immunity</button>
+<button type="button" data-view="muscle" aria-pressed="false">Muscle &amp; bone</button>
+<button type="button" data-view="brain" aria-pressed="false">Brain &amp; sleep</button>
+</nav>
+<div class="model-layout">
+<div class="model-stage" data-view="body">
+<svg id="model-camera" viewBox="-210 -38 920 1420" role="img" aria-label="Full-body anatomical twin">
+<g class="model-images">
+<image class="model-frame" data-active id="model-body" href="examples-studio/twin-neutral.png" width="500" height="1344"/>
+<image class="model-frame" id="model-lungs" href="examples-studio/twin-lungs-focus.png" width="500" height="1344"/>
+<image class="model-frame" id="model-heart" href="examples-studio/twin-heart-focus.png" width="500" height="1344"/>
+<image class="model-frame" id="model-liver" href="examples-studio/twin-liver-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-kidneys" href="examples-studio/twin-kidneys-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-gut" href="examples-studio/twin-gut-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-blood" href="examples-studio/twin-blood-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-muscle" href="examples-studio/twin-muscle-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-brain" href="examples-studio/twin-brain-focus.webp" width="500" height="1344"/>
+</g>
+</svg>
+<button class="model-hotspot" type="button">Lungs</button>
+<span class="model-viewport-label" id="model-view-label">Full body</span>
+</div>
+<div class="model-cards" aria-live="polite">
+<div class="model-card" id="body-copy"><p class="model-kicker">Model overview</p><h2>From body to system</h2><p>Choose a system to see its anatomy and the readings linked to it.</p></div>
+<div class="model-cards" id="lungs-copy" hidden>
+<div class="model-card"><p class="model-kicker">Respiratory system</p><h2>Lungs</h2><p>The close-up shows both lungs and the branching airways within them.</p></div>
+<div class="model-card"><h3>Overnight signals</h3><p>26 Nov 2026 · Simulated wearable example</p><div class="model-metrics"><div class="model-metric"><span>Oxygen saturation</span><b>97.5<small>%</small></b></div><div class="model-metric"><span>Breathing rate</span><b>14.8 <small>/ min</small></b></div></div></div>
+<div class="model-card"><h3>Data coverage</h3><p>This example includes simulated wearable readings. Lung-function test results aren’t included.</p></div>
+</div>
+<div class="model-cards" id="heart-copy" hidden>
+<div class="model-card"><p class="model-kicker">Cardiovascular system</p><h2>Heart</h2><p>The heart is highlighted in its position within the chest.</p></div>
+<div class="model-card"><h3>Resting heart rate</h3><p>26 Nov 2026 · Simulated wearable example</p><div class="model-metric"><b>54 <small>bpm</small></b></div></div>
+<div class="model-card"><h3>LDL cholesterol</h3><p>18 Nov 2026 · N1 lab result</p><div class="model-metric"><b>2.98 <small>mmol/L</small></b></div></div>
+</div>
+<div class="model-cards" id="liver-copy" hidden>
+<div class="model-card"><p class="model-kicker">Digestive system</p><h2>Liver</h2><p>The liver sits under the right side of the rib cage. The readings below come from Jasper’s latest available lab draw.</p></div>
+<div class="model-card"><h3>Latest readings</h3><div class="model-metrics"><div class="model-metric"><span>ALT</span><b>14.6 <small>U/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>AST</span><b>25.3 <small>U/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>GGT</span><b>9.3 <small>U/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Albumin</span><b>46.3 <small>g/L</small></b><span>N1 lab · 18 Nov 2026</span></div></div></div>
+<div class="model-card"><a href="#labs">Explore the readings ↓</a></div>
+</div>
+<div class="model-cards" id="kidneys-copy" hidden>
+<div class="model-card"><p class="model-kicker">Renal system</p><h2>Kidneys</h2><p>The kidneys sit on either side of the spine. Explore filtration and related blood markers.</p></div>
+<div class="model-card"><h3>Latest readings</h3><div class="model-metrics"><div class="model-metric"><span>Creatinine</span><b>119.4 <small>µmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Estimated filtration</span><b>66 <small>mL/min</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Uric acid</span><b>541 <small>µmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Urea</span><b>6.25 <small>mmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div></div></div>
+<div class="model-card"><a href="#labs">Explore the readings ↓</a></div>
+</div>
+<div class="model-cards" id="gut-copy" hidden>
+<div class="model-card"><p class="model-kicker">Digestive system</p><h2>Gut &amp; metabolism</h2><p>The stomach and intestines are shown in context. The lab readings describe glucose and lipid metabolism.</p></div>
+<div class="model-card"><h3>Latest readings</h3><div class="model-metrics"><div class="model-metric"><span>Fasting glucose</span><b>3.77 <small>mmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>HbA1c</span><b>35.63 <small>mmol/mol</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Triglycerides</span><b>1.18 <small>mmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div></div></div>
+<div class="model-card"><a href="#cgm">Explore the readings ↓</a></div>
+</div>
+<div class="model-cards" id="blood-copy" hidden>
+<div class="model-card"><p class="model-kicker">Circulatory system</p><h2>Blood &amp; immunity</h2><p>Blood circulates throughout the body. These measurements describe blood cells and immune markers.</p></div>
+<div class="model-card"><h3>Latest readings</h3><div class="model-metrics"><div class="model-metric"><span>Haemoglobin</span><b>146 <small>g/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>White blood cells</span><b>4.97 <small>10⁹/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Platelets</span><b>231 <small>10⁹/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Hep B surface antibody</span><b>38 <small>IU/L</small></b><span>N1 lab · 18 Nov 2026</span></div></div></div>
+<div class="model-card"><a href="#labs">Explore the readings ↓</a></div>
+</div>
+<div class="model-cards" id="muscle-copy" hidden>
+<div class="model-card"><p class="model-kicker">Musculoskeletal system</p><h2>Muscle &amp; bone</h2><p>The thigh shows how muscle and bone sit together. Explore body composition and related lab readings.</p></div>
+<div class="model-card"><h3>Latest readings</h3><div class="model-metrics"><div class="model-metric"><span>Body fat</span><b>16.6 <small>%</small></b><span>N1 log · 22 Nov 2026</span></div><div class="model-metric"><span>Vitamin D</span><b>97.59 <small>nmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Calcium</span><b>2.42 <small>mmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div><div class="model-metric"><span>Magnesium</span><b>0.8 <small>mmol/L</small></b><span>N1 lab · 18 Nov 2026</span></div></div></div>
+<div class="model-card"><a href="#body">Explore the readings ↓</a></div>
+</div>
+<div class="model-cards" id="brain-copy" hidden>
+<div class="model-card"><p class="model-kicker">Nervous system</p><h2>Brain &amp; sleep</h2><p>The brain is shown inside the skull. Sleep measurements come from the simulated wearable stream.</p></div>
+<div class="model-card"><h3>Latest readings</h3><div class="model-metrics"><div class="model-metric"><span>Sleep duration</span><b>5.7 <small>h</small></b><span>Simulated wearable · 26 Nov 2026</span></div><div class="model-metric"><span>Deep sleep</span><b>1.1 <small>h</small></b><span>Simulated wearable · 26 Nov 2026</span></div></div></div>
+<div class="model-card"><a href="#wear">Explore the readings ↓</a></div>
+</div>
+</div>
+</div>
   </div>
 </section>
 
@@ -1770,90 +1844,41 @@ ring(0, 0, 1, "", "Activity · so far", "", "", `Move 312 / 700 kcal · Exercise
 /* =========================================================
    MODEL ZOOM
    ========================================================= */
-const ROW = (n, v, u, lo, hi, src, sub) => ({ n, v, u, lo, hi, src, sub });
-const lab = (n, short) => { const m = byName(n); return ROW(short || n, m.v, m.unit, m.lo, m.hi, "N1 · " + fd(m.date)); };
-const sim = (n, v, u, lo, hi, s = "simulated") => ROW(n, v, u, null, null, s);
-const STOPS = [
-  { name: "Overview", fx: .5, fy: .5, z: 1 },
-  { name: "Heart & vessels", fx: .6, fy: .255, z: 2.7, why: "Lipids from the lab, blood pressure from home readings, and cardio fitness from the watch.",
-    rows: [lab("LDL Cholesterol", "LDL cholesterol"), lab("HDL Cholesterol", "HDL cholesterol"), lab("Triglycerides"), ROW("Blood pressure", "132/62", "mmHg", null, null, "N1 · 26 Nov"), sim("Resting heart rate", rhr7, "bpm", 40, 70), sim("VO₂ max", T.vo2, "ml/kg/min", 42, 52)] },
-  { name: "Liver", fx: .41, fy: .37, z: 2.7, why: "Enzymes and proteins from three lab draws.",
-    rows: [lab("ALT"), lab("AST"), lab("GGT"), lab("Alkaline Phosphatase", "Alkaline phosphatase"), lab("Total Bilirubin", "Bilirubin"), lab("Albumin")] },
-  { name: "Kidneys", fx: .51, fy: .425, z: 2.6, why: "Filtration, waste and electrolytes. Two of these sat above range in the November draw.",
-    rows: [lab("Creatinine"), lab("eGFR"), lab("Uric Acid", "Uric acid"), lab("Urea"), lab("Potassium"), lab("Sodium")] },
-  { name: "Gut & metabolism", fx: .5, fy: .48, z: 2.3, why: "Glucose control from the lab, fibre from your logged meals.",
-    rows: [lab("Fasting Glucose", "Fasting glucose"), lab("HbA1c"), lab("Triglycerides"), sim("Fibre · 30-day avg", Math.round(avg(DAY.slice(-30).map(d => d.fib))), "g/day", 30, 60), sim("Glucose · 14-day mean", window.SIM.CGMSUM.mean, "mmol/L", 3.9, 7.8, "CGM preview · simulated"), ROW("PHGG + psyllium", "daily", "", null, null, "N1 · supplements")] },
-  { name: "Blood & immunity", fx: .5, fy: .5, z: 1.35, why: "Red cells, white cells and immune markers, all within range except hepatitis B antibody.",
-    rows: [lab("Hemoglobin"), lab("White Blood Cells", "White cells"), lab("Platelets"), lab("hs-CRP"), lab("Iron"), lab("Hepatitis B surface antibody", "Hep B surface antibody")] },
-  { name: "Muscle & bone", fx: .39, fy: .65, z: 2.1, why: "Body composition from the scale, minerals from the lab, strength from your plan.",
-    rows: [ROW("Body fat", 16.6, "%", null, null, "N1 · 22 Nov"), ROW("Skeletal muscle", 37.7, "%", null, null, "Health note · 10 Nov"), lab("25-Hydroxyvitamin D", "Vitamin D"), lab("Calcium"), lab("Magnesium"), sim("Flat DB press · hard set", 12.5, "kg × 20", null, null, "Session log · simulated")] },
-  { name: "Brain & sleep", fx: .5, fy: .075, z: 3, why: "Sleep from the strap, thyroid and nutrients from the lab.",
-    rows: [sim("Sleep · last night", T.sleep, "h", 7, 9), sim("Deep sleep", T.stages.deep, "h", 1, 2), sim("HRV · 7-day", hrv7, "ms", 40, 90), lab("TSH"), lab("Vitamin B12"), lab("Homocysteine")] },
-  { name: "Whole model", fx: .5, fy: .5, z: .92 }
-];
-const mp = $("mpanel"), md = $("mdots");
-STOPS.forEach((s, i) => {
-  const b = H("button", {}, s.name); b.onclick = () => { const sec = $("model"), tot = sec.offsetHeight - innerHeight; scrollTo({ top: sec.offsetTop + tot * (i / (STOPS.length - 1)), behavior: "smooth" }); }; md.appendChild(b); s.btn = b;
-  if (!s.rows) return;
-  const c = H("div", { class: "mcard" }, `<div class="k">${String(i).padStart(2, "0")} / ${String(STOPS.length - 2).padStart(2, "0")}</div><h3>${s.name}</h3><div class="why">${s.why}</div>`);
-  s.rows.forEach(r => {
-    const isNum = typeof r.v == "number";
-    const out = isNum && ((r.hi != null && r.v > r.hi) || (r.lo != null && r.v < r.lo));
-    const row = H("div", { class: "mrow" }, `<div class="n">${r.n}${out ? ' <span class="badge">· ' + (r.v > r.hi ? "HIGH" : "LOW") + "</span>" : ""}</div><div class="val${out ? " f" : ""}">${isNum ? fmt(r.v) : r.v}<small>${r.u}</small></div><div class="r"><span>${r.lo != null || r.hi != null ? rng(r.lo, r.hi) : ""}</span>${isNum && (r.lo != null || r.hi != null) ? "<svg></svg>" : "<span></span>"}<span>${r.src}</span></div>`);
-    const sv = row.querySelector("svg"); if (sv) rangeBar(sv, r.lo, r.hi, r.v, 140, 14, false);
-    c.appendChild(row);
-  });
-  mp.appendChild(c); s.card = c;
-});
-const FW = 500, FH = 1344;
-const twinImg = new Image(); twinImg.src = "twin-f0.webp";
-const mc = $("mcanvas"), mx = mc.getContext("2d");
-let mIdx = -1;
-function mDraw() {
-  const sec = $("model"), r = sec.getBoundingClientRect(), tot = sec.offsetHeight - innerHeight;
-  if (!r.height || r.bottom < 0 || r.top > innerHeight) return requestAnimationFrame(mDraw);
-  const p = clamp(-r.top / tot, 0, 1), n = STOPS.length - 1, t = p * n, i = Math.min(n - 1, Math.floor(t)), f = t - i;
-  const g0 = clamp((f - .4) / .5, 0, 1), g = g0 * g0 * (3 - 2 * g0);
-  const A = STOPS[i], B = STOPS[i + 1] || A;
-  const z = A.z + (B.z - A.z) * g, fx = A.fx + (B.fx - A.fx) * g, fy = A.fy + (B.fy - A.fy) * g;
-  const active = f < .65 ? i : i + 1;
-  if (active != mIdx) { mIdx = active; STOPS.forEach((s, k) => { s.card && s.card.classList.toggle("on", k == active); s.btn.classList.toggle("on", k == active); }); $("mhead").style.opacity = active == 0 || active == n ? 1 : 0; }
-  const dpr = Math.min(2, devicePixelRatio || 1), W = mc.clientWidth, Hh = mc.clientHeight;
-  if (mc.width != W * dpr || mc.height != Hh * dpr) { mc.width = W * dpr; mc.height = Hh * dpr; }
-  mx.setTransform(dpr, 0, 0, dpr, 0, 0); mx.clearRect(0, 0, W, Hh);
-  const mob = matchMedia("(max-width:900px)").matches;
-  const bodyH = (Hh - 80) * (mob ? .66 : .9) * z, bodyW = bodyH * FW / FH;
-  const ax = mob ? W * .5 : W * .42, ay = mob ? 70 + (Hh - 70) * .4 : 74 + (Hh - 74) * .5;
-  // focus point maps to anchor (blend towards body centre at z=1)
-  const k = clamp((z - 1) / 1.2, 0, 1);
-  const cxF = .5 + (fx - .5) * k, cyF = .5 + (fy - .5) * k;
-  const x0 = ax - bodyW * cxF, y0 = ay - bodyH * cyF;
-  // grid
-  mx.strokeStyle = "rgba(0,150,214,.07)"; mx.lineWidth = 1; const gs = 48 * Math.max(1, z * .7);
-  for (let gx = (x0 % gs); gx < W; gx += gs) { mx.beginPath(); mx.moveTo(gx, 0); mx.lineTo(gx, Hh); mx.stroke(); }
-  for (let gy = (y0 % gs); gy < Hh; gy += gs) { mx.beginPath(); mx.moveTo(0, gy); mx.lineTo(W, gy); mx.stroke(); }
-  const fxp = x0 + bodyW * fx, fyp = y0 + bodyH * fy;
-  const glow = mx.createRadialGradient(fxp, fyp, 0, fxp, fyp, 260 * Math.min(z, 2));
-  glow.addColorStop(0, "rgba(0,150,214,.16)"); glow.addColorStop(1, "rgba(0,150,214,0)"); mx.fillStyle = glow; mx.fillRect(0, 0, W, Hh);
-  if (twinImg.complete) { mx.save(); mx.shadowColor = "rgba(0,150,214,.22)"; mx.shadowBlur = 40; mx.drawImage(twinImg, x0, y0, bodyW, bodyH); mx.restore(); }
-  // hotspot
-  const sel = STOPS[active];
-  if (sel && sel.rows && sel.z > 1.5) {
-    const now = performance.now() / 1000, hx = x0 + bodyW * sel.fx, hy = y0 + bodyH * sel.fy, a = clamp(1 - Math.abs(t - active) * 2.2, 0, 1);
-    mx.globalAlpha = a;
-    for (let q = 0; q < 3; q++) { const ph = (now * .6 + q / 3) % 1; mx.strokeStyle = `rgba(0,150,214,${.6 * (1 - ph)})`; mx.lineWidth = 1.5; mx.beginPath(); mx.arc(hx, hy, 20 + ph * 90, 0, Math.PI * 2); mx.stroke(); }
-    mx.strokeStyle = "rgba(28,27,23,.55)"; mx.lineWidth = 1; mx.beginPath(); mx.arc(hx, hy, 14, 0, Math.PI * 2); mx.stroke();
-    [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([u, v]) => { mx.beginPath(); mx.moveTo(hx + u * 22, hy + v * 22); mx.lineTo(hx + u * 44, hy + v * 44); mx.stroke(); });
-    // orbiting data particles
-    for (let q = 0; q < 26; q++) { const an = now * (.25 + q % 5 * .05) + q * 2.4, rr = 60 + (q * 37) % 120; mx.fillStyle = q % 7 == 0 ? "rgba(224,87,60,.9)" : "rgba(0,150,214,.75)"; mx.beginPath(); mx.arc(hx + Math.cos(an) * rr, hy + Math.sin(an) * rr * .55, q % 4 ? 1.6 : 2.6, 0, Math.PI * 2); mx.fill(); }
-    if (!mob) { const pr = mp.getBoundingClientRect(); mx.strokeStyle = "rgba(0,150,214,.4)"; mx.setLineDash([3, 5]); mx.beginPath(); mx.moveTo(hx + 16, hy); mx.lineTo(pr.left - 20, Hh / 2); mx.stroke(); mx.setLineDash([]); }
-    mx.globalAlpha = 1;
+(() => {
+const camera = document.querySelector('#model-camera');
+const stage = document.querySelector('.model-stage');
+const controls = [...document.querySelectorAll('.model-controls button')];
+const hotspot = document.querySelector('.model-hotspot');
+const views = {body: [-210,-38,920,1420], lungs: [-24,113,570,450], heart: [44,128,520,425], liver: [0, 290, 500, 415], kidneys: [4, 355, 500, 415], gut: [0, 399, 500, 445], blood: [-155, -24, 820, 1370], muscle: [-24, 605, 450, 410], brain: [45, -32, 410, 340]};
+const labels = {body: 'Full-body anatomical twin', lungs: 'Chest close-up with the lungs highlighted', heart: 'Chest close-up with the heart highlighted'};
+const panels = Object.fromEntries(Object.keys(views).map(key => [key, document.getElementById(key + "-copy")]));
+const images = [...camera.querySelectorAll(".model-frame")];
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let frame = 0;
+function show(view) {
+  stage.dataset.view = view;
+  controls.forEach(button => button.setAttribute('aria-pressed', button.dataset.view === view));
+  hotspot.hidden = view !== 'body';
+  for (const [key, panel] of Object.entries(panels)) panel.hidden = view !== key;
+  document.querySelector('#model-view-label').textContent = view === 'body' ? 'Full body' : controls.find(button => button.dataset.view === view).textContent + ' close-up';
+  images.forEach(image => image.toggleAttribute('data-active', image.id === 'model-' + view));
+  camera.setAttribute('aria-label', labels[view] ?? controls.find(button => button.dataset.view === view).textContent + ' anatomical view');
+  cancelAnimationFrame(frame);
+  const from = camera.getAttribute('viewBox').split(' ').map(Number);
+  const to = views[view];
+  if (reducedMotion.matches) { camera.setAttribute('viewBox',to.join(' ')); return; }
+  const start = performance.now();
+  function animate(now) {
+    const progress = Math.min(1,(now-start)/560);
+    const eased = progress*progress*(3-2*progress);
+    camera.setAttribute('viewBox',from.map((value,index) => value+(to[index]-value)*eased).join(' '));
+    if(progress<1) frame=requestAnimationFrame(animate);
   }
-  // scale bar / HUD
-  mx.fillStyle = "rgba(28,27,23,.45)"; mx.font = "11px DM Mono"; mx.fillText(`ZOOM ${z.toFixed(2)}×   FOCUS ${(fx * 100).toFixed(0)},${(fy * 100).toFixed(0)}`, W - (mob ? 190 : 260), Hh - 24);
-  requestAnimationFrame(mDraw);
+  frame=requestAnimationFrame(animate);
 }
-requestAnimationFrame(mDraw);
+controls.forEach(button => button.onclick = () => show(button.dataset.view));
+hotspot.onclick = () => { show('lungs'); controls[1].focus({preventScroll:true}); };
+})();
 
 /* =========================================================
    LABS
@@ -2618,7 +2643,7 @@ document.querySelectorAll("#cal .k, #strain, #macro").forEach(() => {});
 $("wt").addEventListener("click", e => { if (e.target.tagName != "circle") return; const cx = +e.target.getAttribute("cx"); const t = pd("2026-08-27") + (cx - 40) / (800 - 54) * (pd("2026-12-14") - pd("2026-08-27")); const i = Math.round((t - pd(DAY[0].d)) / 864e5); if (i >= 0 && i <= LAST) openDay(i); });
 
 /* ================= renumber section labels ================= */
-document.querySelectorAll(".sechead .num b, .mhead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
+document.querySelectorAll(".sechead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
 })();
 
 </script>
@@ -2940,7 +2965,7 @@ exUI(); exDraw();
 const tsSel = $("tsm"); tsSel.innerHTML = optHTML(tsKey); tsSel.onchange = e => { tsKey = e.target.value; tsDraw(); }; tsDraw();
 $("drvt").onchange = e => { target = e.target.value; drivers(); }; drivers();
 matrix(); energy(); glucoseDrivers(); weekly(); labmap(); raw();
-document.querySelectorAll(".sechead .num b, .mhead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
+document.querySelectorAll(".sechead .num b").forEach((b, k) => b.textContent = String(k + 1).padStart(2, "0"));
 })();
 
 </script>
