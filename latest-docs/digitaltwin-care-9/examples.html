@@ -141,6 +141,9 @@ section{position:relative}
 /* medical analysis */
 #medical-analysis .sechead{margin-bottom:26px}
  .clinical-intro,.clinical-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.clinical-intro{align-items:start}
+.clinical-story{display:grid;gap:14px}
+.clinical-columns.clinical-impression{grid-template-columns:minmax(0,1fr)}
 .clinical-columns{margin-top:18px;align-items:start}
 .clinical-brief h3,.clinical-heading{font-size:clamp(25px,3vw,36px);line-height:1.07;margin:0 0 12px}
 .clinical-brief p{margin:0 0 10px;color:var(--ink2);font-size:14px}
@@ -738,15 +741,34 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 
     <div class="clinical-intro">
       <article class="card clinical-brief">
+        <h3>Patient profile</h3>
+        <dl class="clinical-profile">
+          <div><dt>Age, sex and height</dt><dd>39 · male · 190 cm</dd></div>
+          <div><dt>Work</dt><dd>Engineering manager · largely seated</dd></div>
+          <div><dt>Alcohol and tobacco</dt><dd>Never</dd></div>
+          <div><dt>Medication and allergies</dt><dd>Supplements only · no known medication or food allergies</dd></div>
+          <div><dt>Family history</dt><dd>No known early heart, metabolic, kidney or bowel disease in the health note</dd></div>
+          <div><dt>Diet</dt><dd>Plant-forward slow carb · soy, legumes, eggs, chicken and fish · little dairy · no red meat or pork</dd></div>
+          <div><dt>Training</dt><dd>BJJ three evenings a week, Saturday Pilates and a 12-week dumbbell plan started 23 November</dd></div>
+          <div><dt>Symptoms noted</dt><dd>Occasional calf cramps, low energy during some BJJ sessions and lower-back discomfort after prolonged sitting</dd></div>
+        </dl>
+      </article>
+      <div class="clinical-story">
+      <article class="card clinical-brief">
         <h3>Reason for assessment</h3>
         <p>Jasper asked for a complete review of his health record: three blood panels over 18 months, home measurements since late August, his health note, and the available device, glucose, training and genetic data. His goals are long-term health, mobility, strength and healthy ageing, with weight and body fat as measures along the way.</p>
         <p>The full report goes system by system through the findings, explains the strength of the evidence and closes with a ranked plan. Device and glucose previews on this site are labeled where simulated.</p>
       </article>
       <article class="card clinical-brief">
-        <h3>Overall impression</h3>
-        <p>Most November lab results were reassuring. Liver markers, blood counts, inflammation, thyroid, electrolytes and urine were within range. Vitamin D recovered, HbA1c improved and logged weight declined.</p>
-        <p>The report prioritises persistent LDL elevation, recurring increases in creatinine and uric acid, and gaps in the home blood-pressure record. It also calls out sleep duration and baseline measures of strength and aerobic capacity.</p>
+        <h3>Clinical history</h3>
+        <ol class="clinical-timeline">
+          <li><time datetime="2025-05">May 2025</time><p>First panel showed elevated LDL, creatinine and uric acid. Circumstances of the draw were unrecorded.</p></li>
+          <li><time datetime="2026-05">May 2026</time><p>After a low-activity year, creatinine and uric acid were within range. LDL was higher, and vitamin D was just below range.</p></li>
+          <li><time datetime="2026-08">August–October 2026</time><p>Restarted BJJ and Pilates, returned to a slow-carb diet and began logging weight. Travel and a planned diet break interrupted the routine.</p></li>
+          <li><time datetime="2026-11">November 2026</time><p>Started body-fat and home blood-pressure readings and a dumbbell plan. The third blood draw followed fasting and training. LDL fell, while creatinine and uric acid rose again.</p></li>
+        </ol>
       </article>
+      </div>
     </div>
 
     <h3 class="clinical-heading">What changed</h3>
@@ -764,6 +786,13 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       <div><strong>6–7 <small>h</small></strong><span>Typical sleep per night · health note</span></div>
     </div>
 
+    <div class="clinical-columns clinical-impression">
+      <article class="card clinical-brief">
+        <h3>Overall impression</h3>
+        <p>Most November lab results were reassuring. Liver markers, blood counts, inflammation, thyroid, electrolytes and urine were within range. Vitamin D recovered, HbA1c improved and logged weight declined.</p>
+        <p>The report prioritises persistent LDL elevation, recurring increases in creatinine and uric acid, and gaps in the home blood-pressure record. It also calls out sleep duration and baseline measures of strength and aerobic capacity.</p>
+      </article>
+    </div>
     <div class="clinical-columns">
       <article class="card clinical-brief">
         <h3>Ranked problem list</h3>
@@ -792,31 +821,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
           <li><span class="clinical-status gray">Grey</span> Brain and mood · no data</li>
         </ul>
         <details class="clinical-detail"><summary>Compare the three lab draws</summary><div class="assessment-evidence" data-assessment-markers="LDL Cholesterol|Creatinine|Uric Acid|eGFR|Fasting Glucose|HbA1c|25-Hydroxyvitamin D|Vitamin B12|Hepatitis B surface antibody"></div></details>
-      </article>
-    </div>
-
-    <div class="clinical-columns">
-      <article class="card clinical-brief">
-        <h3>Clinical history</h3>
-        <ol class="clinical-timeline">
-          <li><time datetime="2025-05">May 2025</time><p>First panel showed elevated LDL, creatinine and uric acid. Circumstances of the draw were unrecorded.</p></li>
-          <li><time datetime="2026-05">May 2026</time><p>After a low-activity year, creatinine and uric acid were within range. LDL was higher, and vitamin D was just below range.</p></li>
-          <li><time datetime="2026-08">August–October 2026</time><p>Restarted BJJ and Pilates, returned to a slow-carb diet and began logging weight. Travel and a planned diet break interrupted the routine.</p></li>
-          <li><time datetime="2026-11">November 2026</time><p>Started body-fat and home blood-pressure readings and a dumbbell plan. The third blood draw followed fasting and training. LDL fell, while creatinine and uric acid rose again.</p></li>
-        </ol>
-      </article>
-      <article class="card clinical-brief">
-        <h3>Patient profile</h3>
-        <dl class="clinical-profile">
-          <div><dt>Age, sex and height</dt><dd>39 · male · 190 cm</dd></div>
-          <div><dt>Work</dt><dd>Engineering manager · largely seated</dd></div>
-          <div><dt>Alcohol and tobacco</dt><dd>Never</dd></div>
-          <div><dt>Medication and allergies</dt><dd>Supplements only · no known medication or food allergies</dd></div>
-          <div><dt>Family history</dt><dd>No known early heart, metabolic, kidney or bowel disease in the health note</dd></div>
-          <div><dt>Diet</dt><dd>Plant-forward slow carb · soy, legumes, eggs, chicken and fish · little dairy · no red meat or pork</dd></div>
-          <div><dt>Training</dt><dd>BJJ three evenings a week, Saturday Pilates and a 12-week dumbbell plan started 23 November</dd></div>
-          <div><dt>Symptoms noted</dt><dd>Occasional calf cramps, low energy during some BJJ sessions and lower-back discomfort after prolonged sitting</dd></div>
-        </dl>
       </article>
     </div>
 
