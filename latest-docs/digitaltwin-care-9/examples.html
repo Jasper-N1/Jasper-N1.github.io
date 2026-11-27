@@ -54,13 +54,9 @@ section{position:relative}
 /* hero */
 #hero{padding:clamp(30px,5vw,68px) 0 clamp(40px,5vw,72px)}
 .hero-grid{display:grid;gap:clamp(16px,2.2vw,28px)}
-.hero-visual{position:relative;overflow:hidden;border-radius:8px;border:var(--hair-soft);background:#ded2c8}
+.hero-visual{min-width:0}
 .hero-portrait{display:block;width:100%;height:auto}
-@media(min-width:901px){.hero-visual{width:min(100%,max(560px,calc((100svh - 270px) * 1.23)));justify-self:center}}
-#heroTwin{position:absolute;top:8.5%;bottom:4%;left:72%;width:29%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center}
-#heroTwin canvas{display:block;width:auto;height:100%;max-width:100%;object-fit:contain;background:url("twin-f0.webp") center / contain no-repeat}
-#heroTwin.is-ready canvas{background:none}
-.twinload{position:absolute;right:12px;bottom:12px;padding:5px 8px;border-radius:4px;background:#fffdf8e6;font:500 10px var(--mono);color:var(--action);transition:opacity .5s}
+@media(min-width:901px){.hero-visual{width:min(100%,max(560px,calc((100svh - 270px) * 1.28)));justify-self:center}}
 .hero-biomarkers,.tags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .tags{grid-template-columns:repeat(2,minmax(0,1fr));grid-column:span 2}
 .tag{min-width:0;padding:10px 12px;border:var(--hair-soft);border-radius:8px;background:#fffdf8}
@@ -595,9 +591,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 <section id="hero" aria-label="Jasper’s digital twin and biomarkers">
   <div class="wrap hero-grid">
     <div class="hero-visual">
-      <img class="hero-portrait" src="twin-hero-portrait-extended.webp" width="3200" height="2600" alt="Jasper standing in a burgundy sweater" fetchpriority="high" decoding="async">
-      <div id="heroTwin" role="img" aria-label="Animated anatomical model of Jasper"><canvas id="htc" width="500" height="1344" aria-hidden="true"></canvas></div>
-      <div class="twinload" id="twinLoad" aria-hidden="true">Loading model <b id="tlp">0</b>%</div>
+      <img class="hero-portrait" src="jasper-digital-twin-portrait.png" width="1419" height="1108" alt="Jasper in a burgundy sweater standing beside his digital twin" fetchpriority="high" decoding="async">
     </div>
     <div class="hero-biomarkers" role="group" aria-label="Jasper’s biomarkers">
       <div class="tags tags-left" id="tagsLeft"></div>
@@ -1637,32 +1631,6 @@ document.querySelectorAll(".reveal,.sechead,.card,.tile,.spotc,.gene,.meal,.log,
 
 /* ---------- counters ---------- */
 
-/* =========================================================
-   HERO TWIN (sprite sheets)
-   ========================================================= */
-const NSH = 47, NFR = 186, FPS = 36, FW = 500, FH = 1344;
-const sheets = new Array(NSH); let sheetsIn = 0, twinReady = false;
-const htc = $("htc"), hctx = htc.getContext("2d");
-function loadSheets() {
-  let next = 0;
-  const chain = () => { if (next >= NSH) return; const i = next++; const im = new Image(); im.decoding = "async";
-    im.onload = () => { sheets[i] = im; sheetsIn++; $("tlp").textContent = Math.round(sheetsIn / NSH * 100); if (sheetsIn === NSH) ready(); chain(); };
-    im.onerror = () => { sheetsIn++; if (sheetsIn === NSH) ready(); chain(); };
-    im.src = "walk36-" + String(i).padStart(2, "0") + ".webp"; };
-  chain(); chain(); chain();
-}
-function ready() { twinReady = true; if (sheets.some(Boolean)) $("heroTwin").classList.add("is-ready"); $("twinLoad").style.opacity = 0; setTimeout(() => { $("twinLoad").style.display = "none"; }, 600); }
-let heroVisible = true;
-new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe($("hero"));
-function heroLoop(t) {
-  if (twinReady && heroVisible) {
-    const f = Math.floor(t / 1000 * FPS) % NFR, sh = sheets[f >> 2];
-    if (sh) { const q = f & 3; hctx.clearRect(0, 0, FW, FH); hctx.drawImage(sh, (q & 1) * FW, (q >> 1) * FH, FW, FH, 0, 0, FW, FH); }
-  }
-  requestAnimationFrame(heroLoop);
-}
-loadSheets(); requestAnimationFrame(heroLoop);
-
 /* hero tags */
 const ldl = byName("LDL Cholesterol"), cre = byName("Creatinine"), ua = byName("Uric Acid"), vd = byName("25-Hydroxyvitamin D");
 const hrv7 = Math.round(avg(DAY.slice(-7).map(d => d.hrv))), rhr7 = Math.round(avg(DAY.slice(-7).map(d => d.rhr)));
@@ -1831,6 +1799,7 @@ STOPS.forEach((s, i) => {
   });
   mp.appendChild(c); s.card = c;
 });
+const FW = 500, FH = 1344;
 const twinImg = new Image(); twinImg.src = "twin-f0.webp";
 const mc = $("mcanvas"), mx = mc.getContext("2d");
 let mIdx = -1;
