@@ -372,32 +372,38 @@
   .plat .pviz canvas { position: absolute; left: 0; right: 0; bottom: 0; top: 41px; width: 100%; height: calc(100% - 41px); }
   .plat .sensing-scan { background: rgba(250,241,231,.44); border-color: #9eaaa7; }
   .sensing-scan .ph2 { background: rgba(247,250,246,.90); border-bottom-color: #83aeb84d; }
-  .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:rgba(237,246,242,.46); border-color:#a1b9b7; }
-  .intervention-viz .ph2 { background:#f7f6f0; }
+  .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:transparent; border-color:#a1b9b7; }
+  .intervention-viz .ph2 { background:transparent; }
   .plat .intervention-viz .intervention-heat { height:calc(100% - 84px); }
   .intervention-score { grid-row:2; position:relative; z-index:1; margin:10px 10px 10px 36%;
-    padding:clamp(12px,2vw,25px); border:1px solid #dce5de; border-radius:8px; background:rgba(255,253,245,.94);
+    padding:clamp(12px,2vw,25px); border:0; background:transparent;
     color:#253732; display:grid; align-content:center; gap:clamp(10px,1.45vw,18px); }
   .score-overview { display:grid; grid-template-columns:clamp(78px,24%,112px) minmax(0,1fr); align-items:center; gap:clamp(12px,1.5vw,22px); }
   .score-dial { width:100%; aspect-ratio:1; position:relative; display:grid; place-content:center; justify-items:center;
-    border-radius:50%; background:conic-gradient(var(--score-accent) var(--score-fill),#dee9df 0); }
-  .score-dial::before { content:""; position:absolute; inset:5px; border-radius:50%; background:#fffdf6; }
+    border-radius:50%; }
+  .score-dial::before { content:""; position:absolute; inset:0; border-radius:inherit;
+    background:conic-gradient(var(--score-accent) var(--score-fill),rgba(38,112,85,.17) 0);
+    mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px)); }
   .score-number,.score-denominator { z-index:1; }
   .score-number { font:500 clamp(23px,3.2vw,40px)/.95 var(--serif); letter-spacing:-.035em; color:#193830; }
   .score-denominator { margin-top:4px; color:#4b675d; font:500 9px var(--mono); }
   .score-caption { margin:0 0 5px !important; color:#546b60 !important; font:500 10px/1.3 var(--mono) !important; text-transform:uppercase; letter-spacing:.06em; }
   .plat .score-title { margin:0; color:#203c32; font:400 clamp(21px,2.4vw,34px)/1.02 var(--serif); letter-spacing:-.025em; }
   .plat .score-status { margin:6px 0 0; color:#306756; font:500 clamp(11px,1.2vw,15px)/1.3 var(--sans); }
+  .score-progress { position:relative; height:8px; margin-inline:4px;
+    background:repeating-linear-gradient(90deg,rgba(38,112,85,.20) 0 1px,transparent 1px 10%); }
+  .score-progress::before { content:""; position:absolute; inset:3px 0 auto; height:2px; background:rgba(38,112,85,.17); }
+  .score-progress::after { content:""; position:absolute; inset:3px auto auto 0; width:var(--score-fill); height:2px; background:var(--score-accent); }
   .score-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:0; }
-  .score-metrics > div { padding:8px; border:1px solid #dbe6dd; border-radius:6px; background:#f0f5ee; }
+  .score-metrics > div { padding:8px; border-top:1px solid #91aaa0; background:transparent; }
   .score-metrics dt { color:#496156; font:500 9px/1.2 var(--mono); text-transform:uppercase; }
   .score-metrics dd { margin:4px 0 0; color:#25473a; font:600 clamp(11px,1.35vw,17px)/1.1 var(--sans); }
   .plat .score-next { margin:0; color:#52635a; font:400 clamp(10px,1.1vw,13px)/1.35 var(--sans); }
   .viz-tabs { grid-row:3; position:relative; z-index:1; display:flex; justify-content:center; gap:8px; align-items:center;
-    min-height:43px; padding:5px; border-top:1px solid #c8d9d1; background:#f5f7ef; }
+    min-height:43px; padding:5px; border-top:1px solid #c8d9d1; background:transparent; }
   .viz-tabs button { padding:6px 11px; border:1px solid transparent; border-radius:99px; background:transparent;
     color:#465e54; font:500 11px var(--mono); cursor:pointer; }
-  .viz-tabs button[aria-pressed="true"] { color:#1f5541; border-color:#a0c8b1; background:#deeee1; }
+  .viz-tabs button[aria-pressed="true"] { color:#1f5541; border-color:#a0c8b1; background:transparent; }
   .viz-tabs button:focus-visible { outline:2px solid #27745a; outline-offset:1px; }
   @media(max-width:580px) {
     .plat .intervention-viz { aspect-ratio:auto; grid-template-rows:41px minmax(140px,34vw) auto auto; }
@@ -1260,6 +1266,7 @@
               <p class="score-status">77% of the way to 80 kg</p>
             </div>
           </div>
+          <div class="score-progress" aria-hidden="true"></div>
           <dl class="score-metrics">
             <div><dt>Start</dt><dd>88.1 kg</dd></div>
             <div><dt>Latest</dt><dd>81.9 kg</dd></div>
@@ -2632,59 +2639,62 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   }
 
   const scanFeeds = [
-    ["LIPID PANEL", .55, .28], ["RESTING HEART RATE", .55, .29], ["KNEE SCAN", .43, .72],
-    ["MEDICATION RECORD", .45, .39], ["FOLLOW-UP NOTE", .54, .45], ["GENETIC REPORT", .50, .11]
+    ["LAB · LDL","2.98 mmol/L",.55,.28,"#267caa"],
+    ["WATCH · RESTING HR","53 bpm",.55,.29,"#008b86"],
+    ["MRI · KNEE","Meniscus",.43,.72,"#75609e"],
+    ["PHARMACY","Medication record",.45,.39,"#4f759d"],
+    ["GP LETTER","BP follow-up",.54,.45,"#008b86"],
+    ["GENETIC REPORT","APOE E3 / E3",.50,.11,"#75609e"]
   ];
   const stream = (v, t, dt) => {
-    const {cv, g, W, H, st} = v;
-    const still = networkMotion.matches;
-    const interval = 1.25, duration = scanFeeds.length * interval;
-    st.elapsed = still ? duration : ((st.elapsed || 0) + dt) % duration;
-    const index = Math.min(scanFeeds.length - 1, Math.floor(st.elapsed / interval));
-    const fade = still ? 1 : Math.min(1, (st.elapsed % interval) / .36);
+    const {g,W,H,st} = v, still = networkMotion.matches;
+    const interval = 1.05;
+    st.elapsed = still ? 2.7 : (st.elapsed || 0) + dt;
+    const index = Math.floor(st.elapsed / interval), phase = (st.elapsed % interval) / interval;
     const box = imagingBox(v), {x,y,w,h} = box;
     const source = !still && scanColourFrame?.hasAttribute("data-frame") ? scanColourFrame : panelModel;
     if (w > 0 && h > 0 && (source === scanColourFrame || panelModel.naturalWidth)) {
       g.save();
-      g.filter = "grayscale(.8) sepia(.48) saturate(1.44) contrast(1.12)";
-      g.globalAlpha = .9;
+      g.filter = "grayscale(.48) sepia(.18) saturate(1.2)";
+      g.globalAlpha = .82;
       drawImagingModel(g,box,source);
       g.restore();
     }
 
-    // Incoming records move down the right side of the scan window.
-    const railX = Math.min(W * .78, Math.max(W * .67, x + w + W * .04));
-    const railTop = H * .12, railBottom = H * .73;
-    label(g,"INCOMING DATA",W-20,railTop-10,BL,"right");
-    for (let lane = 0; lane < 3; lane++) {
-      const laneX = railX + lane * Math.min(16,W * .035);
-      g.strokeStyle = "rgba(0,110,156,.24)"; g.lineWidth = 1;
-      g.beginPath(); g.moveTo(laneX,railTop); g.lineTo(laneX,railBottom); g.stroke();
-      const phase = still ? .28 + lane * .19 : (st.elapsed * .72 + lane * .33) % 1;
-      const point = railTop + phase * (railBottom - railTop);
-      for (let j = 4; j >= 0; j--) {
-        const tail = point - j * 6;
-        if (tail < railTop) continue;
-        g.fillStyle = `rgba(0,150,214,${.85 - j * .15})`;
-        g.beginPath(); g.arc(laneX,tail,j ? 1.25 : 2.8,0,2*Math.PI); g.fill();
+    const left = W * .56, right = W - 18, top = H * .17, bottom = H * .74;
+    const columns = Math.max(8,Math.floor((right-left)/12));
+    const rows = Math.max(7,Math.floor((bottom-top)/12));
+    const [name,value,,,color] = scanFeeds[index % scanFeeds.length];
+    const waveRow = (col,packet) => (rows-1)*(.5 + .32*Math.sin(col*.36 + packet*1.74));
+    label(g,"INCOMING DATA",right,top-15,BL,"right");
+    for (let col=0;col<columns;col++) {
+      const px=left+col*(right-left)/(columns-1);
+      for (let row=0;row<rows;row++) {
+        const py=top+row*(bottom-top)/(rows-1);
+        const distance = Math.abs(row-waveRow(col,index)) + Math.abs(col-(1-phase)*(columns-1))*.49;
+        const signal = Math.max(0,1-distance/2.6);
+        g.fillStyle = signal ? color : "#215367";
+        g.globalAlpha = signal ? .20 + signal*.8 : .16;
+        g.beginPath(); g.arc(px,py,1+signal*1.6,0,2*Math.PI); g.fill();
       }
-      g.fillStyle = "rgba(0,110,156,.54)"; g.beginPath(); g.arc(laneX,railBottom,2,0,2*Math.PI); g.fill();
     }
-    const [,u,z] = scanFeeds[index], targetX = x+u*w, targetY = y+z*h;
-    if (targetX > 12 && targetX < railX-12 && targetY > 10 && targetY < H-10) {
-      g.strokeStyle = `rgba(0,110,156,${.10 + fade * .19})`; g.lineWidth = 1;
-      g.beginPath(); g.moveTo(railX,railBottom);
-      g.bezierCurveTo(railX-27,railBottom,targetX+40,targetY,targetX,targetY); g.stroke();
+    g.globalAlpha=1;
+    const previous = (index + scanFeeds.length - 1) % scanFeeds.length;
+    const [, , prevU, prevZ, prevColor] = scanFeeds[previous];
+    const targetX=x+prevU*w, targetY=y+prevZ*h;
+    if (targetX>12 && targetX<left && targetY>12 && targetY<H-12 && phase<.62) {
+      const startY=top+waveRow(0,index-1)*(bottom-top)/(rows-1);
+      g.strokeStyle=prevColor;
+      g.globalAlpha=.62*(1-phase/.62);
+      g.beginPath();g.moveTo(left,startY);g.bezierCurveTo(left-24,startY,targetX+23,targetY,targetX,targetY);g.stroke();
+      g.beginPath();g.arc(targetX,targetY,3+phase*15,0,2*Math.PI);g.stroke();
+      g.globalAlpha=1;
     }
-    g.strokeStyle = "rgba(0,110,156,.56)"; g.lineWidth = 1; g.beginPath();
-    for (const [cx,cy,dx,dy] of [[12,12,1,1],[W-12,12,-1,1],[12,H-12,1,-1],[W-12,H-12,-1,-1]]) {
-      g.moveTo(cx,cy+dy*10); g.lineTo(cx,cy); g.lineTo(cx+dx*10,cy);
-    }
-    g.stroke();
-    label(g,"CT-STYLE ANATOMY",21,H-33,BL);
-    label(g,"ILLUSTRATION",21,H-20);
-    g.fillStyle = "rgba(247,250,246,.88)"; g.fillRect(W-157,H-49,137,29);
-    label(g,scanFeeds[index][0],W-26,H-31,BL,"right");
+    label(g,"CT-STYLE ANATOMY",16,H-32,BL);
+    label(g,"ILLUSTRATION",16,H-17);
+    g.fillStyle="rgba(248,248,239,.82)";g.fillRect(left-8,H-49,right-left+12,37);
+    label(g,name,right,H-35,color,"right");
+    label(g,value,right,H-19,undefined,"right");
   };
   const thermalRegions = [
     [[.49,.51],[.43,.69],[.59,.72]], [[.55,.27],[.48,.38]], [[.50,.105],[.55,.28]]
@@ -2710,7 +2720,6 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       else g.clearRect(0,0,W,H);
       g.restore();
     }
-    g.fillStyle="rgba(247,250,246,.86)";g.fillRect(9,10,102,34);
     label(g,"HEAT MAP",15,23,BL);
     label(g,"AREAS OF FOCUS",15,36);
   };
@@ -2816,6 +2825,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     dashboard.style.setProperty("--score-fill",fill+"%");
     dashboard.style.setProperty("--score-accent",accent);
     dashboard.querySelector(".score-denominator").hidden=index!==0;
+    dashboard.querySelector(".score-progress").hidden=index!==0;
     for (const [key,value] of Object.entries({number,caption,title,status,next})) dashboard.querySelector(".score-"+key).textContent=value;
     dashboard.querySelectorAll(".score-metrics > div").forEach((cell,i)=>{
       cell.querySelector("dt").textContent=metrics[i][0];
