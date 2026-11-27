@@ -380,15 +380,7 @@
   .intervention-score { grid-row:2; position:relative; z-index:1; margin:10px 10px 10px 36%;
     padding:clamp(12px,2vw,25px); border:0; background:transparent;
     color:#253732; display:grid; align-content:center; gap:clamp(10px,1.45vw,18px); }
-  .score-overview { display:grid; grid-template-columns:clamp(78px,24%,112px) minmax(0,1fr); align-items:center; gap:clamp(12px,1.5vw,22px); }
-  .score-dial { width:100%; aspect-ratio:1; position:relative; display:grid; place-content:center; justify-items:center;
-    border-radius:50%; }
-  .score-dial::before { content:""; position:absolute; inset:0; border-radius:inherit;
-    background:conic-gradient(var(--score-accent) var(--score-fill),rgba(38,112,85,.17) 0);
-    mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px)); }
-  .score-number,.score-denominator { z-index:1; }
-  .score-number { font:500 clamp(23px,3.2vw,40px)/.95 var(--serif); letter-spacing:-.035em; color:#193830; }
-  .score-denominator { margin-top:4px; color:#4b675d; font:500 9px var(--mono); }
+  .score-source { width:fit-content; font:500 11px var(--mono); color:#306756; text-underline-offset:3px; }
   .score-caption { margin:0 0 5px !important; color:#546b60 !important; font:500 10px/1.3 var(--mono) !important; text-transform:uppercase; letter-spacing:.06em; }
   .plat .score-title { margin:0; color:#203c32; font:400 clamp(21px,2.4vw,34px)/1.02 var(--serif); letter-spacing:-.025em; }
   .plat .score-status { margin:6px 0 0; color:#306756; font:500 clamp(11px,1.2vw,15px)/1.3 var(--sans); }
@@ -1259,27 +1251,25 @@
     </div>
       <div class="ptx" data-bounce><h3>Deep medically validated intelligence</h3><p class="pbody">Continuous data lets the AI learn an individual baseline and normal range, then flag a deviation well before a population-based reference range would register an issue.</p></div></div>
     <div class="prow"><div class="ptx" data-bounce><h3>Actionable insights tailored to you</h3><p class="pbody">The system acts on the live data stream. Because it keeps monitoring, it tracks the response to every intervention and adjusts continuously.</p></div>
-      <div class="pviz intervention-viz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Closed loop</span></div>
+      <div class="pviz intervention-viz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Jasper’s example</span></div>
         <canvas class="intervention-heat" data-viz="thermal" role="img" aria-label="Illustrative heat map on the moving digital twin showing areas of focus"></canvas>
         <div class="intervention-score" style="--score-accent:#3d9270;--score-fill:77%">
-          <div class="score-overview">
-            <div class="score-dial"><strong class="score-number">77</strong><span class="score-denominator">/ 100</span></div>
-            <div>
-              <p class="score-caption">Weight goal · recorded weigh-ins</p>
-              <h3 class="score-title">Improvement score</h3>
-              <p class="score-status">77% of the way to 80 kg</p>
-            </div>
+          <div>
+            <p class="score-caption">N1 · recorded weigh-ins</p>
+            <h3 class="score-title">1.9 kg to go</h3>
+            <p class="score-status">Weight target · 80 kg by 12 Dec 2026</p>
           </div>
           <div class="score-progress" aria-hidden="true"></div>
           <dl class="score-metrics">
-            <div><dt>Start</dt><dd>88.1 kg</dd></div>
-            <div><dt>Latest</dt><dd>81.9 kg</dd></div>
-            <div><dt>Goal</dt><dd>80 kg</dd></div>
+            <div><dt>1 Sep · evening</dt><dd>88.1 kg</dd></div>
+            <div><dt>26 Nov · AM</dt><dd>81.9 kg</dd></div>
+            <div><dt>12 Dec · goal</dt><dd>80 kg</dd></div>
           </dl>
-          <p class="score-next">6.2 kg of the planned 8.1 kg lost.</p>
+          <p class="score-next">6.2 kg between these two weigh-ins, taken at different times of day.</p>
+          <a class="score-source" href="examples.html#body">See Jasper’s weigh-ins →</a>
         </div>
         <div class="viz-tabs" role="group" aria-label="Intervention views">
-          <button type="button" aria-pressed="true">Improvement</button><button type="button" aria-pressed="false">LDL</button><button type="button" aria-pressed="false">Recovery</button>
+          <button type="button" aria-pressed="true">Weight</button><button type="button" aria-pressed="false">LDL</button><button type="button" aria-pressed="false">Body fat</button>
         </div>
       </div></div>
   </div>
@@ -2746,27 +2736,27 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       g.stroke();
     }
   };
-  // 3. a dashboard for recovery and recorded follow-up measurements
+  // Recorded readings and personal goals from the Jasper example.
   const scoreViews = [
-    ["77",77,"#3d9270","Weight goal · recorded weigh-ins","Improvement score","77% of the way to 80 kg",
-      [["Start","88.1 kg"],["Latest","81.9 kg"],["Goal","80 kg"]],
-      "6.2 kg of the planned 8.1 kg lost."],
-    ["−17%",17,"#25829b","Recorded lab draws","LDL cholesterol","Lower since May 2026",
-      [["May","3.61 mmol/L"],["November","2.98 mmol/L"],["Lab limit","2.58 mmol/L"]],
-      "Still above the lab limit. Discuss apoB and repeat lipids with your clinician."],
-    ["56%",56,"#3d9270","Simulated wearable data","Recovery","Average recovery score",
-      [["After BJJ","45%"],["Average HRV","49.1 ms"],["Resting HR","57.4 bpm"]],
-      "Connect wearable data to track recovery alongside training."]
+    ["N1 · recorded weigh-ins","1.9 kg to go","Weight target · 80 kg by 12 Dec 2026",
+      [["1 Sep · evening","88.1 kg"],["26 Nov · AM","81.9 kg"],["12 Dec · goal","80 kg"]],
+      "6.2 kg between these two weigh-ins, taken at different times of day.","See Jasper’s weigh-ins →","body"],
+    ["Recorded lab draws","LDL fell by 0.63 mmol/L","November result remains above the lab limit",
+      [["11 May","3.61 mmol/L"],["18 Nov","2.98 mmol/L"],["Lab limit","2.58 mmol/L"]],
+      "The lab limit is a reference value.","See Jasper’s lab results →","labs"],
+    ["N1 · Omron estimates","1.6 points to go","Body-fat target · 15% by 12 Dec 2026",
+      [["21 Nov","15.6%"],["22 Nov","16.6%"],["12 Dec · goal","15%"]],
+      "The two most recent estimates differ by 1 percentage point.","See Jasper’s body-fat readings →","body"]
   ];
   const dashboard = document.querySelector(".intervention-score");
   const buttons = [...document.querySelectorAll(".viz-tabs button")];
   function showScore(index) {
-    const [number,fill,accent,caption,title,status,metrics,next] = scoreViews[index];
-    dashboard.style.setProperty("--score-fill",fill+"%");
-    dashboard.style.setProperty("--score-accent",accent);
-    dashboard.querySelector(".score-denominator").hidden=index!==0;
+    const [caption,title,status,metrics,next,source,section] = scoreViews[index];
     dashboard.querySelector(".score-progress").hidden=index!==0;
-    for (const [key,value] of Object.entries({number,caption,title,status,next})) dashboard.querySelector(".score-"+key).textContent=value;
+    for (const [key,value] of Object.entries({caption,title,status,next})) dashboard.querySelector(".score-"+key).textContent=value;
+    const link=dashboard.querySelector(".score-source");
+    link.textContent=source;
+    link.href="examples.html#"+section;
     dashboard.querySelectorAll(".score-metrics > div").forEach((cell,i)=>{
       cell.querySelector("dt").textContent=metrics[i][0];
       cell.querySelector("dd").textContent=metrics[i][1];
