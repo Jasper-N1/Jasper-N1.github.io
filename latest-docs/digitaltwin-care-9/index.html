@@ -888,11 +888,15 @@
 
   /* Capture log: source icons and a single active reading. */
   .capture-data { table-layout: fixed; width: 100% !important; }
-  .capture-data th:nth-child(1) { width: 9ch; }
-  .capture-data th:nth-child(2) { width: 16ch; }
+  .capture-data th:nth-child(1) { width: 10.5ch; }
+  .capture-data th:nth-child(2) { width: 18ch; }
   .capture-data td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .capture-data .source-icon { width: 15px; height: 15px; vertical-align: -.21em; margin-right: 7px; color: #537786; }
   .capture-data tr.hot .source-icon { color: var(--blue); }
+  .capture-data [data-feed-icon="ecg"] .source-icon,.capture-data [data-feed-icon="cuff"] .source-icon { color:#a95250; }
+  .capture-data [data-feed-icon="scan"] .source-icon,.capture-data [data-feed-icon="bone"] .source-icon { color:#77618b; }
+  .capture-data [data-feed-icon="lab"] .source-icon,.capture-data [data-feed-icon="drop"] .source-icon { color:#057391; }
+  .capture-data [data-feed-icon="food"] .source-icon,.capture-data [data-feed-icon="activity"] .source-icon { color:#42816e; }
   .capture-data .capture-region { color: #006e9c; text-align: left; }
   @media(max-width: 560px) {
     .capture-data th:nth-child(1) { width: 9ch; }
@@ -2158,35 +2162,50 @@ if (LITE) document.documentElement.classList.add("lite");
   const capCv = steps.querySelector(".capture-streams"), cg = capCv.getContext("2d");
   const capRows = [...steps.querySelectorAll(".capture-data tbody tr")];
   let capOn = false, capRaf = 0, capLast = 0, capNext = 0, capIndex = 0, capRowIndex = 0;
-  let captureFlight = null, captureFocus = null;
+  const captureFlights = [], captureFocus = new Map();
   const captureRecords = [
-    ["ECG", "SINUS RHYTHM", "heart", "heart"],
-    ["SYMPTOM LOG", "HEADACHE · MILD", "nerves", "note"],
+    ["ECG", "SINUS RHYTHM", "heart", "ecg"],
+    ["SYMPTOM LOG", "HEADACHE · MILD", "nerves", "symptom"],
     ["SPIROMETRY", "FEV1 · 3.9 L", "lungs", "lungs"],
     ["LAB REPORT", "CREATININE · 119.4 µMOL/L", "kidneys", "lab"],
-    ["CGM", "GLUCOSE · 5.2 MMOL/L", "metabolic", "sensor"],
+    ["CGM", "GLUCOSE · 5.2 MMOL/L", "metabolic", "drop"],
     ["MRI", "KNEE · MENISCUS", "knee", "scan"],
     ["LIPID PANEL", "LDL · 2.98 MMOL/L", "heart", "lab"],
     ["SLEEP TRACKER", "SLEEP · 6 H 40", "nerves", "moon"],
-    ["HOME CUFF", "BP · 132 / 62", "heart", "heart"],
+    ["HOME CUFF", "BP · 132 / 62", "arm", "cuff"],
     ["FOOD LOG", "FIBRE · 18 G", "gut", "food"],
     ["LIVER PANEL", "ALT · 22 U/L", "liver", "lab"],
-    ["DXA SCAN", "BODY COMPOSITION", "bones", "scan"],
-    ["FAMILY HISTORY", "CARDIAC HISTORY", "heart", "note"],
+    ["DXA SCAN", "BODY COMPOSITION", "bones", "bone"],
+    ["FAMILY HISTORY", "CARDIAC HISTORY", "heart", "family"],
     ["ACTIVITY LOG", "WALK · 42 MIN", "legs", "activity"],
     ["GENETIC REPORT", "APOE · E3 / E3", "nerves", "dna"],
     ["PHARMACY", "MEDICATION RECORD", "liver", "pill"],
-    ["AIR QUALITY", "PM2.5 · 31 µG/M³", "lungs", "lungs"],
+    ["AIR QUALITY", "PM2.5 · 31 µG/M³", "lungs", "air"],
     ["GP LETTER", "FOLLOW-UP · BP", "heart", "note"],
-    ["WEARABLE", "RESTING HR · 53 BPM", "heart", "sensor"],
-    ["HYDRATION LOG", "FLUID · 1.8 L", "kidneys", "sensor"]
+    ["WEARABLE", "RESTING HR · 53 BPM", "heart", "watch"],
+    ["HYDRATION LOG", "FLUID · 1.8 L", "kidneys", "drop"],
+    ["THYROID PANEL", "TSH · LAB RESULT", "neck", "lab"],
+    ["PHYSIO NOTE", "SHOULDER MOBILITY", "shoulder", "activity"],
+    ["VISION EXAM", "VISUAL ACUITY", "eyes", "eye"],
+    ["GAIT ANALYSIS", "STEP SYMMETRY", "foot", "foot"],
+    ["GRIP TEST", "HAND STRENGTH", "hand", "activity"],
+    ["SMART SCALE", "WEIGHT · 81.9 KG", "torso", "scale"]
   ];
   const captureIcons = {
-    heart:"M3 8a4 4 0 0 1 7-2l2 2 2-2a4 4 0 0 1 6 6l-8 8-8-8a4 4 0 0 1-1-4Z",
+    ecg:"M2 12h5l3-7 4 14 3-7h5",
+    symptom:"M9 4h6v3h4v13H5V7h4z M12 10v6m-3-3h6",
+    drop:"M12 3c-2 4-6 7-6 11a6 6 0 0 0 12 0c0-4-4-7-6-11Z",
+    cuff:"M6 7h11v10H6z M9 7v10m8-7h3v5h-3",
+    bone:"M7 7a2 2 0 1 0-3-3 2 2 0 0 0 1 4l11 11a2 2 0 1 0 3 1 2 2 0 0 0-1-4L7 7Z",
+    family:"M12 8v5m-7 2v-2h14v2 M9 3h6v5H9z M2 15h6v6H2z M16 15h6v6h-6z",
+    air:"M3 8h13a2 2 0 1 0-2-2M3 12h17M3 16h11a2 2 0 1 1-2 2",
+    watch:"M9 2h6l1 5v10l-1 5H9l-1-5V7z M8 7h8m-8 10h8m-6-5h4",
+    eye:"M2 12c3-5 7-7 10-7s7 2 10 7c-3 5-7 7-10 7s-7-2-10-7Z M15 12a3 3 0 1 0-6 0 3 3 0 0 0 6 0Z",
+    foot:"M9 15c-2 3-1 6 2 6 4 0 6-4 5-7-1-3-4-2-7 1Z M7 11h0m2-4h0m4-2h0m4 1h0m3 3h0",
+    scale:"M4 4h16v16H4z M8 11a4 4 0 0 1 8 0m-4 0 2-2",
     note:"M6 3h8l4 4v14H6z M9 11h6m-6 4h6",
     lungs:"M12 3v7m-2-2C6 5 3 11 3 17c0 3 7 3 7 0V8Zm4 0c4-3 7 3 7 9 0 3-7 3-7 0V8Z",
     lab:"M9 3h6m-5 0v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 15h8",
-    sensor:"M3 12a9 9 0 0 1 18 0M6 12a6 6 0 0 1 12 0M9 12a3 3 0 0 1 6 0m-3 4v4",
     scan:"M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 12h10",
     moon:"M19 15A8 8 0 0 1 9 5a8 8 0 1 0 10 10Z",
     food:"M6 3v7m-3-7v4a3 3 0 0 0 6 0V3m-3 7v11M18 3c-3 2-4 6-4 10h4m0-10v18",
@@ -2204,9 +2223,11 @@ if (LITE) document.documentElement.classList.add("lite");
     gut:[[.50,.46,.21,.085]],
     liver:[[.41,.36,.15,.06]],
     bones:[[.46,.51,.24,.07],[.41,.65,.085,.11],[.61,.68,.085,.11]],
-    legs:[[.41,.72,.145,.19],[.62,.75,.13,.17]]
+    legs:[[.41,.72,.145,.19],[.62,.75,.13,.17]],
+    arm:[[.24,.38,.105,.10]], neck:[[.53,.17,.11,.038]], shoulder:[[.68,.225,.12,.05]],
+    eyes:[[.53,.085,.14,.038]], foot:[[.45,.93,.12,.058]], hand:[[.14,.54,.08,.062]], torso:[[.5,.45,.19,.13]]
   };
-  const captureAnchor = {heart:0,nerves:2,lungs:1,kidneys:6,metabolic:4,knee:8,gut:4,liver:9,bones:8,legs:8};
+  const captureAnchor = {heart:0,nerves:2,lungs:1,kidneys:6,metabolic:4,knee:8,gut:4,liver:9,bones:8,legs:8,arm:10,neck:7,shoulder:1,eyes:2,foot:8,hand:10,torso:4};
   function captureOffset(region) {
     const frame = Math.max(0,Math.floor(lastFrame * 124 / 186));
     const [x,y] = BMT[captureAnchor[region]]?.[frame] || [0,0];
@@ -2223,6 +2244,7 @@ if (LITE) document.documentElement.classList.add("lite");
   function fillCaptureRow(row, record, time) {
     const [name, value,, icon] = record, [stamp, source, reading] = row.cells;
     if (time) stamp.textContent = time;
+    row.dataset.feedIcon = icon;
     source.innerHTML = `<svg class="source-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${captureIcons[icon]}"/></svg>`;
     source.append(document.createTextNode(name)); reading.textContent = value;
   }
@@ -2230,12 +2252,12 @@ if (LITE) document.documentElement.classList.add("lite");
   function capReading(now) {
     const row = capRows[capRowIndex++ % capRows.length], record = captureRecords[capIndex++ % captureRecords.length];
     fillCaptureRow(row, record, new Date().toTimeString().slice(0,8));
-    capRows.forEach(r => r.classList.toggle("hot", r === row));
-    captureFlight = {start:now, row, region:record[2]};
+    row.classList.add("hot");
+    captureFlights.push({start:now,row,region:record[2],travel:400+(capIndex%4)*55});
   }
   function capLoop(now) {
     if (!capOn) {
-      capRaf = 0; cg.clearRect(0,0,capCv.width,capCv.height); captureFlight = captureFocus = null;
+      capRaf = 0; cg.clearRect(0,0,capCv.width,capCv.height); captureFlights.length = 0; captureFocus.clear();
       capNext = 0; capRows.forEach(row => row.classList.remove("hot")); return;
     }
     const dt = capLast ? Math.min(.05,(now-capLast)/1000) : 0; capLast = now;
@@ -2244,45 +2266,55 @@ if (LITE) document.documentElement.classList.add("lite");
     if (capCv.width !== w || capCv.height !== h) { capCv.width = w; capCv.height = h; }
     cg.setTransform(dpr,0,0,dpr,0,0); cg.clearRect(0,0,cr.width,cr.height);
     capNext -= dt;
-    if (capNext <= 0) { capNext = 1.55; capReading(now); }
-    if (captureFlight && cur) {
-      const {start,row,region} = captureFlight, body = captureBody();
+    if (capNext <= 0) { capNext += .34 + (capIndex % 3) * .065; capReading(now); }
+    for(let i=captureFlights.length-1; i>=0 && cur; i--) {
+      const {start,row,region,travel} = captureFlights[i], body = captureBody();
       const [u,v] = captureRegions[region][0], reading = row.cells[2].getBoundingClientRect();
       const [dx,dy] = captureOffset(region);
       const x1 = body.left + (u + dx) * body.width - cr.left, y1 = body.top + (v + dy) * body.height - cr.top;
       const x0 = Math.min(reading.right + 4 - cr.left, x1 - 26), y0 = reading.top + reading.height * .28 - cr.top;
-      const progress = Math.min(1,(now-start)/580);
+      const progress = Math.min(1,(now-start)/travel);
       const position = p => [x0 + (x1-x0)*p, y0 + (y1-y0)*p*p*(3-2*p)];
       if (progress === 1) {
-        captureFocus = {region, start:now};
-        captureFlight = null;
+        captureFocus.set(region,now);
+        row.classList.remove("hot");
+        captureFlights.splice(i,1);
       } else {
-        for (let j = 5; j >= 0; j--) {
-          const distance = Math.max(0,progress-j*.03), [x,y] = position(distance);
-          cg.fillStyle = `rgba(0,150,214,${(6-j)/6})`; cg.beginPath(); cg.arc(x,y,j ? 1.4 : 3.1,0,Math.PI*2); cg.fill();
+        for (let j = 7; j >= 0; j--) {
+          const distance = Math.max(0,progress-j*.036), [x,y] = position(distance);
+          cg.fillStyle = `rgba(0,150,214,${(8-j)/8})`; cg.beginPath(); cg.arc(x,y,j ? 1.4 : 3.1,0,Math.PI*2); cg.fill();
         }
       }
     }
     capRaf = requestAnimationFrame(capLoop);
   }
   function revealCaptureRegion(now, body) {
-    if (!captureFocus || (!hiVidOK && !capturePoster.naturalWidth)) return;
-    const age = (now - captureFocus.start) / 1000;
-    const strength = Math.min(1,age * 9) * Math.max(0,1 - Math.max(0,age-.64)/.31);
-    if (strength <= 0) return;
+    if (!captureFocus.size || (!hiVidOK && !capturePoster.naturalWidth)) return;
     const {width,height} = reveal;
     revealG.clearRect(0,0,width,height);
-    const [dx,dy] = captureOffset(captureFocus.region);
-    for (const [u,v,rx,ry] of captureRegions[captureFocus.region]) {
-      revealG.save(); revealG.translate((u+dx)*width,(v+dy)*height); revealG.scale(rx*width,ry*height);
-      const mask = revealG.createRadialGradient(0,0,.30,0,0,1);
-      mask.addColorStop(0,"#fff"); mask.addColorStop(.58,"rgba(255,255,255,.94)"); mask.addColorStop(1,"rgba(255,255,255,0)");
-      revealG.fillStyle = mask; revealG.fillRect(-1,-1,2,2); revealG.restore();
+    for(const [region,start] of captureFocus){
+      const age=(now-start)/1000;
+      if(age>.82){captureFocus.delete(region);continue;}
+      const strength=Math.min(1,age*16)*Math.min(1,(.82-age)/.33);
+      const [dx,dy] = captureOffset(region);
+      for(const [u,v,rx,ry] of captureRegions[region]){
+        revealG.save(); revealG.globalAlpha=strength;
+        revealG.translate((u+dx)*width,(v+dy)*height); revealG.scale(rx*width,ry*height);
+        const mask=revealG.createRadialGradient(0,0,.26,0,0,1);
+        mask.addColorStop(0,"#fff"); mask.addColorStop(.55,"rgba(255,255,255,.96)"); mask.addColorStop(1,"rgba(255,255,255,0)");
+        revealG.fillStyle=mask; revealG.fillRect(-1,-1,2,2); revealG.restore();
+      }
     }
-    revealG.save(); revealG.globalCompositeOperation = "source-in";
+    revealG.save(); revealG.globalCompositeOperation="source-in";
     revealG.drawImage(hiVidOK ? hiWrap : capturePoster,0,0,width,height); revealG.restore();
-    gg.save(); gg.globalAlpha = strength;
-    gg.drawImage(reveal,body.left,body.top,body.width,body.height); gg.restore();
+    gg.drawImage(reveal,body.left,body.top,body.width,body.height);
+    for(const [region,start] of captureFocus){
+      const t=(now-start)/320;
+      if(t>=1)continue;
+      const [u,v]=captureRegions[region][0], [dx,dy]=captureOffset(region);
+      gg.strokeStyle=`rgba(0,150,214,${.74*(1-t)})`;gg.lineWidth=1.2;
+      gg.beginPath();gg.arc(body.left+(u+dx)*body.width,body.top+(v+dy)*body.height,3+t*17,0,2*Math.PI);gg.stroke();
+    }
   }
 
   // ---- Header: the line twin starts faint; data points ride the field lines into it, each one lights
