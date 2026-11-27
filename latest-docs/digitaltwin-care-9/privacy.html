@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · digitaltwin.care</title>
+<meta name="description" content="Learn how digitaltwin.care handles your health information and how to manage your privacy.">
+<meta name="theme-color" content="#F3F2E9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F3F2E9'/%3E%3Cg stroke='%230096D6' stroke-width='2'%3E%3Cpath d='M7 10h18M5 15h22M7 20h18M10 25h12'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="site-menu.css?v=2">
+<style>
+:root{--bg:#F3F2E9;--ink:#1C1B17;--blue:#0096D6;--action:#006e9c;--muted:#545b52;--paper:#fffcf2;--line:#1c1b1724;--space:clamp(64px,8vw,120px);--sans:"DM Sans",Arial,sans-serif;--serif:"Newsreader",Georgia,serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans)}
+.wrap{width:calc(100% - 2 * clamp(20px,3.3vw,64px));max-width:1200px;margin-inline:auto}
+a{color:var(--action);text-underline-offset:3px}
+.bar .logo{color:var(--ink)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--action);outline-offset:4px}
+h1,h2,h3{margin:0;font:400 30px/1.08 var(--serif);letter-spacing:-.025em}
+h1{font-size:clamp(48px,6vw,88px);line-height:1;max-width:15ch;letter-spacing:-.045em}
+h1 em{color:var(--action);font-style:normal}
+h2{font-size:clamp(35px,4vw,59px)}
+p{margin:12px 0 0;color:var(--muted)}
+.kick{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--action);margin:0 0 12px}
+.intro{padding:clamp(48px,8vw,108px) 0 clamp(32px,5vw,56px)}
+.lead{font-size:clamp(17px,1.5vw,21px);max-width:62ch;margin-top:20px}
+.hero-links{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;margin-top:24px}
+.button{display:inline-flex;align-items:center;min-height:44px;padding:8px 17px;border-radius:999px;background:var(--action);color:#fff;font-weight:600;text-decoration:none}
+.button:hover{background:#005a80}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{padding:clamp(20px,2.5vw,32px);background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.card:first-child{background:#c8e5eb}
+.card:first-child p{color:#23404a}
+.controls{padding-top:var(--space);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(24px,5vw,72px)}
+.rows{margin:0;border-top:1px solid var(--line)}
+.rows div{padding:13px 0;border-bottom:1px solid var(--line)}
+.rows dt{font-weight:600}
+.rows dd{margin:4px 0 0;color:var(--muted)}
+.data-use{max-width:780px;margin:auto;padding-top:var(--space)}
+.data-use h2{margin-bottom:22px}
+.questions{max-width:780px;margin:auto;padding:var(--space) 0}
+.questions h2{margin-bottom:22px}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{padding:15px 0;cursor:pointer;font-weight:600}
+details p{margin:0 0 16px}
+.contact{padding:clamp(22px,4vw,42px);border-radius:8px;background:#dceef1;margin-bottom:var(--space)}
+footer{border-top:1px solid var(--line);padding:24px 0;font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 22px}
+footer span{margin-right:auto}
+@media(max-width:800px){.wrap{width:calc(100% - 40px)}.controls{grid-template-columns:1fr}}
+@media(max-width:650px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Main navigation">
+  <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
+  <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
+  <ul class="primary-links" id="primary-menu">
+    <li><a href="examples.html">Examples</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="privacy.html" aria-current="page">Privacy</a></li>
+  </ul>
+  <a class="sign" href="https://app.n1.care/signup?role=patient"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
+</nav>
+<main class="wrap">
+  <header class="intro">
+    <p class="kick">Privacy</p>
+    <h1>What happens to <em>your health data?</em></h1>
+    <p class="lead">When you upload a lab report, N1 reads it to build your health record. Your doctor doesn’t automatically get access, and we don’t sell patient data or use it to train general-purpose AI models.</p>
+    <div class="hero-links">
+      <a class="button" href="https://n1.care/privacy">Read the full Privacy Notice</a>
+      <a href="https://trust.n1.care/">Visit the N1 Trust Centre ↗</a>
+    </div>
+  </header>
+  <section class="cards" aria-label="Privacy at a glance">
+    <article class="card">
+      <h3>Who can see your records?</h3>
+      <p>People you authorize can see what you share. A limited group of N1 staff may access records for support, maintenance, or security incidents. If your clinic manages the record, it sets the access rules.</p>
+    </article>
+    <article class="card">
+      <h3>What does AI see?</h3>
+      <p>AI providers may receive relevant records or excerpts to answer a question or draft a report. Our providers process that information for us. They can’t use patient data to train general-purpose models.</p>
+    </article>
+    <article class="card">
+      <h3>What happens if you delete?</h3>
+      <p>You can remove individual files or delete your account in Settings. Account deletion stops sign-in access. Deletion from backups can take longer, and legal or security records may be retained where required or permitted.</p>
+    </article>
+  </section>
+  <section class="controls" aria-labelledby="controls-title">
+    <div><h2 id="controls-title">What you can control</h2><p>These controls apply to your personal account. If a clinic manages your record, contact them about access or changes.</p></div>
+    <dl class="rows">
+      <div><dt>What you add</dt><dd>Choose which records to upload and which services to connect.</dd></div>
+      <div><dt>Who can see a report</dt><dd>Share an individual report when you’re ready. You can password-protect the link, set an expiry, or turn it off.</dd></div>
+      <div><dt>What you take with you</dt><dd>Export your available records or download a report to keep a copy.</dd></div>
+      <div><dt>What you remove</dt><dd>Delete individual files or request account deletion from Settings. Some copies may remain temporarily in backups, and some information may need to be kept for legal or security reasons.</dd></div>
+    </dl>
+  </section>
+  <section class="data-use" aria-labelledby="data-use-title">
+    <h2 id="data-use-title">From upload to report</h2>
+    <dl class="rows">
+      <div><dt>When you upload a file</dt><dd>We read the document to organize information such as results, dates, and units, and connect findings to their source when available. Records are encrypted as they travel and while they’re stored.</dd></div>
+      <div><dt>When you use the app</dt><dd>We collect account, device, sign-in, and activity information to run the service, manage billing, and investigate security problems. We don’t sell patient data, disclose it to data brokers, or use it for targeted ads.</dd></div>
+      <div><dt>When you share a report</dt><dd>You share the report you choose. For example, you can send a password-protected link that expires after an appointment. Turning the link off stops future access through that link. Anyone who already saved a copy can still have it.</dd></div>
+      <div><dt>Where your information goes</dt><dd>The Trust Centre describes six possible regions for uploaded files and says databases and logs are hosted in the US. File storage, databases, and AI processing can be in different places. <a href="https://trust.n1.care/#regions">See storage regions</a> or contact N1 to confirm what applies to your account.</dd></div>
+    </dl>
+  </section>
+  <section class="questions" aria-labelledby="privacy-questions">
+    <h2 id="privacy-questions">Common privacy questions</h2>
+    <details><summary>Does deleting an uploaded file also delete the information extracted from it?</summary><p>Your original upload and the information extracted into your record are separate. Check the deletion options for each, or contact N1 if you want help removing both.</p></details>
+    <details><summary>What happens if I connect an outside AI assistant?</summary><p>The assistant can request information within the permissions you grant. Its provider handles what it receives under its own privacy terms. You can disconnect N1 in the assistant’s settings.</p></details>
+    <details><summary>How do I get a copy or correct a record?</summary><p>Use the export options in your personal account, or contact N1 for help accessing or correcting your information. If a clinic manages your record, start with that clinic.</p></details>
+  </section>
+  <section class="contact" aria-labelledby="privacy-contact">
+    <h2 id="privacy-contact">Questions about your data?</h2>
+    <p>N1 Research, LLC handles privacy questions and requests for personal accounts. You can ask for access, a correction, or deletion. Please keep lab reports and other health records out of ordinary email.</p>
+    <div class="hero-links">
+      <a class="button" href="https://n1.care/contact">Contact N1</a>
+      <a href="mailto:security@n1.care">security@n1.care</a>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© 2026 digitaltwin.care</span><a href="https://n1.care/privacy">Privacy Notice</a><a href="https://trust.n1.care/">Trust Centre</a></div></footer>
+<script src="site-menu.js" defer></script>
+</body>
+</html>
