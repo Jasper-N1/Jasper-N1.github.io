@@ -370,6 +370,11 @@
   .plat .pviz { position: relative; aspect-ratio: 718 / 470; background: #F7F6F0; border: 1px solid rgba(28,27,23,.16); border-radius: 6px; overflow: hidden; }
   .plat .ph2 { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid rgba(28,27,23,.09); background: #F7F6F0; font: 500 var(--fs-label) var(--mono); letter-spacing: var(--ls-l); color: #66645D; } .plat .ph2 span:first-child { color: var(--blue-text); }
   .plat .pviz canvas { position: absolute; left: 0; right: 0; bottom: 0; top: 41px; width: 100%; height: calc(100% - 41px); }
+  .plat .intervention-viz canvas { height: calc(100% - 79px); }
+  .viz-tabs { position:absolute; inset:auto 0 0; height:38px; display:flex; justify-content:center; gap:5px; align-items:center; border-top:1px solid rgba(28,27,23,.09); }
+  .viz-tabs button { padding:4px 10px; border:1px solid transparent; border-radius:4px; background:transparent; color:#66645D; font:500 11px var(--mono); cursor:pointer; }
+  .viz-tabs button[aria-pressed="true"] { color:#006e9c; border-color:#0096d640; background:#0096d60d; }
+  .viz-tabs button:focus-visible { outline:2px solid #006e9c; outline-offset:1px; }
   @media (max-width: 900px) { .plat .prow { grid-template-columns: 1fr; gap: 28px; margin-bottom: 70px; } .plat .prow.rev .ptx { order: 0; } }
 
   /* ---- one page grid: every section shares the same content edges, with generous vertical breathing room ----
@@ -1194,11 +1199,16 @@
   <div class="pin2">
 
     <div class="prow"><div class="ptx" data-bounce><h3>Continuous data</h3><p class="pbody">Your twin automatically brings in new readings from connected sensors and wearables alongside your lab results and other health records. It shows what’s missing, why it matters, and what information could fill the gap.</p></div>
-      <div class="pviz" data-bounce><div class="ph2"><span>Sensing layer</span><span>Live</span></div><canvas data-viz="stream" aria-label="Records from many sources flowing in and being parsed into structured values"></canvas></div></div>
+      <div class="pviz" data-bounce><div class="ph2"><span>Sensing layer</span><span>Live</span></div><canvas data-viz="stream" aria-label="An illustrative heat map lighting up as lab reports, wearables, scans, prescriptions, letters and DNA are added"></canvas></div></div>
     <div class="prow rev"><div class="pviz" data-bounce><div class="ph2"><span>Reasoning layer</span><span>Updated continuously</span></div><canvas data-viz="base" aria-label="A connected reasoning network comparing incoming readings with personal and population ranges"></canvas></div>
       <div class="ptx" data-bounce><h3>Deep medically validated intelligence</h3><p class="pbody">Continuous data lets the AI learn an individual baseline and normal range, then flag a deviation well before a population-based reference range would register an issue.</p></div></div>
     <div class="prow"><div class="ptx" data-bounce><h3>Actionable insights tailored to you</h3><p class="pbody">The system acts on the live data stream. Because it keeps monitoring, it tracks the response to every intervention and adjusts continuously.</p></div>
-      <div class="pviz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Closed loop</span></div><canvas data-viz="act" aria-label="A reading kept in range: each time it nears a limit, an action brings it back"></canvas></div></div>
+      <div class="pviz intervention-viz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Closed loop</span></div>
+        <canvas data-viz="act" role="img" aria-label="Illustrative X-ray model followed by recorded LDL and weight trends"></canvas>
+        <div class="viz-tabs" role="group" aria-label="Intervention views">
+          <button type="button" aria-pressed="true">Model</button><button type="button" aria-pressed="false">LDL</button><button type="button" aria-pressed="false">Weight</button>
+        </div>
+      </div></div>
   </div>
 </section>
 <section class="s3" id="s3" data-i="0" aria-label="How it works">
@@ -2440,24 +2450,55 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const io = new IntersectionObserver(es => es.forEach(e => { const v = viz.find(v => v.cv === e.target); v.vis = e.isIntersecting; }), { rootMargin: "100px" }); viz.forEach(v => io.observe(v.cv));
   const fit = v => { const d = Math.min(2, devicePixelRatio || 1), W = v.cv.clientWidth, H = v.cv.clientHeight; if (W === v.W && H === v.H) return; v.W = W; v.H = H; v.cv.width = W * d; v.cv.height = H * d; v.g.setTransform(d, 0, 0, d, 0, 0); v.st = {}; };
   const label = (g, s, x, y, col = `rgba(${INK},.62)`, al = "left") => { g.font = MONO; g.fillStyle = col; g.textAlign = al; g.fillText(s, x, y); };
-  const hatch = (g, x0, x1, yTop, yBot, step, col) => { g.strokeStyle = col; g.lineWidth = .8; g.beginPath(); for (let y = Math.ceil(Math.min(yTop(x0), 9e9) / 1) ; false;) {} for (let x = x0; x <= x1; x += 2) {} // (kept simple below)
+  const panelModel = new Image();
+  panelModel.decoding = "async";
+  panelModel.src = "twin-f0.webp";
+  const dataFeeds = [
+    ["LAB REPORTS", "Lipid panel", .5, .32],
+    ["WEARABLES", "Resting heart rate", .47, .25],
+    ["SCANS", "Knee scan", .57, .72],
+    ["PRESCRIPTIONS", "Medication record", .5, .39],
+    ["LETTERS", "Follow-up note", .42, .47],
+    ["DNA", "Genetic report", .53, .13]
+  ];
+  const palette = ["53,160,226", "15,184,182", "246,117,68"];
+  const stream = (v, t, dt) => {
+    const {g, W, H, st} = v;
+    if (networkMotion.matches) st.elapsed = dataFeeds.length * .88;
+    else st.elapsed = ((st.elapsed || 0) + dt) % (dataFeeds.length * .88 + 1.5);
+    const live = Math.min(dataFeeds.length - 1, Math.floor(st.elapsed / .88));
+    const mix = Math.min(1, st.elapsed / .88 - live);
+    const height = H * .88, width = height * 500 / 1344, left = W * .29 - width / 2, top = H * .065;
+    if (panelModel.complete && panelModel.naturalWidth) {
+      g.save(); g.globalAlpha = .68; g.drawImage(panelModel, left, top, width, height); g.restore();
+      g.save(); g.globalCompositeOperation = "source-atop";
+      dataFeeds.slice(0, live + 1).forEach(([,, x,y], i) => {
+        const cx = left + x * width, cy = top + y * height, r = Math.max(10, height * .15);
+        const heat = g.createRadialGradient(cx,cy,0,cx,cy,r);
+        const a = i === live ? .38 + .62 * mix : .60;
+        heat.addColorStop(0, `rgba(${palette[2]},${a})`);
+        heat.addColorStop(.38, `rgba(244,191,82,${a * .85})`);
+        heat.addColorStop(.72, `rgba(${palette[1]},${a * .65})`);
+        heat.addColorStop(1, `rgba(${palette[0]},0)`);
+        g.fillStyle = heat; g.fillRect(cx-r,cy-r,2*r,2*r);
+      });
+      g.restore();
+    }
+    const leftLabel = W * .54;
+    label(g, "DATA ADDED", leftLabel, H * .15, BL);
+    dataFeeds.forEach(([name, detail, x, y], i) => {
+      const ty = H * (.25 + i * .112), tx = left + x * width, sy = top + y * height;
+      const active = i === live, received = i <= live;
+      if (active) {
+        g.strokeStyle = "rgba(0,110,156,.32)"; g.lineWidth = .9; g.beginPath();
+        g.moveTo(leftLabel - 11, ty - 4); g.lineTo(leftLabel - 23, ty - 4); g.lineTo(tx, sy); g.stroke();
+        g.fillStyle = BL; g.beginPath(); g.arc(tx, sy, 2.7, 0, Math.PI * 2); g.fill();
+      }
+      label(g, name, leftLabel, ty, received ? `rgb(${INK})` : `rgba(${INK},.42)`);
+      label(g, active ? detail : received ? "ADDED" : "WAITING", leftLabel, ty + Math.min(13,H * .065), active ? BL : `rgba(${INK},.56)`);
+    });
+    label(g, "WARMER = NEW DATA", W * .29, H * .97, undefined, "center");
   };
-  const trail = (g, yAt, x, xmin, len, col) => window.__trail && window.__trail(g, yAt, x, xmin, len, col, 1);
-  // field line shared by the panels: the same wave family as the page background
-  const wave = (x, y0, t, W, H) => y0 + Math.sin(x / W * 7 + y0 * .05 + t * .5) * H * .025 + Math.sin(x / W * 15 - t * .7 + y0 * .03) * H * .01;
-  // 1. readings follow their source lanes and appear in the parsed list on arrival
-  const PARSED = [["LAB PDF", "HBA1C", "5.4 %"], ["WATCH", "RESTING HR", "53 BPM"], ["MRI REPORT", "MENISCUS", "MILD WEAR"], ["PHARMACY", "ATORVASTATIN", "10 MG"], ["GP LETTER", "BP RECHECK", "3 MONTHS"], ["RING", "DEEP SLEEP", "1 H 12"], ["DNA KIT", "APOE", "E3 / E3"], ["LAB PDF", "LDL", "3.61 MMOL/L"], ["SCALE", "WEIGHT", "78.4 KG"], ["CGM", "GLUCOSE", "5.2 MMOL/L"]];
-  const stream = (v, t, dt) => { const { g, W, H } = v, st = v.st, SRC = ["LAB REPORTS", "WEARABLES", "SCANS", "PRESCRIPTIONS", "LETTERS", "DNA"], n = SRC.length, ys = SRC.map((_, i) => H * (.14 + i * .72 / (n - 1))), px = W * .56, rows = 8, rh = (H * .8) / rows, ry = j => H * .12 + j * rh;
-    const start = W * .2, end = px - 10, lanes = ys.map(y => x => wave(x, y, t, W, H));
-    st.rows = st.rows || []; st.p = st.p || []; st.nt = (st.nt || 0) - dt;
-    for (let i = 0; i < n; i++) { label(g, SRC[i], 14, ys[i] + 3.5, `rgba(${INK},.7)`); g.strokeStyle = "rgba(0,150,214,.22)"; g.lineWidth = .8; g.beginPath(); g.moveTo(start, lanes[i](start)); for (let x = start + 4; x < end; x += 4) g.lineTo(x, lanes[i](x)); g.lineTo(end, lanes[i](end)); g.stroke(); }
-    g.strokeStyle = `rgba(${INK},.12)`; g.beginPath(); g.moveTo(px - 4, H * .08); g.lineTo(px - 4, H * .94); g.stroke(); label(g, "PARSED", px + 6, H * .07, BL);
-    while (st.nt <= 0) { st.nt += .28; const i = (Math.random() * n) | 0; st.p.push({ i, x: start, v: W * (.42 + Math.random() * .12), d: PARSED[(Math.random() * PARSED.length) | 0] }); }
-    st.p = st.p.filter(p => { p.x += p.v * dt; if (p.x >= end) { st.rows.unshift({ d: p.d, a: 0 }); st.rows.length = Math.min(st.rows.length, rows); return false; } return true; });
-    st.p.forEach(p => trail(g, lanes[p.i], p.x, start, 80, BL));
-    st.rows.forEach((r, j) => { r.a = Math.min(1, r.a + dt * 3); const y = ry(j) + 6 - (1 - r.a) * 8; g.globalAlpha = r.a * (1 - j / (rows + 1));
-      label(g, r.d[0], px + 6, y, `rgba(${INK},.5)`); label(g, r.d[1], px + 6 + W * .13, y, j ? `rgb(${INK})` : BL); label(g, r.d[2], W - 14, y, j ? `rgb(${INK})` : BL, "right"); g.globalAlpha = 1;
-      g.strokeStyle = `rgba(${INK},.08)`; g.beginPath(); g.moveTo(px + 6, y + 10); g.lineTo(W - 14, y + 10); g.stroke(); }); };
   // 2. a reading propagates through the network to a personal-range check
   const networkMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const layers = [[.36, .51, .66], [.27, .39, .51, .63, .75], [.27, .39, .51, .63, .75], [.39, .63]];
@@ -2513,22 +2554,76 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     label(g, status, W / 2, H * .88, BL, "center");
     if (flagged) label(g, "WITHIN POPULATION RANGE", W / 2, H * .95, undefined, "center");
   };
-  // 3. a reading between two limits, with a hatched safe zone; nearing a limit triggers an action, shown as a tag, and the line comes back in blue
-  const ACTS = ["ZONE 2 · 3 × 45 MIN", "LIGHTS OUT 23:15", "WALK AFTER MEALS", "RECHECK IN 12 WEEKS", "OMEGA-3 DAILY", "SALT UNDER 5 G"];
-  const act = (v, t, dt) => { const { g, W, H } = v, st = v.st, top = H * .24, bot = H * .82, step = 3, N = Math.ceil(W / step) + 2, Y = q => bot - (bot - top) * q;
-    if (!st.p) { st.p = []; st.v = .5; st.fix = 0; st.acc = 0; st.ai = 0; for (let i = 0; i < N; i++) push(st); }
-    st.acc += dt * 60; while (st.acc >= 1) { st.acc--; push(st); st.p.shift(); }
-    g.strokeStyle = "rgba(0,150,214,.16)"; g.lineWidth = .8; g.beginPath(); for (let y = top; y <= bot; y += 3.4) { g.moveTo(0, y); g.lineTo(W, y); } g.stroke();
-    g.strokeStyle = `rgba(${INK},.35)`; g.setLineDash([2, 4]); g.lineWidth = 1; for (const y of [top, bot]) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); } g.setLineDash([]);
-    label(g, "UPPER LIMIT", W - 14, top - 7, `rgba(${INK},.62)`, "right"); label(g, "LOWER LIMIT", W - 14, bot + 15, `rgba(${INK},.62)`, "right");
-    for (let i = 1; i < st.p.length; i++) { const a = st.p[i - 1], b = st.p[i]; g.strokeStyle = b.fix ? BL : `rgba(${INK},.75)`; g.lineWidth = b.fix ? 2 : 1.3; g.beginPath(); g.moveTo((i - 1) * step, Y(a.v)); g.lineTo(i * step, Y(b.v)); g.stroke(); }
-    st.p.forEach((q, i) => { if (!q.tag) return; const x = i * step, y = Y(q.v), up = q.v > .5, ty = up ? y + 26 : y - 18; g.fillStyle = BL; g.beginPath(); g.arc(x, y, 3.2, 0, 7); g.fill();
-      g.strokeStyle = BL; g.lineWidth = 1; g.beginPath(); g.moveTo(x, y + (up ? 5 : -5)); g.lineTo(x, ty + (up ? -11 : 4)); g.stroke(); g.font = MONO; const w = g.measureText("→ " + q.tag).width + 14;
-      const lx = x + w > W - 8 ? x - w + 6 : x - 6; g.fillStyle = "#F7F6F0"; g.fillRect(lx, ty - 12, w, 17); g.strokeStyle = BL; g.strokeRect(lx + .5, ty - 11.5, w, 16); label(g, "→ " + q.tag, lx + 7, ty, BL); }); };
-  function push(st) { let tag = null; if (!st.fix && (st.v > .92 || st.v < .08)) { st.fix = 42; st.dir = st.v > .5 ? -1 : 1; tag = ACTS[st.ai++ % ACTS.length]; }
-    if (st.fix) { st.fix--; st.v += st.dir * .0085 * (st.fix / 42 + .2); if (!st.fix) st.tr = st.dir; }
-    else { st.tr = st.tr || 1; if (Math.random() < .006) st.tr *= -1; st.ph = (st.ph || 0) + .09; st.v += st.tr * .0042 + Math.sin(st.ph) * .004 + (Math.random() - .5) * .012; }
-    st.p.push({ v: st.v, fix: st.fix > 0 || !!tag, tag }); }
+  // 3. model review, then two recorded trends from the example assessment
+  const views = [...document.querySelectorAll(".viz-tabs button")];
+  let selectedView = null, shownView = -1;
+  views.forEach((button, i) => button.addEventListener("click", () => { selectedView = i; }));
+  const trends = [
+    {title:"LDL cholesterol", change:"−17% since May 2026", unit:"MMOL/L", low:2.75, high:3.85,
+      points:[[0,3.34,"May 2025"],[.66,3.61,"May 2026"],[1,2.98,"Nov 2026"]], axis:[2.8,3.2,3.6], precision:2},
+    {title:"Body weight", change:"−6.2 kg since September", unit:"KG", low:80.5, high:89.5,
+      points:[[0,88.1,"1 Sep"],[.35,85.7,""],[.49,87.5,""],[.74,84,""],[1,81.9,"26 Nov"]], axis:[81,85,89], precision:1}
+  ];
+  const act = (v, t, dt) => {
+    const {g, W, H, st} = v;
+    st.elapsed = (st.elapsed || 0) + dt;
+    const auto = !networkMotion.matches && selectedView === null;
+    const index = auto && !document.querySelector(".viz-tabs:focus-within") ? Math.floor(st.elapsed / 5.5) % views.length : selectedView ?? Math.max(0, shownView);
+    if (index !== shownView) {
+      shownView = index; st.entered = st.elapsed;
+      views.forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
+      v.cv.setAttribute("aria-label", index === 0 ? "Illustrative X-ray view of the anatomical model. This is not a scan." :
+        index === 1 ? "Recorded LDL fell from 3.61 to 2.98 millimoles per litre between May and November 2026." :
+        "Selected weight readings fell from 88.1 to 81.9 kilograms between September and November 2026.");
+    }
+    const p = networkMotion.matches ? 1 : Math.min(1, (st.elapsed - (st.entered ?? 0)) / .85);
+    if (index === 0) {
+      const height = H * .86, width = height * 500 / 1344, left = W * .66-width/2, top = H * .07;
+      if (panelModel.complete && panelModel.naturalWidth) {
+        g.save(); g.filter = "grayscale(1) contrast(1.13) brightness(1.24)"; g.drawImage(panelModel,left,top,width,height); g.restore();
+        g.save(); g.globalCompositeOperation = "source-atop";
+        g.fillStyle = "rgba(27,157,255,.38)"; g.fillRect(left,top,width,height);
+        const scanY = top + height * (networkMotion.matches ? .46 : (st.elapsed % 5.5) / 5.5);
+        const beam = g.createLinearGradient(0,scanY-16,0,scanY+16);
+        beam.addColorStop(0,"rgba(111,231,255,0)"); beam.addColorStop(.5,"rgba(111,231,255,.75)"); beam.addColorStop(1,"rgba(111,231,255,0)");
+        g.fillStyle = beam; g.fillRect(left,scanY-16,width,32); g.restore();
+      }
+      g.save(); g.globalCompositeOperation = "destination-over";
+      const field=g.createRadialGradient(W*.65,H*.47,0,W*.65,H*.47,W*.58);
+      field.addColorStop(0,"#17394c"); field.addColorStop(1,"#071823");
+      g.fillStyle=field; g.fillRect(0,0,W,H); g.restore();
+      label(g, "MODEL REVIEW", W*.08, H*.34, "#91dcff");
+      g.font = `400 ${Math.min(32,W*.055)}px Newsreader, Georgia, serif`;
+      g.textAlign="left"; g.fillStyle="#eaf7ff"; g.fillText("X-ray view", W*.08,H*.48);
+      label(g, "ANATOMICAL ILLUSTRATION", W*.08,H*.60,"#a8c7d7");
+      return;
+    }
+
+    const {title,change,unit,low,high,points,axis,precision}=trends[index-1];
+    const left=42, right=W-26, top=H*.39, bottom=H*.81;
+    const X=x=>left+x*(right-left), Y=y=>bottom-(y-low)/(high-low)*(bottom-top);
+    g.font=`400 ${Math.min(30,W*.062)}px Newsreader, Georgia, serif`;
+    g.fillStyle=`rgb(${INK})`; g.textAlign="left"; g.fillText(title, 16,H*.17);
+    label(g,change,16,H*.27,BL);
+    label(g,unit,W-16,H*.17,undefined,"right");
+    g.strokeStyle=`rgba(${INK},.14)`; g.lineWidth=.8;
+    axis.forEach(value=>{const y=Y(value); g.beginPath();g.moveTo(left,y);g.lineTo(right,y);g.stroke();label(g,String(value),left-8,y+3,undefined,"right");});
+    const end = left + (right-left) * (1 - (1 - p) ** 3);
+    g.save();g.beginPath();g.rect(left-10,top-24,end-left+13,bottom-top+40);g.clip();
+    const path=()=>points.forEach(([x,y],i)=>{if(i)g.lineTo(X(x),Y(y));else g.moveTo(X(x),Y(y));});
+    g.beginPath();path();g.lineTo(right,bottom);g.lineTo(left,bottom);g.closePath();
+    const fill=g.createLinearGradient(0,top,0,bottom);fill.addColorStop(0,"rgba(0,150,214,.24)");fill.addColorStop(1,"rgba(0,150,214,.02)");
+    g.fillStyle=fill;g.fill();
+    g.strokeStyle=BL;g.lineWidth=2;g.beginPath();path();g.stroke();g.restore();
+    points.forEach(([x,value,date],i)=>{
+      const cx=X(x),cy=Y(value);
+      if(date)label(g,date,cx,bottom+15,undefined,i===0?"left":x===1?"right":"center");
+      if(cx>end+1)return;
+      g.fillStyle=BL;g.beginPath();g.arc(cx,cy,3.5,0,Math.PI*2);g.fill();
+      if(date)label(g,value.toFixed(precision),cx,cy-9,BL,i===0?"left":x===1?"right":"center");
+    });
+    label(g,index===1?"RECORDED LAB DRAWS":"SELECTED LOGGED WEIGH-INS",W/2,H*.97,undefined,"center");
+  };
   const F = { stream, base: network, act }; let last = performance.now();
   (function frame(now) { requestAnimationFrame(frame); const t = now / 1000, dt = Math.min(.05, (now - last) / 1000); last = now;
     viz.forEach(v => { if (!v.vis) return; fit(v); v.g.clearRect(0, 0, v.W, v.H); F[v.kind](v, t, dt); }); })(last);
