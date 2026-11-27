@@ -372,37 +372,39 @@
   .plat .pviz canvas { position: absolute; left: 0; right: 0; bottom: 0; top: 41px; width: 100%; height: calc(100% - 41px); }
   .plat .sensing-scan { background: rgba(250,241,231,.44); border-color: #9eaaa7; }
   .sensing-scan .ph2 { background: rgba(247,250,246,.90); border-bottom-color: #83aeb84d; }
-  .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:#0c2634; }
+  .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:rgba(237,246,242,.46); border-color:#a1b9b7; }
   .intervention-viz .ph2 { background:#f7f6f0; }
-  .plat .intervention-viz { background:rgba(237,246,242,.46); border-color:#83aeb8; }
-  .plat .intervention-viz .intervention-heat { height:calc(100% - 79px); }
-  .intervention-score { position:relative; z-index:1; margin:8px 8px 8px 36%; border-radius:7px; background:#0c2634; }
-  .intervention-viz .viz-tabs { position:relative; z-index:1; background:#0c2634; }
+  .plat .intervention-viz .intervention-heat { height:calc(100% - 84px); }
+  .intervention-score { grid-row:2; position:relative; z-index:1; margin:10px 10px 10px 36%;
+    padding:clamp(12px,2vw,25px); border:1px solid #dce5de; border-radius:8px; background:rgba(255,253,245,.94);
+    color:#253732; display:grid; align-content:center; gap:clamp(10px,1.45vw,18px); }
+  .score-overview { display:grid; grid-template-columns:clamp(78px,24%,112px) minmax(0,1fr); align-items:center; gap:clamp(12px,1.5vw,22px); }
+  .score-dial { width:100%; aspect-ratio:1; position:relative; display:grid; place-content:center; justify-items:center;
+    border-radius:50%; background:conic-gradient(var(--score-accent) var(--score-fill),#dee9df 0); }
+  .score-dial::before { content:""; position:absolute; inset:5px; border-radius:50%; background:#fffdf6; }
+  .score-number,.score-denominator { z-index:1; }
+  .score-number { font:500 clamp(23px,3.2vw,40px)/.95 var(--serif); letter-spacing:-.035em; color:#193830; }
+  .score-denominator { margin-top:4px; color:#4b675d; font:500 9px var(--mono); }
+  .score-caption { margin:0 0 5px !important; color:#546b60 !important; font:500 10px/1.3 var(--mono) !important; text-transform:uppercase; letter-spacing:.06em; }
+  .plat .score-title { margin:0; color:#203c32; font:400 clamp(21px,2.4vw,34px)/1.02 var(--serif); letter-spacing:-.025em; }
+  .plat .score-status { margin:6px 0 0; color:#306756; font:500 clamp(11px,1.2vw,15px)/1.3 var(--sans); }
+  .score-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:0; }
+  .score-metrics > div { padding:8px; border:1px solid #dbe6dd; border-radius:6px; background:#f0f5ee; }
+  .score-metrics dt { color:#496156; font:500 9px/1.2 var(--mono); text-transform:uppercase; }
+  .score-metrics dd { margin:4px 0 0; color:#25473a; font:600 clamp(11px,1.35vw,17px)/1.1 var(--sans); }
+  .plat .score-next { margin:0; color:#52635a; font:400 clamp(10px,1.1vw,13px)/1.35 var(--sans); }
+  .viz-tabs { grid-row:3; position:relative; z-index:1; display:flex; justify-content:center; gap:8px; align-items:center;
+    min-height:43px; padding:5px; border-top:1px solid #c8d9d1; background:#f5f7ef; }
+  .viz-tabs button { padding:6px 11px; border:1px solid transparent; border-radius:99px; background:transparent;
+    color:#465e54; font:500 11px var(--mono); cursor:pointer; }
+  .viz-tabs button[aria-pressed="true"] { color:#1f5541; border-color:#a0c8b1; background:#deeee1; }
+  .viz-tabs button:focus-visible { outline:2px solid #27745a; outline-offset:1px; }
   @media(max-width:580px) {
     .plat .intervention-viz { aspect-ratio:auto; grid-template-rows:41px minmax(140px,34vw) auto auto; }
     .plat .intervention-viz .intervention-heat { height:max(140px,34vw); }
-    .intervention-viz .intervention-score { grid-row:3; margin:0 8px 8px; }
-    .intervention-viz .viz-tabs { grid-row:4; }
+    .intervention-score { grid-row:3; margin:0 8px 8px; }
+    .viz-tabs { grid-row:4; }
   }
-
-  .intervention-score { grid-row:2; padding:clamp(14px,2vw,28px); color:#eaf5f6; display:grid; align-content:center; gap:clamp(10px,1.5vw,18px); }
-  .score-overview { display:grid; grid-template-columns:clamp(90px,20%,143px) minmax(0,1fr); align-items:center; gap:clamp(12px,2vw,26px); }
-  .score-dial { width:100%; aspect-ratio:1; position:relative; display:grid; place-items:center;
-    border-radius:50%; background:conic-gradient(var(--score-accent) var(--score-fill),#274656 0); }
-  .score-dial::before { content:""; position:absolute; inset:6px; border-radius:50%; background:#102e3c; }
-  .score-number { z-index:1; font:600 clamp(18px,3vw,38px)/1 var(--sans); letter-spacing:-.055em; color:#fff; }
-  .score-caption { margin:0 0 5px !important; color:#99bbc5 !important; font:500 10px/1.3 var(--mono) !important; text-transform:uppercase; letter-spacing:.06em; }
-  .plat .score-title { margin:0; color:#f5fcfd; font:500 clamp(19px,2.4vw,31px)/1.08 var(--sans); letter-spacing:-.03em; }
-  .plat .score-status { margin:5px 0 0; color:var(--score-accent); font:500 clamp(11px,1.3vw,15px)/1.35 var(--sans); }
-  .score-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:0; }
-  .score-metrics > div { padding:8px; border:1px solid #31505e; border-radius:6px; background:#143543; }
-  .score-metrics dt { color:#b0cbd2; font:500 9px/1.2 var(--mono); text-transform:uppercase; }
-  .score-metrics dd { margin:4px 0 0; color:#f2fbfc; font:600 clamp(11px,1.5vw,18px)/1.1 var(--sans); }
-  .plat .score-next { margin:0; color:#c4dbe0; font:400 clamp(10px,1.1vw,13px)/1.35 var(--sans); }
-  .viz-tabs { grid-row:3; display:flex; justify-content:center; gap:5px; align-items:center; padding:5px; border-top:1px solid #31505e; }
-  .viz-tabs button { padding:6px 10px; border:1px solid transparent; border-radius:4px; background:transparent; color:#b0cbd2; font:500 11px var(--mono); cursor:pointer; }
-  .viz-tabs button[aria-pressed="true"] { color:#a8e9ff; border-color:#5ca7bb; background:#1b4352; }
-  .viz-tabs button:focus-visible { outline:2px solid #9edfff; outline-offset:1px; }
   @media (max-width: 900px) { .plat .prow { grid-template-columns: 1fr; gap: 28px; margin-bottom: 70px; } .plat .prow.rev .ptx { order: 0; } }
 
   /* ---- one page grid: every section shares the same content edges, with generous vertical breathing room ----
@@ -1245,24 +1247,24 @@
     <div class="prow"><div class="ptx" data-bounce><h3>Actionable insights tailored to you</h3><p class="pbody">The system acts on the live data stream. Because it keeps monitoring, it tracks the response to every intervention and adjusts continuously.</p></div>
       <div class="pviz intervention-viz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Closed loop</span></div>
         <canvas class="intervention-heat" data-viz="thermal" role="img" aria-label="Illustrative heat map on the moving digital twin showing areas of focus"></canvas>
-        <div class="intervention-score" style="--score-accent:#88dfba;--score-fill:56%">
+        <div class="intervention-score" style="--score-accent:#3d9270;--score-fill:77%">
           <div class="score-overview">
-            <div class="score-dial"><strong class="score-number">56%</strong></div>
+            <div class="score-dial"><strong class="score-number">77</strong><span class="score-denominator">/ 100</span></div>
             <div>
-              <p class="score-caption">Simulated wearable data</p>
-              <h3 class="score-title">Recovery</h3>
-              <p class="score-status">Average recovery score</p>
+              <p class="score-caption">Weight goal · recorded weigh-ins</p>
+              <h3 class="score-title">Improvement score</h3>
+              <p class="score-status">77% of the way to 80 kg</p>
             </div>
           </div>
           <dl class="score-metrics">
-            <div><dt>After BJJ</dt><dd>45%</dd></div>
-            <div><dt>Average HRV</dt><dd>49.1 ms</dd></div>
-            <div><dt>Resting HR</dt><dd>57.4 bpm</dd></div>
+            <div><dt>Start</dt><dd>88.1 kg</dd></div>
+            <div><dt>Latest</dt><dd>81.9 kg</dd></div>
+            <div><dt>Goal</dt><dd>80 kg</dd></div>
           </dl>
-          <p class="score-next">Connect wearable data to track recovery alongside training.</p>
+          <p class="score-next">6.2 kg of the planned 8.1 kg lost.</p>
         </div>
         <div class="viz-tabs" role="group" aria-label="Intervention views">
-          <button type="button" aria-pressed="true">Recovery</button><button type="button" aria-pressed="false">LDL</button><button type="button" aria-pressed="false">Weight</button>
+          <button type="button" aria-pressed="true">Improvement</button><button type="button" aria-pressed="false">LDL</button><button type="button" aria-pressed="false">Recovery</button>
         </div>
       </div></div>
   </div>
@@ -2653,7 +2655,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     label(g,scanFeeds[index][0],W-26,H-31,BL,"right");
   };
   const thermalRegions = [
-    [[.50,.105],[.55,.28]], [[.55,.27],[.48,.38]], [[.49,.51],[.43,.69],[.59,.72]]
+    [[.49,.51],[.43,.69],[.59,.72]], [[.55,.27],[.48,.38]], [[.50,.105],[.55,.28]]
   ];
   const thermal = (v,t) => {
     const {g,W,H} = v, box=imagingBox(v), {x,y,w,h,hasWire}=box;
@@ -2765,15 +2767,15 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   };
   // 3. a dashboard for recovery and recorded follow-up measurements
   const scoreViews = [
-    ["56%",56,"#88dfba","Simulated wearable data","Recovery","Average recovery score",
-      [["After BJJ","45%"],["Average HRV","49.1 ms"],["Resting HR","57.4 bpm"]],
-      "Connect wearable data to track recovery alongside training."],
-    ["−17%",17,"#82dfff","Recorded lab draws","LDL cholesterol","Lower since May 2026",
+    ["77",77,"#3d9270","Weight goal · recorded weigh-ins","Improvement score","77% of the way to 80 kg",
+      [["Start","88.1 kg"],["Latest","81.9 kg"],["Goal","80 kg"]],
+      "6.2 kg of the planned 8.1 kg lost."],
+    ["−17%",17,"#25829b","Recorded lab draws","LDL cholesterol","Lower since May 2026",
       [["May","3.61 mmol/L"],["November","2.98 mmol/L"],["Lab limit","2.58 mmol/L"]],
       "Still above the lab limit. Discuss apoB and repeat lipids with your clinician."],
-    ["77%",77,"#82dfff","Recorded weigh-ins","Weight goal","Progress toward 80 kg",
-      [["Start","88.1 kg"],["Latest","81.9 kg"],["Change","−6.2 kg"]],
-      "1.9 kg to the 80 kg goal."]
+    ["56%",56,"#3d9270","Simulated wearable data","Recovery","Average recovery score",
+      [["After BJJ","45%"],["Average HRV","49.1 ms"],["Resting HR","57.4 bpm"]],
+      "Connect wearable data to track recovery alongside training."]
   ];
   const dashboard = document.querySelector(".intervention-score");
   const buttons = [...document.querySelectorAll(".viz-tabs button")];
@@ -2781,6 +2783,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const [number,fill,accent,caption,title,status,metrics,next] = scoreViews[index];
     dashboard.style.setProperty("--score-fill",fill+"%");
     dashboard.style.setProperty("--score-accent",accent);
+    dashboard.querySelector(".score-denominator").hidden=index!==0;
     for (const [key,value] of Object.entries({number,caption,title,status,next})) dashboard.querySelector(".score-"+key).textContent=value;
     dashboard.querySelectorAll(".score-metrics > div").forEach((cell,i)=>{
       cell.querySelector("dt").textContent=metrics[i][0];
@@ -2788,18 +2791,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     });
     buttons.forEach((button,i)=>button.setAttribute("aria-pressed",String(i===index)));
   }
-  let scoreIndex=0, scoreTimer, manualScore=false;
-  buttons.forEach((button,i)=>button.addEventListener("click",()=>{
-    manualScore=true; clearInterval(scoreTimer); showScore(i);
-  }));
-  new IntersectionObserver(([entry])=>{
-    clearInterval(scoreTimer);
-    if (!entry.isIntersecting || manualScore || networkMotion.matches) return;
-    scoreTimer=setInterval(()=>{
-      if (networkMotion.matches || document.hidden || document.querySelector(".viz-tabs:focus-within")) return;
-      scoreIndex=(scoreIndex+1)%scoreViews.length; showScore(scoreIndex);
-    },6000);
-  },{threshold:.3}).observe(dashboard);
+  buttons.forEach((button,i)=>button.addEventListener("click",()=>showScore(i)));
 
   const F = { stream, base: network, thermal }; let last = performance.now();
   (function frame(now) { requestAnimationFrame(frame); const t = now / 1000, dt = Math.min(.05, (now - last) / 1000); last = now;
