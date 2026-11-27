@@ -54,7 +54,6 @@ section{position:relative}
 /* hero */
 #hero{padding:clamp(30px,5vw,68px) 0 clamp(40px,5vw,72px)}
 .hero-grid{display:grid;gap:clamp(16px,2.2vw,28px)}
-.hero-title{text-align:center;font-size:clamp(36px,5vw,76px);line-height:1.04;text-wrap:balance}
 .hero-visual{position:relative;overflow:hidden;border-radius:8px;border:var(--hair-soft);background:#ded2c8}
 .hero-portrait{display:block;width:100%;height:auto}
 @media(min-width:901px){.hero-visual{width:min(100%,max(560px,calc((100svh - 270px) * 1.23)));justify-self:center}}
@@ -593,9 +592,8 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 </section>
 
 <!-- HERO -->
-<section id="hero" aria-labelledby="heroTitle">
+<section id="hero" aria-label="Jasper’s digital twin and biomarkers">
   <div class="wrap hero-grid">
-    <h1 id="heroTitle" class="hero-title">Jasper and his <em>digital twin.</em></h1>
     <div class="hero-visual">
       <img class="hero-portrait" src="twin-hero-portrait-extended.webp" width="3200" height="2600" alt="Jasper standing in a burgundy sweater" fetchpriority="high" decoding="async">
       <div id="heroTwin" role="img" aria-label="Animated anatomical model of Jasper"><canvas id="htc" width="500" height="1344" aria-hidden="true"></canvas></div>
