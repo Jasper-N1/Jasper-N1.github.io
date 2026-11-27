@@ -91,7 +91,6 @@ section{position:relative}
 
 /* model zoom */
 #model{--model-step:51svh;--model-top:calc(var(--bar,65px) + 12px);--model-height:calc(100svh - var(--model-top) - 12px);scroll-margin-top:70px}
-#model .sechead{margin-bottom:24px}
 .model-track{height:calc(var(--model-step) * 8 + var(--model-height))}
 .model-layout{position:sticky;top:var(--model-top);height:var(--model-height);display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);
@@ -99,7 +98,6 @@ section{position:relative}
 .model-stage{grid-column:2;grid-row:2;min-width:0;min-height:0;overflow:hidden}
 .model-readings{grid-column:3;grid-row:2;align-self:start;max-height:100%;min-width:0;overflow:auto}
 .model-stage svg{display:block;width:100%;height:100%}
-#hero[hidden]{display:none}
 .model-selectors{grid-column:1/-1;grid-row:1;display:flex;justify-content:safe center;gap:6px;overflow-x:auto;padding:3px}
 .model-selectors button{flex:none;font:inherit;font-size:13px;padding:7px 11px;background:var(--paper);color:var(--ink);border:var(--hair);border-radius:999px;cursor:pointer}
 .model-selectors button[aria-pressed="true"]{background:var(--action);border-color:var(--action);color:#fff}
@@ -111,7 +109,18 @@ section{position:relative}
 .model-card{padding:clamp(14px,2vw,24px);border:var(--hair-soft);border-radius:12px;background:var(--paper)}
 .model-card h3{margin:0 0 7px;font-size:clamp(24px,3vw,38px);line-height:1.05}
 .model-card p{margin:0 0 8px;color:var(--ink2);font-size:14px}
-.model-card dl{margin:0}
+.model-card dl{margin:8px 0 0}
+.model-trend{margin-top:12px;padding:10px;background:#edf2ed;border-radius:7px}
+.model-trend-head{display:flex;justify-content:space-between;gap:4px 10px;align-items:baseline;flex-wrap:wrap}
+.model-trend-head strong{font-size:12px}
+.model-trend-head span{color:var(--action);font:500 25px/1 var(--serif)}
+.model-trend-head small{font:11px var(--sans)}
+.model-trend svg{display:block;width:100%;height:clamp(68px,8vw,116px);margin:5px 0}
+.model-trend-period{display:flex;justify-content:space-between;gap:4px;font:10px var(--mono);color:var(--ink2)}
+.model-data-row button{background:none;border:0;padding:0;color:var(--action);font:inherit;cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:3px}
+.model-data-row button[aria-pressed="true"]{font-weight:700}
+.model-data-row:has(button[aria-pressed="true"]){border-top-color:var(--action)}
+.model-data-row button:focus-visible{outline:2px solid var(--action);outline-offset:2px}
 .model-data-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:baseline;padding:8px 0;border-top:var(--hair-soft)}
 .model-data-row dt{font-size:13px;line-height:1.2}
 .model-data-row dd{margin:0;color:var(--blue);font-size:15px;font-weight:600;line-height:1.2}
@@ -129,6 +138,51 @@ section{position:relative}
 }
 @media(prefers-reduced-motion:reduce){.model-frame{transition:none}}
  
+/* medical analysis */
+#medical-analysis .sechead{margin-bottom:26px}
+.assessment-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.58fr);gap:clamp(18px,4vw,48px);align-items:center;margin-bottom:22px}
+.assessment-summary h3{margin:0 0 8px;font-size:clamp(26px,3vw,40px);line-height:1.05}
+.assessment-summary p{margin:0;color:var(--ink2)}
+.assessment-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0}
+.assessment-metrics div{border-left:var(--hair);padding-left:12px}
+.assessment-metrics dt{font-size:12px;color:var(--ink2)}
+.assessment-metrics dd{margin:0;color:var(--action);font:400 clamp(29px,4vw,48px)/1 var(--serif)}
+.assessment-chapter{margin:32px 0 12px;font-size:clamp(26px,3vw,36px)}
+.assessment-priorities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.assessment-priority{display:flex;flex-direction:column;gap:13px;min-width:0}
+.assessment-priority figure{margin:0}
+.assessment-priority figure img{display:block;width:100%;height:clamp(125px,16vw,210px);object-fit:cover;object-position:center 46%;border-radius:6px}
+.assessment-priority figcaption{margin-top:5px;font-size:11px;color:var(--ink2)}
+.assessment-priority h4,.assessment-note h4{margin:0;font-size:clamp(23px,2.6vw,32px);line-height:1.08}
+.assessment-priority p,.assessment-note p{margin:0;font-size:14px}
+.assessment-priority .k{display:block;margin-bottom:4px}
+.assessment-priority details{margin-top:auto}
+.assessment-priority summary,.assessment-notes summary{cursor:pointer;color:var(--action);font-size:13px}
+.assessment-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.assessment-note{display:grid;align-content:start;gap:8px;min-width:0}
+.assessment-note h4{font-size:23px}
+.assessment-next{margin-top:24px}
+.assessment-next h3{margin:0 0 10px;font-size:clamp(25px,3vw,36px)}
+.assessment-next dl{margin:0}
+.assessment-next dl div{display:grid;grid-template-columns:minmax(130px,1fr) minmax(0,3fr);gap:6px 16px;padding:10px 0;border-top:var(--hair-soft)}
+.assessment-next dt{font-weight:600}
+.assessment-next dd{margin:0;color:var(--ink2)}
+.assessment-priority a,.assessment-note a,.assessment-footer a{color:var(--action);text-underline-offset:3px;font-size:13px}
+.assessment-priority .assessment-evidence,.assessment-note .assessment-evidence{margin-top:8px}
+.assessment-evidence{min-width:0;background:#edf1ea;border-radius:8px;padding:12px}
+.assessment-evidence-scroll{overflow:auto}
+.assessment-evidence table{width:100%;min-width:340px;border-collapse:collapse;text-align:left;font-size:12px;font-variant-numeric:tabular-nums}
+.assessment-evidence caption{text-align:left;margin-bottom:4px;color:var(--ink2);font-size:12px}
+.assessment-evidence th,.assessment-evidence td{border-bottom:var(--hair-soft);padding:7px 5px;vertical-align:top}
+.assessment-evidence td:last-child,.assessment-evidence th:last-child{font-weight:700}
+.assessment-evidence small{display:block;color:var(--ink2);font-size:10px;white-space:nowrap}
+.assessment-evidence .flagged-reading{color:#a53927}
+.assessment-evidence button{font:inherit;color:var(--action);background:none;border:0;padding:0;text-align:left;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.assessment-footer{display:flex;gap:8px 20px;flex-wrap:wrap;margin-top:18px;font-size:13px}
+@media(max-width:760px){
+ .assessment-summary,.assessment-priorities,.assessment-notes,.assessment-next dl div{grid-template-columns:minmax(0,1fr)}
+}
+
 /* labs */
 #labs .sechead{margin-bottom:clamp(20px,3vw,34px)}
 .filters{display:grid;grid-template-columns:minmax(180px,250px) minmax(180px,320px);gap:12px;margin-bottom:20px}
@@ -570,6 +624,8 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
         <p class="example-tools-label" id="exampleGroup0">Overview</p>
         <ul>
           <li><a href="#model">Explore the twin</a></li>
+          <li><a href="#medical-analysis">Medical analysis</a></li>
+          <li><a href="#labs">Lab markers</a></li>
           <li><a href="#today">Daily overview</a></li>
         </ul>
       </div>
@@ -586,7 +642,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
         <p class="example-tools-label" id="exampleGroup2">Measurements</p>
         <ul>
           <li><a href="#body">Vitals & body composition</a></li>
-          <li><a href="#labs">Lab markers</a></li>
           <li><a href="#cgm">Glucose monitoring</a></li>
         </ul>
       </div>
@@ -625,13 +680,20 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<section id="model" class="sec">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>03</b> Inside the model</div>
-      <h2>Zoom into<br><em>the twin.</em></h2>
-      <p class="lede">Choose a system or scroll to zoom in and see the readings linked to it.</p></div>
+<section id="hero" aria-label="Jasper’s digital twin and biomarkers">
+  <div class="wrap hero-grid">
+    <div class="hero-visual">
+      <img class="hero-portrait" src="jasper-digital-twin-portrait-neutral.png" width="1419" height="1108" alt="Jasper in a burgundy sweater standing beside his digital twin" fetchpriority="high" decoding="async">
     </div>
+    <div class="hero-biomarkers" role="group" aria-label="Jasper’s biomarkers">
+      <div class="tags tags-left" id="tagsLeft"></div>
+      <div class="tags tags-right" id="tagsRight"></div>
+    </div>
+  </div>
+</section>
+
+<section id="model" class="sec" aria-label="Explore the twin">
+  <div class="wrap">
     <div class="model-track">
       <div class="model-layout">
         <div class="model-selectors" role="group" aria-label="Body systems"></div>
@@ -650,23 +712,100 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 </g>
 </svg>
         </div>
-        <div class="model-readings">
-          <div class="model-card"><h3>Full body</h3><p>Choose a system to explore its anatomy and readings.</p></div>
-        </div>
+        <div class="model-readings"></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="hero" hidden aria-label="Jasper’s digital twin and biomarkers">
-  <div class="wrap hero-grid">
-    <div class="hero-visual">
-      <img class="hero-portrait" src="jasper-digital-twin-portrait-neutral.png" width="1419" height="1108" alt="Jasper in a burgundy sweater standing beside his digital twin" fetchpriority="high" decoding="async">
+<section id="medical-analysis" class="sec" aria-labelledby="medical-analysis-title">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>00</b> Medical analysis</div>
+        <h2 id="medical-analysis-title">Jasper’s <em>health assessment.</em></h2>
+        <p class="lede">What stands out across three lab draws, what improved, and what the full assessment leaves open.</p>
+      </div>
+      <div class="srcs"><span class="src">N1 · May 2025 to November 2026</span></div>
     </div>
-    <div class="hero-biomarkers" role="group" aria-label="Jasper’s biomarkers">
-      <div class="tags tags-left" id="tagsLeft"></div>
-      <div class="tags tags-right" id="tagsRight"></div>
+    <div class="card assessment-summary">
+      <div><h3>Most results are within range.</h3>
+      <p>Liver tests, blood counts, inflammation and thyroid markers were within their lab ranges in November. The report prioritises persistent LDL elevation and the recurring creatinine and uric acid findings. Outside the lab, logged weight fell from 88.1 kg in September to 81.9 kg in November.</p></div>
+      <dl class="assessment-metrics"><div><dt>Within range</dt><dd>57 of 62</dd></div><div><dt>Outside range</dt><dd>5</dd></div></dl>
     </div>
+    <h3 class="assessment-chapter">Two priorities from the assessment</h3>
+    <div class="assessment-priorities">
+      <article class="card assessment-priority">
+        <div><span class="k">01 · Heart and cholesterol</span><h4>LDL improved. Its long-term significance remains open.</h4></div>
+        <p>LDL was above the lab limit at every draw. November’s <strong>2.98 mmol/L</strong> was lower than both previous readings, while HDL and triglycerides were within range. The report treats the three-draw pattern as the first long-term follow-up question.</p>
+        <figure><img src="report-art/05-ldl-and-arteries.webp" loading="lazy" alt="Conceptual cross-sections of an open artery and an artery with plaque"><figcaption>The report uses this illustration to explain why LDL exposure matters.</figcaption></figure>
+        <p><span class="k">What would clarify it</span>The assessment asks whether ApoB and lipoprotein(a), both missing from this record, would add context to LDL.</p>
+        <details><summary>Compare lipid readings across the three draws</summary><div class="assessment-evidence" data-assessment-markers="LDL Cholesterol|HDL Cholesterol|Triglycerides"></div></details>
+        <a href="Digital Twin Care Health Assessment - 2026.pdf#page=45">Heart and cholesterol in the full report ↗</a>
+      </article>
+      <article class="card assessment-priority">
+        <div><span class="k">02 · Kidneys and uric acid</span><h4>Two results rose again. The draw context matters.</h4></div>
+        <p>Creatinine and uric acid were above range in May 2025 and November 2026, with both in range between those draws. In November they measured <strong>119.4 µmol/L</strong> and <strong>541 µmol/L</strong>. Estimated filtration was <strong>66 mL/min</strong>, above the lab’s lower limit.</p>
+        <figure><img src="report-art/02-kidney-filtration.webp" loading="lazy" alt="Kidney cross-section with a close-up of its microscopic filtration structures"><figcaption>The report illustrates where filtration happens inside the kidneys.</figcaption></figure>
+        <p><span class="k">What would clarify it</span>The health note describes exercise and fasting around the November draw. The assessment flags these as possible influences and asks whether a comparable repeat, cystatin C, and a urine albumin-to-creatinine ratio would clarify the findings.</p>
+        <details><summary>Compare kidney-related readings across the three draws</summary><div class="assessment-evidence" data-assessment-markers="Creatinine|Uric Acid|eGFR"></div></details>
+        <a href="Digital Twin Care Health Assessment - 2026.pdf#page=39">Kidneys and uric acid in the full report ↗</a>
+      </article>
+    </div>
+    <h3 class="assessment-chapter">Other findings in context</h3>
+    <div class="assessment-notes">
+      <article class="card assessment-note">
+        <h4>One low fasting glucose result</h4>
+        <p>November fasting glucose was <strong>3.77 mmol/L</strong>, slightly below range. HbA1c, which reflects glucose over roughly three months, stayed within range across all three draws and was lowest in November. The report asks whether the fasting result recurs.</p>
+        <details><summary>Compare glucose readings</summary><div class="assessment-evidence" data-assessment-markers="Fasting Glucose|HbA1c"></div></details>
+      </article>
+      <article class="card assessment-note">
+        <h4>Vitamin D returned to range</h4>
+        <p>Vitamin D rose from <strong>71.06 to 97.59 nmol/L</strong> between May and November, during a period with supplementation logged. B12 was within range. The report notes its position in the range and places it in the context of Jasper’s diet.</p>
+        <details><summary>Compare vitamin readings</summary><div class="assessment-evidence" data-assessment-markers="25-Hydroxyvitamin D|Vitamin B12"></div></details>
+      </article>
+      <article class="card assessment-note">
+        <h4>Hepatitis B antibody needs context</h4>
+        <p>Surface antibody was below the lab’s threshold in all three draws. The report discusses the latest reading alongside Jasper’s reported vaccination history. Vaccination documentation is a gap in the record.</p>
+        <details><summary>Compare antibody readings</summary><div class="assessment-evidence" data-assessment-markers="Hepatitis B surface antibody"></div></details>
+      </article>
+      <article class="card assessment-note">
+        <h4>Weight is down. Blood pressure has limited coverage.</h4>
+        <p>The weight log went from <strong>88.1 to 81.9 kg</strong>. The assessment leaves open how much of that change reflects fat or lean mass. Four home blood-pressure readings also leave Jasper’s usual blood pressure unclear.</p>
+        <a href="#body">Explore the weight and blood-pressure records ↓</a>
+      </article>
+    </div>
+    <div class="card assessment-next">
+      <h3>What would make the next assessment clearer</h3>
+      <dl>
+        <div><dt>Comparable lab draws</dt><dd>Three samples show what was measured on those dates. The assessment notes differences in draw conditions and gaps in lipid and kidney markers.</dd></div>
+        <div><dt>More home measurements</dt><dd>The report highlights a structured blood-pressure series and better body-composition coverage as ways to fill gaps in the existing record.</dd></div>
+        <div><dt>Recorded daily signals</dt><dd>The report identifies original device readings, meal portions and training logs as missing pieces. Wearable and glucose-sensor streams in this example are simulated.</dd></div>
+      </dl>
+    </div>
+    <div class="assessment-footer">
+      <a href="Digital Twin Care Health Assessment - 2026.pdf">Open full assessment PDF ↗</a>
+      <a href="Digital Twin Care Health Assessment - 2026.pdf#page=168">Questions the assessment raises ↗</a>
+      <a href="#labs">Browse all lab markers ↓</a>
+      <a href="https://medlineplus.gov/lab-tests/blood-glucose-test/">About fasting glucose and HbA1c ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="labs" class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>04</b> Measurements</div><h2>Lab <em>markers.</em></h2>
+      <p class="lede">Compare readings across three lab draws. Results outside the lab range appear first. Select a marker to see its history.</p></div>
+      <div class="srcs"><span class="src">N1 · 3 lab draws</span></div>
+    </div>
+    <div class="filters" id="filters">
+      <label>Category<select id="labCategory"></select></label>
+      <label>Search markers<input id="labSearch" type="search" placeholder="e.g. cholesterol"></label>
+    </div>
+    <div class="matrix" id="matrix"></div>
+    <div class="k" style="margin-top:44px">Results reported as a status</div>
+    <div class="qual" id="qual"></div>
+    <div class="draws" id="draws"></div>
   </div>
 </section>
 
@@ -804,24 +943,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       <div class="card c6"><div class="lab"><div><div class="k">Blood pressure · N1</div><h4>This week</h4></div><div style="text-align:right"><div class="stat">132/62<small>mmHg</small></div><div class="k">26 Nov</div></div></div><svg id="bp" viewBox="0 0 600 220"></svg></div>
       <div class="card c6"><div class="lab"><div><div class="k">Goal tracker</div><h4>Distance to target</h4></div></div><div id="goals"></div></div>
     </div>
-  </div>
-</section>
-
-<section id="labs" class="sec">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>04</b> Measurements</div><h2>Lab <em>markers.</em></h2>
-      <p class="lede">Compare readings across three lab draws. Results outside the lab range appear first. Select a marker to see its history.</p></div>
-      <div class="srcs"><span class="src">N1 · 3 lab draws</span></div>
-    </div>
-    <div class="filters" id="filters">
-      <label>Category<select id="labCategory"></select></label>
-      <label>Search markers<input id="labSearch" type="search" placeholder="e.g. cholesterol"></label>
-    </div>
-    <div class="matrix" id="matrix"></div>
-    <div class="k" style="margin-top:44px">Results reported as a status</div>
-    <div class="qual" id="qual"></div>
-    <div class="draws" id="draws"></div>
   </div>
 </section>
 
@@ -1689,42 +1810,83 @@ ring(0, 0, 1, "", "Activity · so far", "", "", `Move 312 / 700 kcal · Exercise
   const views = {body: [-60,-24,620,1392], lungs: [-24,113,570,450], heart: [44,128,520,425], liver: [0, 290, 500, 415], kidneys: [4, 355, 500, 415], gut: [0, 399, 500, 445], blood: [-155, -24, 820, 1370], muscle: [-24, 605, 450, 410], brain: [45, -32, 410, 340]};
   const lab = (name, label = name) => {
     const reading = byName(name);
-    return ROW(label, reading.v, reading.unit, reading.lo, reading.hi, "N1 lab · " + fd(reading.date));
+    return ROW(label, reading.v, reading.unit, reading.lo, reading.hi, "N1 lab · " + fd(reading.date), reading.pts);
   };
-  const ROW = (label, value, unit, low, high, source) => ({label,value,unit,low,high,source});
+  const ROW = (label, value, unit, low, high, source, history) => ({label,value,unit,low,high,source,history});
+  const wearable = (label, unit, read) => {
+    const history = DAY.slice(-14).map(day => [day.d,read(day)]).filter(([,value]) => Number.isFinite(value));
+    const [date,value] = history.at(-1);
+    return ROW(label, value, unit, null, null, "Simulated wearable · " + fd(date), history);
+  };
   const sim = (label, value, unit, low, high, source = "Simulated wearable") => ROW(label,value,unit,low,high,source);
+  const [weightDate, weight] = WEIGHT.at(-1);
+  const [fatDate, bodyFat] = FAT.at(-1);
+  const [pressureDate, systolic, diastolic] = BP.at(-1);
+  const height = NOTE.profile.find(([label]) => label === "Height")[1];
   const systems = [
-    ["body","Full body",[],null],
+    ["body","Body at a glance",[
+      ROW("Weight", weight, "kg", null, null, "N1 · " + fd(weightDate), WEIGHT),
+      ROW("Body fat", bodyFat, "%", null, null, "N1 · Omron estimate · " + fd(fatDate), FAT),
+      ROW("Blood pressure", systolic + "/" + diastolic, "mmHg", null, null, "N1 · " + fd(pressureDate)),
+      ROW("Height", height, "", null, null, "Health note")
+    ],"body"],
     ["lungs","Lungs",[
-      sim("Oxygen saturation",97.5,"%",null,null,"26 Nov · Simulated wearable"),
-      sim("Breathing rate",14.8,"/ min",null,null,"26 Nov · Simulated wearable")
+      wearable("Oxygen saturation","%",d => d.spo2),
+      wearable("Breathing rate","breaths/min",d => d.resp)
     ],"wear","The record includes simulated overnight readings for lungs."],
-    ["heart","Heart & vessels",[lab("LDL Cholesterol", "LDL cholesterol"), lab("HDL Cholesterol", "HDL cholesterol"), lab("Triglycerides"), ROW("Blood pressure", "132/62", "mmHg", null, null, "N1 · 26 Nov"), sim("Resting heart rate · 7-day avg", rhr7, "bpm", 40, 70), sim("VO₂ max", T.vo2, "ml/kg/min", 42, 52), sim("Resting heart rate · 26 Nov", 54, "bpm", null, null, "Simulated wearable")],"labs"],
+    ["heart","Heart & vessels",[lab("LDL Cholesterol", "LDL cholesterol"), lab("HDL Cholesterol", "HDL cholesterol"), lab("Triglycerides"), ROW("Blood pressure", "132/62", "mmHg", null, null, "N1 · 26 Nov"), sim("Resting heart rate · 7-day avg", rhr7, "bpm", 40, 70), sim("VO₂ max", T.vo2, "ml/kg/min", 42, 52), wearable("Resting heart rate", "bpm", d => d.rhr)],"labs"],
     ["liver","Liver",[lab("ALT"), lab("AST"), lab("GGT"), lab("Alkaline Phosphatase", "Alkaline phosphatase"), lab("Total Bilirubin", "Bilirubin"), lab("Albumin")],"labs"],
     ["kidneys","Kidneys",[lab("Creatinine"), lab("eGFR"), lab("Uric Acid", "Uric acid"), lab("Urea"), lab("Potassium"), lab("Sodium")],"labs"],
     ["gut","Gut & metabolism",[lab("Fasting Glucose", "Fasting glucose"), lab("HbA1c"), lab("Triglycerides"), sim("Fibre · 30-day avg", Math.round(avg(DAY.slice(-30).map(d => d.fib))), "g/day", 30, 60), sim("Glucose · 14-day mean", window.SIM.CGMSUM.mean, "mmol/L", 3.9, 7.8, "CGM preview · simulated"), ROW("PHGG + psyllium", "daily", "", null, null, "N1 · supplements")],"cgm"],
     ["blood","Blood & immunity",[lab("Hemoglobin"), lab("White Blood Cells", "White cells"), lab("Platelets"), lab("hs-CRP"), lab("Iron"), lab("Hepatitis B surface antibody", "Hep B surface antibody")],"labs"],
-    ["muscle","Muscle & bone",[ROW("Body fat", 16.6, "%", null, null, "N1 · 22 Nov"), ROW("Skeletal muscle", 37.7, "%", null, null, "Health note · 10 Nov"), lab("25-Hydroxyvitamin D", "Vitamin D"), lab("Calcium"), lab("Magnesium"), sim("Flat DB press · hard set", 12.5, "kg × 20", null, null, "Session log · simulated")],"body"],
-    ["brain","Brain & sleep",[sim("HRV · 7-day", hrv7, "ms", 40, 90), lab("TSH"), lab("Vitamin B12"), lab("Homocysteine"), sim("Sleep duration · 26 Nov", 5.7, "h", null, null, "Simulated wearable"), sim("Deep sleep · 26 Nov", 1.1, "h", null, null, "Simulated wearable")],"wear"]
+    ["muscle","Muscle & bone",[ROW("Body fat", bodyFat, "%", null, null, "N1 · Omron estimate · " + fd(fatDate), FAT), ROW("Skeletal muscle", 37.7, "%", null, null, "Health note · 10 Nov"), lab("25-Hydroxyvitamin D", "Vitamin D"), lab("Calcium"), lab("Magnesium"), sim("Flat DB press · hard set", 12.5, "kg × 20", null, null, "Session log · simulated")],"body"],
+    ["brain","Brain & sleep",[sim("HRV · 7-day", hrv7, "ms", 40, 90), lab("TSH"), lab("Vitamin B12"), lab("Homocysteine"), wearable("Sleep duration", "h", d => d.sleep), wearable("Deep sleep", "h", d => d.stages.deep)],"wear"]
   ];
   const images = [...camera.querySelectorAll(".model-frame")];
-  const cards = [readings.firstElementChild];
-  systems.slice(1).forEach(([,name,rows,link,note]) => {
-    const card = H("div", {class:"model-card"}, `<h3>${name}</h3>${note ? `<p>${note}</p>` : ""}<dl></dl><a href="#${link}">Explore the source records ↓</a>`);
-    const list = card.querySelector("dl");
-    rows.forEach(({label,value,unit,low,high,source}) => {
+  const cards = systems.map(([key,name,rows,link,note]) => {
+    const card = H("div", {class:"model-card"}, `<h3>${name}</h3>${note ? `<p>${note}</p>` : ""}<div class="model-trend" aria-live="polite"></div><dl></dl><a href="#${link}">Explore the source records ↓</a>`);
+    const list = card.querySelector("dl"), trend = card.querySelector(".model-trend");
+    const choices = new Map();
+    function showTrend(row) {
+      const {label,value,unit,low,high,history,source} = row;
+      choices.forEach((button, key) => button.setAttribute("aria-pressed", String(key === row)));
+      trend.innerHTML = `<div class="model-trend-head"><strong>${label}</strong><span>${fmt(value)} <small>${unit}</small></span></div>`;
+      const chart = S("svg", {viewBox:"0 0 240 96",role:"img","aria-label":label + " trend · " + source}, trend);
+      const marker = {pts:history,lo:low,hi:high,unit};
+      const area = {left:32,right:233,top:7,bottom:87,datePad:.045};
+      const scale = labScales(marker,area);
+      for (const level of [scale.min, (scale.min + scale.max) / 2, scale.max]) {
+        const y = scale.y(level);
+        S("line", {x1:area.left,x2:area.right,y1:y,y2:y,stroke:"#d4e0da"},chart);
+        S("text", {x:27,y:y+3,"text-anchor":"end","font-size":9,fill:"#465953"},chart).textContent = fmt(level);
+      }
+      labTrend(chart,marker,area,scale,4);
+      trend.appendChild(H("div",{class:"model-trend-period"}, `<span>${fd(history[0][0],1)}</span><span>${fd(history.at(-1)[0],1)}</span>`));
+    }
+    rows.forEach(row => {
+      const {label,value,unit,low,high,source,history} = row;
       const range = low != null || high != null ? " · Range " + rng(low,high) : "";
-      list.appendChild(H("div", {class:"model-data-row"}, `<dt>${label}<small>${source}${range}</small></dt><dd>${typeof value === "number" ? fmt(value) : value} ${unit}</dd>`));
+      const element = H("div", {class:"model-data-row"}, `<dt><span>${label}</span><small>${source}${range}</small></dt><dd>${typeof value === "number" ? fmt(value) : value} ${unit}</dd>`);
+      if (history?.length > 1) {
+        const button = H("button",{type:"button","aria-pressed":"false"},label);
+        button.onclick = () => showTrend(row);
+        choices.set(row,button);
+        element.querySelector("dt span").replaceWith(button);
+      }
+      list.appendChild(element);
     });
-    card.hidden = true;
+    const lead = choices.keys().next().value;
+    if (lead) showTrend(lead);
+    else trend.hidden = true;
+    card.hidden = key !== "body";
     readings.appendChild(card);
-    cards.push(card);
+    return card;
   });
 
   const selectors = track.querySelector(".model-selectors");
   const buttons = systems.map(([, name], index) => {
     const button = H("button", {type:"button", "aria-pressed":String(index === 0)});
-    button.textContent = name;
+    button.textContent = index === 0 ? "Full body" : name;
     button.onclick = () => {
       const top = parseFloat(getComputedStyle(layout).top);
       const distance = track.getBoundingClientRect().height - layout.getBoundingClientRect().height;
@@ -1833,8 +1995,26 @@ function openDrawer(m) {
   $("drawer").classList.add("on");
 }
 window.openLab = n => { const m = byName(n); if (m) openDrawer(m); };
-document.querySelectorAll("[data-analysis-lab]").forEach(button => {
-  button.addEventListener("click", () => window.openLab(button.dataset.analysisLab));
+document.querySelectorAll("[data-assessment-markers]").forEach(panel => {
+  const markers = panel.dataset.assessmentMarkers.split("|").map(byName);
+  const dates = [...new Set(markers.flatMap(m => m.pts.map(([date]) => date)))].sort();
+  const scroll = H("div", {class:"assessment-evidence-scroll", tabindex:"0", role:"region", "aria-label":"Lab readings by draw date"});
+  const table = H("table", {}, `<caption>Recorded lab results · select a marker for its chart</caption>
+    <thead><tr><th scope="col">Marker</th>${dates.map(date => `<th scope="col">${fd(date,1)}</th>`).join("")}</tr></thead><tbody></tbody>`);
+  const body = table.querySelector("tbody");
+  markers.forEach(m => {
+    const row = H("tr", {}, `<th scope="row"><button type="button">${m.name} ↗</button><small>${rng(m.lo,m.hi)} ${m.unit}</small></th>
+      ${dates.map(date => {
+        const reading = m.pts.find(point => point[0] === date);
+        if (!reading) return "<td>—</td>";
+        const v = reading[1], status = v < (m.lo ?? -Infinity) ? "Below range" : v > (m.hi ?? Infinity) ? "Above range" : "";
+        return `<td${status ? ' class="flagged-reading"' : ""}>${v}${status ? `<small>${status}</small>` : ""}</td>`;
+      }).join("")}`);
+    row.querySelector("button").onclick = () => openDrawer(m);
+    body.appendChild(row);
+  });
+  scroll.appendChild(table);
+  panel.appendChild(scroll);
 });
 $("dx_").onclick = () => $("drawer").classList.remove("on"); $("drawer").onclick = e => { if (e.target.id == "drawer") $("drawer").classList.remove("on"); };
 addEventListener("keydown", e => { if (e.key == "Escape") $("drawer").classList.remove("on"); });
