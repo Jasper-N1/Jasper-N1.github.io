@@ -90,14 +90,22 @@ section{position:relative}
 @media(max-width:1000px){.rings{grid-template-columns:1fr 1fr}.clockwrap{grid-template-columns:1fr}}
 
 /* model zoom */
-#model{--model-step:51svh;scroll-margin-top:70px}
+#model{--model-step:51svh;--model-top:calc(var(--bar,65px) + 12px);--model-height:calc(100svh - var(--model-top) - 12px);scroll-margin-top:70px}
 #model .sechead{margin-bottom:24px}
-.model-track{height:calc(var(--model-step) * 8 + 72svh)}
-.model-layout{position:sticky;top:calc(var(--bar, 65px) + 12px);display:grid;
-  grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
-.model-stage{overflow:hidden;height:min(620px,65svh);border:var(--hair-soft);border-radius:12px}
+.model-track{height:calc(var(--model-step) * 8 + var(--model-height))}
+.model-layout{position:sticky;top:var(--model-top);height:var(--model-height);display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr);gap:12px;min-width:0}
+.model-stage{grid-column:2;grid-row:2;min-width:0;min-height:0;overflow:hidden}
+.model-readings{grid-column:3;grid-row:2;align-self:start;max-height:100%;min-width:0;overflow:auto}
 .model-stage svg{display:block;width:100%;height:100%}
-.model-images{opacity:.76}
+#hero[hidden]{display:none}
+.model-selectors{grid-column:1/-1;grid-row:1;display:flex;justify-content:safe center;gap:6px;overflow-x:auto;padding:3px}
+.model-selectors button{flex:none;font:inherit;font-size:13px;padding:7px 11px;background:var(--paper);color:var(--ink);border:var(--hair);border-radius:999px;cursor:pointer}
+.model-selectors button[aria-pressed="true"]{background:var(--action);border-color:var(--action);color:#fff}
+.model-selectors button:focus-visible{outline:2px solid var(--action);outline-offset:1px}
+.model-images{opacity:.64}
+.model-images:has(#model-body[data-active]){opacity:.52}
 .model-frame{opacity:0;transition:opacity .22s ease}
 .model-frame[data-active]{opacity:1}
 .model-card{padding:clamp(14px,2vw,24px);border:var(--hair-soft);border-radius:12px;background:var(--paper)}
@@ -110,10 +118,11 @@ section{position:relative}
 .model-data-row small{display:block;color:var(--ink2);font-size:10px;margin-top:2px}
 .model-card a{display:inline-block;margin-top:8px;color:var(--blue);font-size:12px;text-underline-offset:3px}
 #model [hidden]{display:none}
-@media(max-width:690px){
+@media(max-width:850px){
   #model{--model-step:58svh}
-  .model-layout{grid-template-columns:1fr;gap:8px}
-  .model-stage{height:clamp(115px,26svh,225px)}
+  .model-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1.8fr) minmax(0,1fr);gap:8px}
+  .model-stage{grid-column:1;grid-row:2}
+  .model-readings{grid-column:1;grid-row:3}
   .model-card{padding:10px 12px}
   .model-card p{font-size:12px}
   .model-data-row{padding:4px 0}
@@ -121,33 +130,21 @@ section{position:relative}
 @media(prefers-reduced-motion:reduce){.model-frame{transition:none}}
  
 /* labs */
-.spot{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:46px}
-.spotc{background:var(--paper);border-radius:var(--r);padding:20px 20px 16px;border:var(--hair-soft);position:relative;cursor:pointer;transition:transform .25s,box-shadow .25s}
-.spotc:hover{transform:translateY(-3px);box-shadow:0 20px 40px -20px rgba(0,0,0,.2)}
-.spotc .flag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--flag);display:flex;gap:6px;align-items:center}
-.spotc .flag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--flag)}
-.spotc .nm{font-size:14.5px;margin:10px 0 6px;font-weight:500}
-.spotc .v{font-family:var(--serif);font-size:40px;line-height:1}
-.spotc .v small{font-family:var(--sans);font-size:12px;color:var(--ink3);margin-left:4px}
-.spotc .rg{font-size:12px;color:var(--ink3);margin-top:6px}
-.spotc svg{width:100%;height:54px;margin-top:10px;display:block}
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;align-items:center}
-.filters button{font:inherit;font-size:13px;border:1px solid var(--line);background:transparent;padding:8px 14px;border-radius:99px;cursor:pointer;color:var(--ink2)}
-.filters button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.filters input{font:inherit;font-size:13px;border:var(--hair);background:var(--paper);padding:8px 14px;border-radius:99px;margin-left:auto;min-width:200px}
-.matrix{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px}
-.tile{background:var(--paper);border:var(--hair-soft);border-radius:var(--r);padding:13px 14px 12px;cursor:pointer;transition:border-color .2s,transform .2s;position:relative}
-.tile:hover{border-color:var(--blue);transform:translateY(-2px)}
-.tile.f{border-color:rgba(224,87,60,.45);background:#FFF8F5}
-.tile .g{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
-.tile .nm{font-size:13.5px;font-weight:500;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tile .row{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
-.tile .v{font-family:var(--serif);font-size:24px;line-height:1}
-.tile .v small{font-family:var(--sans);font-size:10.5px;color:var(--ink3);margin-left:3px}
-.tile .d{font-size:11px;color:var(--ink3);font-family:var(--mono)}
-.tile .d.up{color:var(--ink2)}
-.tile svg{width:100%;height:26px;display:block;margin-top:8px}
-.tile .fw{position:absolute;right:12px;top:12px;font-family:var(--mono);font-size:9.5px;color:var(--flag);letter-spacing:.06em}
+#labs .sechead{margin-bottom:clamp(20px,3vw,34px)}
+.filters{display:grid;grid-template-columns:minmax(180px,250px) minmax(180px,320px);gap:12px;margin-bottom:20px}
+.filters label{display:grid;gap:5px;font-size:12px;color:var(--ink2)}
+.filters select,.filters input{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:var(--hair);border-radius:6px;padding:8px 11px;min-height:42px;width:100%}
+.matrix{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,195px),1fr));gap:12px}
+.tile{display:grid;align-content:start;gap:6px;text-align:left;font:inherit;color:var(--ink);background:var(--paper);border:var(--hair-soft);border-radius:var(--r);padding:15px;cursor:pointer;min-width:0}
+.tile:hover,.tile:focus-visible{outline:1px solid var(--action);outline-offset:1px}
+.tile .g,.tile .d{font-family:var(--mono);font-size:11px;color:var(--ink2)}
+.tile .nm{font-size:14px;font-weight:500;line-height:1.3;min-height:2.6em}
+.tile .v{font-family:var(--serif);font-size:31px;line-height:1}
+.tile .v small{font-family:var(--sans);font-size:11px;color:var(--ink2);margin-left:4px}
+.tile svg{width:100%;height:38px;display:block}
+.tile .fw{color:#a53927}
+.tile .row{display:flex;justify-content:space-between;gap:7px}
+@media(max-width:530px){.filters{grid-template-columns:minmax(0,1fr)}.matrix{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{padding:11px}.tile .v{font-size:26px}.tile .row{flex-wrap:wrap}}
 .qual{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
 .qual span{font-size:12.5px;border:var(--hair-soft);border-radius:99px;padding:6px 12px;background:var(--paper)}
 .qual span.f{border-color:rgba(224,87,60,.5);color:var(--flag)}
@@ -155,7 +152,7 @@ section{position:relative}
 .draw{border-top:2px solid var(--ink);padding-top:14px}
 .draw .big{font-family:var(--serif);font-size:44px;line-height:1;margin:8px 0}
 .draw p{font-size:13px;color:var(--ink2);margin:0;line-height:1.45}
-@media(max-width:1000px){.spot{grid-template-columns:1fr 1fr}.draws{grid-template-columns:1fr 1fr}.filters input{margin-left:0;width:100%}}
+@media(max-width:1000px){.draws{grid-template-columns:1fr 1fr}}
 
 /* drawer */
 .drawer{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:rgba(10,18,24,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
@@ -430,6 +427,9 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools{width:calc(100% - 2 * var(--g));max-width:1200px;margin:16px auto 0;border:var(--hair);border-radius:10px;background:var(--paper);box-shadow:0 10px 24px #1c1b1710;color:var(--ink);font:500 13px var(--sans)}
 .example-choice{position:relative;z-index:2}
 .example-name{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:9px 14px 8px;border:0;border-bottom:var(--hair-soft);border-radius:9px 9px 0 0;background:transparent;color:var(--ink);font:400 28px/1.1 var(--serif);text-align:left;cursor:pointer}
+.example-profile{display:flex;align-items:center;gap:10px;min-width:0}
+.example-avatar{width:34px;height:34px;flex:none;object-fit:cover;object-position:center;border-radius:50%;display:block;border:1px solid var(--line)}
+body[data-example="jy"] .example-avatar{display:none}
 .example-name:hover,.example-name[aria-expanded="true"]{background:#edf3ee}
 .example-name svg{color:var(--action);transition:transform .2s}
 .example-name[aria-expanded="true"] svg{transform:rotate(180deg)}
@@ -442,12 +442,14 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 .example-tools svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .example-tools-panel{max-height:calc(100vh - var(--bar) - 74px);max-height:calc(100dvh - var(--bar) - 74px);overflow:auto;padding:14px 12px 12px}
 .example-tools-label{margin:0 0 6px;font:500 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink2)}
-.example-tools-sections{list-style:none;margin:0;padding:0;counter-reset:example-section;max-height:min(36dvh,290px);overflow:auto;scrollbar-width:thin;scrollbar-color:#bcbcb1 transparent;padding-right:4px}
+.example-tools-sections{list-style:none;margin:0;padding:0;max-height:min(48dvh,400px);overflow:auto;scrollbar-width:thin;scrollbar-color:#bcbcb1 transparent;padding-right:4px}
 .example-tools-sections::-webkit-scrollbar{width:5px}
 .example-tools-sections::-webkit-scrollbar-thumb{background:#bcbcb1;border-radius:8px}
-.example-tools-sections li{counter-increment:example-section;border-bottom:var(--hair-soft)}
-.example-tools-sections a{display:flex;align-items:center;gap:9px;min-height:35px;padding:6px 5px;color:var(--ink);text-decoration:none;line-height:1.3}
-.example-tools-sections a::before{content:counter(example-section,decimal-leading-zero);color:var(--action);font:500 10px var(--mono)}
+.example-index-group + .example-index-group{border-top:var(--hair-soft);margin-top:8px;padding-top:9px}
+.example-index-group .example-tools-label{margin:0 0 2px;padding-inline:5px}
+.example-index-group ul{list-style:none;margin:0;padding:0}
+.example-tools-sections a{display:flex;align-items:center;gap:9px;min-height:32px;padding:5px 7px;color:var(--ink);text-decoration:none;line-height:1.3;border-radius:5px}
+
 .example-tools-actions{display:grid;gap:5px;margin-top:12px;padding-top:12px;border-top:var(--hair-soft)}
 .example-tool-action{display:flex;align-items:center;gap:8px;width:100%;min-height:36px;padding:6px 8px;border:var(--hair);border-radius:6px;background:#fffdf8;color:var(--ink);font:inherit;text-align:left;text-decoration:none;cursor:pointer}
 .example-tool-action svg{color:var(--action)}
@@ -465,7 +467,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   .examples-main .wrap{width:100%}
 }
 @container (max-width:990px){
-  .spot,.draws,.logs,.exlib{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .draws,.logs,.exlib{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sechead,.exgrid,.tsgrid{grid-template-columns:minmax(0,1fr)}
   .srcs{justify-content:flex-start}
   .sxlist>div{grid-template-columns:80px minmax(0,1fr) 60px}
@@ -473,7 +475,8 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
   #wear .card,#train .card,#lab .card,.provenance-table{overflow-x:auto}
 }
 @media(max-width:900px){
-  .example-tools-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 8px;max-height:150px}
+  .example-tools-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;max-height:224px;align-items:start}
+  .example-index-group + .example-index-group{border-top:0;margin-top:0;padding-top:0}
   .example-tools-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
   .example-tools-actions .example-tools-label{grid-column:1/-1}
 }
@@ -549,7 +552,10 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 <aside class="example-tools" aria-label="Example navigation">
   <div class="example-choice">
     <button class="example-name" id="examplePicker" type="button" aria-label="Example twin: Jasper" aria-expanded="false" aria-controls="exampleOptions">
-      <span id="currentExample">Jasper</span>
+      <span class="example-profile">
+        <img class="example-avatar" src="about/team/jasper-middendorp.webp" width="34" height="34" alt="">
+        <span id="currentExample">Jasper</span>
+      </span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </button>
     <div class="example-options" id="exampleOptions" role="group" aria-label="Example twins" hidden>
@@ -559,24 +565,48 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
   <div class="example-tools-panel">
     <div class="jasper-tools">
-    <p class="example-tools-label" id="exampleIndexLabel">Body systems</p>
-    <ol class="example-tools-sections" aria-labelledby="exampleIndexLabel">
-      <li><a href="#report">Body systems overview</a></li>
-      <li><a href="#model">Explore the twin</a></li>
-      <li><a href="#labs">Bloodwork</a></li>
-      <li><a href="#body">Weight and body composition</a></li>
-      <li><a href="#cgm">Glucose</a></li>
-      <li><a href="#wear">Sleep and recovery</a></li>
-      <li><a href="#train">Training</a></li>
-      <li><a href="#food">Nutrition</a></li>
-      <li><a href="#dna">Genetics</a></li>
-      <li><a href="#supp">Supplements</a></li>
-      <li><a href="#today">Daily signals</a></li>
-      <li><a href="#corrsec">Connections</a></li>
-      <li><a href="#lab">Data lab</a></li>
-      <li><a href="#raw">Raw data</a></li>
-      <li><a href="#sources">Sources</a></li>
-    </ol>
+    <nav class="example-tools-sections" aria-label="Explore Jasper’s health">
+      <div class="example-index-group" role="group" aria-labelledby="exampleGroup0">
+        <p class="example-tools-label" id="exampleGroup0">Overview</p>
+        <ul>
+          <li><a href="#model">Explore the twin</a></li>
+          <li><a href="#today">Daily overview</a></li>
+        </ul>
+      </div>
+      <div class="example-index-group" role="group" aria-labelledby="exampleGroup1">
+        <p class="example-tools-label" id="exampleGroup1">Daily health</p>
+        <ul>
+          <li><a href="#food">Meals</a></li>
+          <li><a href="#wear">Sleep & recovery</a></li>
+          <li><a href="#train">Exercise</a></li>
+          <li><a href="#stress">Mindfulness & stress</a></li>
+        </ul>
+      </div>
+      <div class="example-index-group" role="group" aria-labelledby="exampleGroup2">
+        <p class="example-tools-label" id="exampleGroup2">Measurements</p>
+        <ul>
+          <li><a href="#body">Vitals & body composition</a></li>
+          <li><a href="#labs">Lab markers</a></li>
+          <li><a href="#cgm">Glucose monitoring</a></li>
+        </ul>
+      </div>
+      <div class="example-index-group" role="group" aria-labelledby="exampleGroup3">
+        <p class="example-tools-label" id="exampleGroup3">Health record</p>
+        <ul>
+          <li><a href="#supp">Supplements</a></li>
+          <li><a href="#dna">Genetics</a></li>
+        </ul>
+      </div>
+      <div class="example-index-group" role="group" aria-labelledby="exampleGroup4">
+        <p class="example-tools-label" id="exampleGroup4">Explore the data</p>
+        <ul>
+          <li><a href="#corrsec">Patterns & connections</a></li>
+          <li><a href="#lab">Data lab</a></li>
+          <li><a href="#raw">Raw data & downloads</a></li>
+          <li><a href="#sources">Data sources</a></li>
+        </ul>
+      </div>
+    </nav>
     <div class="example-tools-actions" role="group" aria-label="Downloads and playback">
       <p class="example-tools-label">Downloads</p>
       <a class="example-tool-action" href="Digital Twin Care Health Assessment - 2026.pdf" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z M14 3v5h4 M10 12h5 M10 16h5"/></svg> Full report <small>PDF</small></a>
@@ -594,8 +624,40 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- HERO -->
-<section id="hero" aria-label="Jasper’s digital twin and biomarkers">
+<section id="model" class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>03</b> Inside the model</div>
+      <h2>Zoom into<br><em>the twin.</em></h2>
+      <p class="lede">Choose a system or scroll to zoom in and see the readings linked to it.</p></div>
+    </div>
+    <div class="model-track">
+      <div class="model-layout">
+        <div class="model-selectors" role="group" aria-label="Body systems"></div>
+        <div class="model-stage">
+<svg id="model-camera" viewBox="-60 -24 620 1392" role="img" aria-label="Full-body anatomical twin">
+<g class="model-images">
+<image class="model-frame" data-active id="model-body" href="examples-studio/twin-neutral.png" width="500" height="1344"/>
+<image class="model-frame" id="model-lungs" href="examples-studio/twin-lungs-focus.png" width="500" height="1344"/>
+<image class="model-frame" id="model-heart" href="examples-studio/twin-heart-focus.png" width="500" height="1344"/>
+<image class="model-frame" id="model-liver" href="examples-studio/twin-liver-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-kidneys" href="examples-studio/twin-kidneys-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-gut" href="examples-studio/twin-gut-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-blood" href="examples-studio/twin-blood-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-muscle" href="examples-studio/twin-muscle-focus.webp" width="500" height="1344"/>
+<image class="model-frame" id="model-brain" href="examples-studio/twin-brain-focus.webp" width="500" height="1344"/>
+</g>
+</svg>
+        </div>
+        <div class="model-readings">
+          <div class="model-card"><h3>Full body</h3><p>Choose a system to explore its anatomy and readings.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hero" hidden aria-label="Jasper’s digital twin and biomarkers">
   <div class="wrap hero-grid">
     <div class="hero-visual">
       <img class="hero-portrait" src="jasper-digital-twin-portrait-neutral.png" width="1419" height="1108" alt="Jasper in a burgundy sweater standing beside his digital twin" fetchpriority="high" decoding="async">
@@ -607,170 +669,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<section id="report" class="sec" aria-labelledby="reportTitle">
-  <div class="wrap">
-    <header class="sechead">
-      <div>
-        <div class="num"><b>01</b> Health analysis · data through 26 Nov 2026</div>
-        <h2 id="reportTitle">Jasper’s <em>body systems.</em></h2>
-        <p class="lede">See where your latest readings sit, compare them with earlier results, and open the data behind each finding.</p>
-      </div>
-      <a class="cta" href="Digital Twin Care Health Assessment - 2026.pdf" download>Download full report · PDF</a>
-    </header>
-    <dl class="report-stats" aria-label="Jasper’s measurements at a glance">
-      <div class="report-stat">
-        <dt><span class="report-value">57 of 62</span> Markers in range</dt>
-        <dd class="report-period">18 Nov 2026 lab draw</dd>
-      </div>
-      <div class="report-stat">
-        <dt><span class="report-value">5</span> Markers outside range</dt>
-        <dd class="report-period">18 Nov 2026 lab draw</dd>
-      </div>
-      <div class="report-stat">
-        <dt><span class="report-value">3</span> Lab draws compared</dt>
-        <dd class="report-period">May 2025 to Nov 2026</dd>
-      </div>
-      <div class="report-stat">
-        <dt><span class="report-value">52</span> Weight measurements</dt>
-        <dd class="report-period">Sep to Nov 2026</dd>
-      </div>
-    </dl>
-    <div class="report-chapter">
-      <h3>Latest bloodwork</h3>
-      <p class="k">N1 lab record · 18 Nov 2026</p>
-    </div>
-    <div class="report-grid">
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Kidneys and uric acid</h3>
-        <p class="report-result">119.4 <small>µmol/L</small></p>
-        <p class="analysis-label">Creatinine · above range</p>
-        <p>Uric acid is also above range at 541 µmol/L. Both were in range in May. Estimated kidney filtration is within the lab’s range.</p>
-        <button class="report-source" type="button" data-analysis-lab="Creatinine">Compare creatinine readings →</button>
-        <details class="report-concept"><summary>How kidney filtration is estimated</summary><figure class="report-figure"><img src="report-art/02-kidney-filtration.webp" width="960" height="640" alt="Kidney cross-section with a close-up of its microscopic filter." loading="lazy" decoding="async"><figcaption>Creatinine is one of the inputs used to estimate kidney filtration.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Creatinine over three lab draws</figcaption>
-          <svg data-system-chart="creatinine" viewBox="0 0 520 210" role="img" aria-label="Creatinine over three lab draws"></svg>
-        </figure>
-      </article>
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Cholesterol</h3>
-        <p class="report-result">2.98 <small>mmol/L</small></p>
-        <p class="analysis-label">LDL cholesterol · above range</p>
-        <p>Down from 3.61 mmol/L in May and the lowest of the three draws. The lab’s upper limit is 2.58 mmol/L.</p>
-        <button class="report-source" type="button" data-analysis-lab="LDL Cholesterol">Compare LDL readings →</button>
-        <details class="report-concept"><summary>Why LDL is measured</summary><figure class="report-figure"><img src="report-art/05-ldl-and-arteries.webp" width="960" height="640" alt="Artery cross-sections showing an open vessel and one with plaque." loading="lazy" decoding="async"><figcaption>LDL particles can contribute to plaque buildup inside artery walls.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>LDL cholesterol over three lab draws</figcaption>
-          <svg data-system-chart="ldl" viewBox="0 0 520 210" role="img" aria-label="LDL cholesterol over three lab draws"></svg>
-        </figure>
-      </article>
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Blood sugar</h3>
-        <p class="report-result">3.77 <small>mmol/L</small></p>
-        <p class="analysis-label">Fasting glucose · below range</p>
-        <p>Slightly below the lab’s 3.9 mmol/L lower limit. HbA1c is within range at 35.63 mmol/mol.</p>
-        <button class="report-source" type="button" data-analysis-lab="Fasting Glucose">Compare fasting glucose readings →</button>
-        <details class="report-concept"><summary>What HbA1c measures</summary><figure class="report-figure"><img src="report-art/08-hba1c-and-red-cells.webp" width="960" height="640" alt="Red blood cells with a close-up of glucose attached to haemoglobin." loading="lazy" decoding="async"><figcaption>HbA1c gives a longer view of blood sugar than a fasting sample.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Fasting glucose over three lab draws</figcaption>
-          <svg data-system-chart="fasting" viewBox="0 0 520 210" role="img" aria-label="Fasting glucose over three lab draws"></svg>
-        </figure>
-      </article>
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Vitamins</h3>
-        <p class="report-result">97.59 <small>nmol/L</small></p>
-        <p class="analysis-label">Vitamin D · in range</p>
-        <p>Up from 71.06 nmol/L in May and now above the lab’s 74.88 nmol/L threshold.</p>
-        <button class="report-source" type="button" data-analysis-lab="25-Hydroxyvitamin D">Compare vitamin D readings →</button>
-        <details class="report-concept"><summary>Where vitamin D comes from</summary><figure class="report-figure"><img src="report-art/11-vitamin-d-pathway.webp" width="960" height="640" alt="Sunlight on skin, a capsule, and a blood sample." loading="lazy" decoding="async"><figcaption>Vitamin D can come from sunlight, food, or supplements.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Vitamin D over three lab draws</figcaption>
-          <svg data-system-chart="vitamin" viewBox="0 0 520 210" role="img" aria-label="Vitamin D over three lab draws"></svg>
-        </figure>
-      </article>
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Immunity</h3>
-        <p class="report-result">38.0 <small>IU/L</small></p>
-        <p class="analysis-label">Hepatitis B surface antibody · below lab threshold</p>
-        <p>All three readings are below the threshold used by this lab. Vaccination history comes from the health note.</p>
-        <button class="report-source" type="button" data-analysis-lab="Hepatitis B surface antibody">Compare antibody readings →</button>
-        <details class="report-concept"><summary>What the antibody test measures</summary><figure class="report-figure"><img src="report-art/14-hepatitis-b-antibodies.webp" width="960" height="640" alt="Conceptual view of antibodies binding to the hepatitis B virus surface." loading="lazy" decoding="async"><figcaption>The lab measures antibodies that recognise the surface of the virus.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Hepatitis B antibody over three lab draws</figcaption>
-          <svg data-system-chart="antibody" viewBox="0 0 520 210" role="img" aria-label="Hepatitis B antibody over three lab draws"></svg>
-        </figure>
-      </article>
-    </div>
-    <div class="report-chapter">
-      <h3>Weight and daily signals</h3>
-    </div>
-    <div class="report-grid">
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Body composition</h3>
-        <p class="report-result">81.9 <small>kg</small></p>
-        <p class="analysis-label">Latest logged weight · 26 Nov</p>
-        <p>Down 6.2 kg from the first logged weight of 88.1 kg on 1 September. Compare readings taken at similar times of day.</p>
-        <a class="report-source" href="#body">Explore weight history →</a>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Logged weight over time</figcaption>
-          <svg data-system-chart="weight" viewBox="0 0 520 210" role="img" aria-label="Logged weight over time"></svg>
-        </figure>
-      </article>
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Sleep and recovery</h3>
-        <p class="report-result">5.7 <small>hours</small></p>
-        <p class="analysis-label">Sleep · simulated</p>
-        <p>Compare the simulated sleep, resting heart rate, and heart rate variability series night by night.</p>
-        <a class="report-source" href="#wear">Explore sleep and recovery →</a>
-        <details class="report-concept"><summary>How overnight signals are compared</summary><figure class="report-figure"><img src="report-art/20-sleep-and-recovery.webp" width="960" height="640" alt="Illustration of sleep and overnight recovery." loading="lazy" decoding="async"><figcaption>Sleep and heart rate are aligned by night so the two can be compared.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Sleep duration over fourteen simulated nights</figcaption>
-          <svg data-system-chart="sleep" viewBox="0 0 520 210" role="img" aria-label="Sleep duration over fourteen simulated nights"></svg>
-        </figure>
-      </article>
-      <article class="card report-story">
-        <div class="analysis-copy">
-        <h3 class="k">Glucose preview</h3>
-        <p class="report-result"><span id="analysisGlucosePeak">—</span> <small>mmol/L</small></p>
-        <p class="analysis-label">Peak glucose on 25 Nov · simulated</p>
-        <p>Compare changes around meals and activity on the same timeline. The preview uses simulated sensor readings.</p>
-        <a class="report-source" href="#cgm">Explore the glucose timeline →</a>
-        <details class="report-concept"><summary>How a glucose sensor differs from a blood draw</summary><figure class="report-figure"><img src="report-art/09-fasting-glucose-and-cgm.webp" width="960" height="640" alt="A blood draw next to a wearable glucose sensor and its filament." loading="lazy" decoding="async"><figcaption>A fasting test captures one moment. A sensor adds a series of readings.</figcaption></figure></details>
-        </div>
-        <figure class="analysis-chart">
-          <figcaption>Five-minute glucose readings over one simulated day</figcaption>
-          <svg data-system-chart="glucose" viewBox="0 0 520 210" role="img" aria-label="Five-minute glucose readings over one simulated day"></svg>
-        </figure>
-      </article>
-    </div>
-    <aside class="card report-method" aria-labelledby="reportMethodTitle">
-      <h3 id="reportMethodTitle">What the data covers</h3>
-      <ol>
-        <li><strong>Recorded in N1</strong><p>Lab readings and weight measurements come from the dated record. Range flags use the lab’s own limits.</p></li>
-        <li><strong>Simulated streams</strong><p>Wearable, glucose, and genetics previews show how connected data can be explored.</p></li>
-        <li><strong>Gaps in the record</strong><p>Some tests are missing, and a few readings can leave the cause of a change open.</p></li>
-      </ol>
-      <a class="report-source" href="#sources">Explore data sources →</a>
-      · <a class="report-source" href="Digital Twin Care Health Assessment - 2026.pdf#page=167">See gaps and follow-up questions</a>
-    </aside>
-  </div>
-</section>
-
-<!-- TODAY -->
 <section id="today">
   <div class="wrap">
     <div class="sechead">
@@ -790,7 +688,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- Linked day detail -->
 <dialog id="day" aria-labelledby="dayDetailTitle">
   <form method="dialog" class="day-close"><button type="submit" aria-label="Close day details">×</button></form>
   <div class="wrap">
@@ -815,61 +712,31 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </dialog>
 
-<!-- MODEL ZOOM -->
-<section id="model" class="sec">
+<section id="food" class="sec light">
   <div class="wrap">
     <div class="sechead">
-      <div><div class="num"><b>03</b> Inside the model</div>
-      <h2>Zoom into<br><em>the twin.</em></h2>
-      <p class="lede">Scroll to zoom through the body and see Jasper’s readings for each system.</p></div>
+      <div><div class="num"><b>07</b> Daily health</div><h2><em>Meals.</em></h2>
+      <p class="lede">Every meal of the last 90 days, item by item, with grams and macros. Meals your health note logged keep their wording, with estimated amounts. The rest are simulated around your slow-carb pattern.</p></div>
+      <div class="srcs"><span class="src note">Health note · meal log</span><span class="src sim">Other meals & amounts · simulated</span></div>
     </div>
-    <div class="model-track">
-      <div class="model-layout">
-        <div class="model-stage">
-<svg id="model-camera" viewBox="-210 -38 920 1420" role="img" aria-label="Full-body anatomical twin">
-<g class="model-images">
-<image class="model-frame" data-active id="model-body" href="examples-studio/twin-neutral.png" width="500" height="1344"/>
-<image class="model-frame" id="model-lungs" href="examples-studio/twin-lungs-focus.png" width="500" height="1344"/>
-<image class="model-frame" id="model-heart" href="examples-studio/twin-heart-focus.png" width="500" height="1344"/>
-<image class="model-frame" id="model-liver" href="examples-studio/twin-liver-focus.webp" width="500" height="1344"/>
-<image class="model-frame" id="model-kidneys" href="examples-studio/twin-kidneys-focus.webp" width="500" height="1344"/>
-<image class="model-frame" id="model-gut" href="examples-studio/twin-gut-focus.webp" width="500" height="1344"/>
-<image class="model-frame" id="model-blood" href="examples-studio/twin-blood-focus.webp" width="500" height="1344"/>
-<image class="model-frame" id="model-muscle" href="examples-studio/twin-muscle-focus.webp" width="500" height="1344"/>
-<image class="model-frame" id="model-brain" href="examples-studio/twin-brain-focus.webp" width="500" height="1344"/>
-</g>
-</svg>
-        </div>
-        <div class="model-readings">
-          <div class="model-card"><h3>Full body</h3><p>Scroll to see the readings linked to each body system.</p></div>
-        </div>
-      </div>
+    <div class="wgrid">
+      <div class="card c12"><div class="lab"><div><div class="k">Daily macros · 90 days</div><h4>Protein, carbs and fat</h4></div><div class="legend" style="margin:0;color:var(--ink2)"><span><i style="background:var(--action)"></i>Protein</span><span><i style="background:var(--amber)"></i>Carbs</span><span><i style="background:#C9C3AE"></i>Fat</span><span><i style="background:var(--flag)"></i>150 g protein target</span></div></div><svg id="macro" viewBox="0 0 1200 300"></svg></div>
+      <div class="card c12"><div class="lab"><div><div class="k">Every meal · 90 days · click any cell</div><h4>The meal map</h4></div><div class="seg" id="mmetric"></div></div><svg id="mmap" viewBox="0 0 1200 230"></svg><div class="legend" style="color:var(--ink2)"><span><i style="background:transparent;border:1.5px solid var(--ink)"></i>Logged in your health note</span><span id="mmlegend"></span></div></div>
+      <div class="card c12"><div class="lab"><div><div class="k">Search every meal</div><h4 id="mxcount"></h4></div></div>
+        <div class="filters" id="mxf"></div><div class="mxgrid" id="mxgrid"></div><button class="more" id="mxmore">Show more meals</button></div>
+      <div class="card c12"><div class="lab"><div><div class="k">Foods · 90 days · click one to search for it</div><h4>What you eat most</h4></div></div><div id="topfoods" class="topfoods"></div></div>
+      <div class="card c5"><div class="lab"><div><div class="k">Every morning</div><h4>The shake</h4></div></div><svg id="shake" viewBox="0 0 420 300"></svg></div>
+      <div class="card c7"><div class="lab"><div><div class="k">Your rules</div><h4>On the plate · off the plate</h4></div></div>
+        <div class="foods" id="pref"></div><div class="foods avoid" id="avoid" style="margin-top:16px"></div>
+        <div class="k" style="margin:24px 0 10px">A normal day</div><div class="agenda light-agenda" id="dayplan"></div></div>
     </div>
   </div>
 </section>
 
-<!-- LABS -->
-<section id="labs" class="sec">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>04</b> Bloodwork</div><h2>99 markers.<br><em>Three draws.</em></h2>
-      <p class="lede">Every numeric result N1 holds, with its unit, the lab's reference range and how it moved since the last draw. Results outside the lab's range come first. Tap any tile for its history.</p></div>
-      <div class="srcs"><span class="src">N1 · 3 laboratory reports</span></div>
-    </div>
-    <div class="spot" id="spot"></div>
-    <div class="filters" id="filters"></div>
-    <div class="matrix" id="matrix"></div>
-    <div class="k" style="margin-top:44px">Results N1 holds as a status, without a number</div>
-    <div class="qual" id="qual"></div>
-    <div class="draws" id="draws"></div>
-  </div>
-</section>
-
-<!-- WEARABLES -->
 <section id="wear" class="sec">
   <div class="wrap">
     <div class="sechead">
-      <div><div class="num"><b>05</b> Wearables</div><h2>90 nights.<br><em>Every beat.</em></h2>
+      <div><div class="num"><b>05</b> Daily health</div><h2>Sleep <em>&amp; recovery.</em></h2>
       <p class="lede">What a Whoop and an Apple Watch Ultra record, day and night, since you restarted training on 29 August.</p></div>
       <div class="srcs"><span class="src sim">Whoop 5.0 · simulated</span><span class="src sim">Apple Watch Ultra 3 · simulated</span></div>
     </div>
@@ -889,70 +756,10 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- GLUCOSE -->
-<section id="cgm" class="sec">
+<section id="train" class="sec light">
   <div class="wrap">
     <div class="sechead">
-      <div><div class="num"><b>00</b> Continuous glucose</div><h2>Every meal,<br><em>every five minutes.</em></h2>
-      <p class="lede">Your glucose sensor starts next week. This is a preview of what the twin will show, built from 14 simulated days of readings that react to the meals and sessions on this page.</p></div>
-      <div class="srcs"><span class="src sim">CGM · simulated preview · 13–26 Nov</span></div>
-    </div>
-    <div class="cgmstats" id="cgmstats"></div>
-    <div class="wgrid" style="margin-top:16px">
-      <div class="card c8"><div class="lab"><div><div class="k">Ambulatory glucose profile · 14 days</div><h4>Your typical day, by the minute</h4></div><div class="legend" style="margin:0"><span><i style="background:rgba(0,150,214,.15)"></i>5–95%</span><span><i style="background:rgba(0,150,214,.35)"></i>25–75%</span><span><i style="background:var(--blue)"></i>Median</span></div></div><svg id="agp" viewBox="0 0 800 340"></svg></div>
-      <div class="card c4"><div class="lab"><div><div class="k">Time in ranges</div><h4>3.9–7.8 mmol/L</h4></div></div><svg id="tir" viewBox="0 0 400 340"></svg></div>
-      <div class="card c12"><div class="lab"><div><div class="k">Each day · click one to open it</div><h4>Fourteen days of readings</h4></div></div><div class="gdays" id="gdays"></div></div>
-      <div class="card c7"><div class="lab"><div><div class="k">Biggest rises after a meal · click to open</div><h4>Meal responses</h4></div></div><div id="gmeals"></div></div>
-      <div class="card c5"><div class="lab"><div><div class="k">Average curve after each meal type</div><h4>How each meal moves you</h4></div></div><svg id="gslot" viewBox="0 0 500 320"></svg><div class="legend" id="gslotleg"></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- BODY -->
-<section id="body" class="sec light">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>06</b> Body composition</div><h2>−6.2 kg.<br><em>Every weigh-in.</em></h2>
-      <p class="lede">Each reading in N1, on a true calendar axis, kept apart by when it was taken: morning, before BJJ, after BJJ. The dashed line runs to your goal of 80 kg by 12 December.</p></div>
-      <div class="srcs"><span class="src">N1 · 52 weights</span><span class="src note">Health note · context</span><span class="src">N1 · 9 body-fat</span></div>
-    </div>
-    <div class="wgrid">
-      <div class="card c8"><div class="lab"><div><div class="k">Weight · kg</div><h4>29 Aug → 26 Nov</h4></div><div style="text-align:right"><div class="stat">81.9<small>kg</small></div><div class="k">26 Nov, morning</div></div></div><svg id="wt" viewBox="0 0 800 380" role="group" aria-label="Weight readings, select a point to see its details"></svg><div class="bctrl" id="wctrl"></div></div>
-      <div class="card c4"><div class="lab"><div><div class="k">Body fat · Omron estimate</div><h4>Toward 15%</h4></div></div><svg id="bf" viewBox="0 0 400 220" role="group" aria-label="Body fat readings, select a point to see its details"></svg>
-        <div id="bodyDetail" class="body-detail" aria-live="polite" aria-atomic="true"></div></div>
-      <div class="card c6"><div class="lab"><div><div class="k">Blood pressure · N1</div><h4>This week</h4></div><div style="text-align:right"><div class="stat">132/62<small>mmHg</small></div><div class="k">26 Nov</div></div></div><svg id="bp" viewBox="0 0 600 220"></svg></div>
-      <div class="card c6"><div class="lab"><div><div class="k">Goal tracker</div><h4>Distance to 12 December</h4></div></div><div id="goals"></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOD -->
-<section id="food" class="sec light" style="padding-top:0">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>07</b> Nutrition</div><h2>Slow-carb,<br><em>every plate.</em></h2>
-      <p class="lede">Every meal of the last 90 days, item by item, with grams and macros. Meals your health note logged keep their wording, with estimated amounts. The rest are simulated around your slow-carb pattern.</p></div>
-      <div class="srcs"><span class="src note">Health note · meal log</span><span class="src sim">Other meals & amounts · simulated</span></div>
-    </div>
-    <div class="wgrid">
-      <div class="card c12"><div class="lab"><div><div class="k">Daily macros · 90 days</div><h4>Protein, carbs and fat</h4></div><div class="legend" style="margin:0;color:var(--ink2)"><span><i style="background:var(--action)"></i>Protein</span><span><i style="background:var(--amber)"></i>Carbs</span><span><i style="background:#C9C3AE"></i>Fat</span><span><i style="background:var(--flag)"></i>150 g protein target</span></div></div><svg id="macro" viewBox="0 0 1200 300"></svg></div>
-      <div class="card c12"><div class="lab"><div><div class="k">Every meal · 90 days · click any cell</div><h4>The meal map</h4></div><div class="seg" id="mmetric"></div></div><svg id="mmap" viewBox="0 0 1200 230"></svg><div class="legend" style="color:var(--ink2)"><span><i style="background:transparent;border:1.5px solid var(--ink)"></i>Logged in your health note</span><span id="mmlegend"></span></div></div>
-      <div class="card c12"><div class="lab"><div><div class="k">Search every meal</div><h4 id="mxcount"></h4></div></div>
-        <div class="filters" id="mxf"></div><div class="mxgrid" id="mxgrid"></div><button class="more" id="mxmore">Show more meals</button></div>
-      <div class="card c12"><div class="lab"><div><div class="k">Foods · 90 days · click one to search for it</div><h4>What you eat most</h4></div></div><div id="topfoods" class="topfoods"></div></div>
-      <div class="card c5"><div class="lab"><div><div class="k">Every morning</div><h4>The shake</h4></div></div><svg id="shake" viewBox="0 0 420 300"></svg></div>
-      <div class="card c7"><div class="lab"><div><div class="k">Your rules</div><h4>On the plate · off the plate</h4></div></div>
-        <div class="foods" id="pref"></div><div class="foods avoid" id="avoid" style="margin-top:16px"></div>
-        <div class="k" style="margin:24px 0 10px">A normal day</div><div class="agenda light-agenda" id="dayplan"></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- TRAINING -->
-<section id="train" class="sec light" style="padding-top:0">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>08</b> Training</div><h2>Mats, bench,<br><em>twelve weeks.</em></h2>
+      <div><div class="num"><b>08</b> Daily health</div><h2><em>Exercise.</em></h2>
       <p class="lede">BJJ three nights a week, Pilates on Saturdays, and a 12-week dumbbell plan that started today: three sets of 20 per lift, five sessions a week.</p></div>
       <div class="srcs"><span class="src note">Health note · schedule & plan</span><span class="src sim">Sessions, sets, rounds · simulated</span></div>
     </div>
@@ -968,11 +775,88 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- GENETICS -->
+<section id="stress" class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>00</b> Daily health</div><h2>Mindfulness <em>&amp; stress.</em></h2>
+      <p class="lede">Explore the related recovery signals in Jasper’s twin.</p></div>
+    </div>
+    <div class="card">
+      <h4>No direct entries</h4>
+      <p>Jasper’s example has no mindfulness sessions or self-reported stress entries. The simulated wearable data includes heart rate variability, resting heart rate and sleep as separate recovery signals.</p>
+      <a href="#wear">Explore sleep and recovery ↓</a>
+    </div>
+  </div>
+</section>
+
+<section id="body" class="sec light">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>06</b> Measurements</div><h2>Vitals <em>&amp; body composition.</em></h2>
+      <p class="lede">Each reading in N1, on a true calendar axis, kept apart by when it was taken: morning, before BJJ, after BJJ. The dashed line runs to your goal of 80 kg by 12 December.</p></div>
+      <div class="srcs"><span class="src">N1 · 52 weights</span><span class="src note">Health note · context</span><span class="src">N1 · 9 body-fat</span></div>
+    </div>
+    <div class="wgrid">
+      <div class="card c8"><div class="lab"><div><div class="k">Weight · kg</div><h4>29 Aug → 26 Nov</h4></div><div style="text-align:right"><div class="stat">81.9<small>kg</small></div><div class="k">26 Nov, morning</div></div></div><svg id="wt" viewBox="0 0 800 380" role="group" aria-label="Weight readings, select a point to see its details"></svg><div class="bctrl" id="wctrl"></div></div>
+      <div class="card c4"><div class="lab"><div><div class="k">Body fat · Omron estimate</div><h4>Toward 15%</h4></div></div><svg id="bf" viewBox="0 0 400 220" role="group" aria-label="Body fat readings, select a point to see its details"></svg>
+        <div id="bodyDetail" class="body-detail" aria-live="polite" aria-atomic="true"></div></div>
+      <div class="card c6"><div class="lab"><div><div class="k">Blood pressure · N1</div><h4>This week</h4></div><div style="text-align:right"><div class="stat">132/62<small>mmHg</small></div><div class="k">26 Nov</div></div></div><svg id="bp" viewBox="0 0 600 220"></svg></div>
+      <div class="card c6"><div class="lab"><div><div class="k">Goal tracker</div><h4>Distance to target</h4></div></div><div id="goals"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="labs" class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>04</b> Measurements</div><h2>Lab <em>markers.</em></h2>
+      <p class="lede">Compare readings across three lab draws. Results outside the lab range appear first. Select a marker to see its history.</p></div>
+      <div class="srcs"><span class="src">N1 · 3 lab draws</span></div>
+    </div>
+    <div class="filters" id="filters">
+      <label>Category<select id="labCategory"></select></label>
+      <label>Search markers<input id="labSearch" type="search" placeholder="e.g. cholesterol"></label>
+    </div>
+    <div class="matrix" id="matrix"></div>
+    <div class="k" style="margin-top:44px">Results reported as a status</div>
+    <div class="qual" id="qual"></div>
+    <div class="draws" id="draws"></div>
+  </div>
+</section>
+
+<section id="cgm" class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>00</b> Measurements</div><h2>Glucose <em>monitoring.</em></h2>
+      <p class="lede">Your glucose sensor starts next week. This is a preview of what the twin will show, built from 14 simulated days of readings that react to the meals and sessions on this page.</p></div>
+      <div class="srcs"><span class="src sim">CGM · simulated preview · 13–26 Nov</span></div>
+    </div>
+    <div class="cgmstats" id="cgmstats"></div>
+    <div class="wgrid" style="margin-top:16px">
+      <div class="card c8"><div class="lab"><div><div class="k">Ambulatory glucose profile · 14 days</div><h4>Your typical day, by the minute</h4></div><div class="legend" style="margin:0"><span><i style="background:rgba(0,150,214,.15)"></i>5–95%</span><span><i style="background:rgba(0,150,214,.35)"></i>25–75%</span><span><i style="background:var(--blue)"></i>Median</span></div></div><svg id="agp" viewBox="0 0 800 340"></svg></div>
+      <div class="card c4"><div class="lab"><div><div class="k">Time in ranges</div><h4>3.9–7.8 mmol/L</h4></div></div><svg id="tir" viewBox="0 0 400 340"></svg></div>
+      <div class="card c12"><div class="lab"><div><div class="k">Each day · click one to open it</div><h4>Fourteen days of readings</h4></div></div><div class="gdays" id="gdays"></div></div>
+      <div class="card c7"><div class="lab"><div><div class="k">Biggest rises after a meal · click to open</div><h4>Meal responses</h4></div></div><div id="gmeals"></div></div>
+      <div class="card c5"><div class="lab"><div><div class="k">Average curve after each meal type</div><h4>How each meal moves you</h4></div></div><svg id="gslot" viewBox="0 0 500 320"></svg><div class="legend" id="gslotleg"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="supp" class="sec light">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>11</b> Health record</div><h2><em>Supplements.</em></h2></div>
+      <div class="srcs"><span class="src">N1 · 11 supplements</span></div>
+    </div>
+    <div class="card"><svg id="gantt" viewBox="0 0 1200 420"></svg></div>
+    <div class="dx" id="dx"></div>
+  </div>
+</section>
+
 <section id="dna" class="sec">
   <div class="wrap">
     <div class="sechead">
-      <div><div class="num"><b>09</b> Genetics</div><h2>Your code,<br><em>next to your labs.</em></h2>
+      <div><div class="num"><b>09</b> Health record</div><h2><em>Genetics.</em></h2>
       <p class="lede">A pharmacogenomic and trait panel mapped on your chromosomes. Variants that relate to something in your bloodwork are linked to it. There is no genetic test in N1 yet, so this section is an illustration.</p></div>
       <div class="srcs"><span class="src sim">Genotype panel · simulated</span></div>
     </div>
@@ -981,7 +865,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- CORRELATIONS -->
 <section id="corrsec" class="sec light">
   <div class="wrap">
     <div class="sechead">
@@ -996,19 +879,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- SUPPLEMENTS & CLINICAL -->
-<section id="supp" class="sec light" style="padding-top:0">
-  <div class="wrap">
-    <div class="sechead">
-      <div><div class="num"><b>11</b> Supplements and background</div><h2>What goes in.<br><em>What's on file.</em></h2></div>
-      <div class="srcs"><span class="src">N1 · 11 supplements</span></div>
-    </div>
-    <div class="card"><svg id="gantt" viewBox="0 0 1200 420"></svg></div>
-    <div class="dx" id="dx"></div>
-  </div>
-</section>
-
-<!-- DATA LAB -->
 <section id="lab" class="sec">
   <div class="wrap">
     <div class="sechead">
@@ -1041,7 +911,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- RAW DATA -->
 <section id="raw" class="sec">
   <div class="wrap">
     <div class="sechead">
@@ -1054,7 +923,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<!-- SOURCES -->
 <section id="sources" class="sec">
   <div class="wrap">
     <div class="sechead">
@@ -1574,23 +1442,45 @@ function rangeBar(svg, lo, hi, v, w = 200, h = 14, dark) {
   const out = (hi != null && v > hi) || (lo != null && v < lo);
   S("circle", { cx: x(v), cy: h / 2, r: 4.5, fill: out ? "#E0573C" : dark ? "#fff" : "#1C1B17", stroke: dark ? "#0A1E2A" : "#fff", "stroke-width": 1.5 }, svg);
 }
-/* sparkline with band */
-function spark(svg, m, w, h, opts = {}) {
-  svg.setAttribute("viewBox", `0 0 ${w} ${h}`); svg.setAttribute("preserveAspectRatio", "none");
-  const vals = m.pts.map(p => p[1]);
-  let a = Math.min(...vals), b = Math.max(...vals);
-  if (m.lo != null) a = Math.min(a, m.lo); if (m.hi != null) b = Math.max(b, m.hi);
-  const pad = (b - a) * .18 || 1; a -= pad; b += pad;
-  const t0 = pd("2025-05-01"), t1 = pd("2026-12-01");
-  const x = lin(t0, t1, 4, w - 4), y = lin(a, b, h - 4, 4);
-  const blo = m.lo != null ? m.lo : a, bhi = m.hi != null ? m.hi : b;
-  S("rect", { x: 0, y: y(bhi), width: w, height: Math.max(0, y(blo) - y(bhi)), fill: opts.dark ? "rgba(0,150,214,.16)" : "rgba(0,150,214,.09)" }, svg);
-  const d = m.pts.map((p, i) => (i ? "L" : "M") + x(pd(p[0])).toFixed(1) + "," + y(p[1]).toFixed(1)).join("");
-  S("path", { d, fill: "none", stroke: opts.dark ? "#5B594F" : "#8F8C7F", "stroke-width": 1.4, "vector-effect": "non-scaling-stroke" }, svg);
-  m.pts.forEach((p, i) => {
-    const out = (m.hi != null && p[1] > m.hi) || (m.lo != null && p[1] < m.lo);
-    S("circle", { cx: x(pd(p[0])), cy: y(p[1]), r: i == m.pts.length - 1 ? 3.6 : 2.4, fill: out ? "#E0573C" : opts.dark ? "#fff" : "#1C1B17", "vector-effect": "non-scaling-stroke" }, svg);
+/* Scale each chart to the readings, including reference limits close to the measured values. */
+function labScales(m, area) {
+  const values = m.pts.map(([, value]) => value);
+  const dates = m.pts.map(([date]) => pd(date));
+  const low = Math.min(...values), high = Math.max(...values);
+  const spread = high - low || Math.max(Math.abs(low) * .1, .01);
+  const nearby = [m.lo, m.hi].filter(v => v != null && v >= low - spread && v <= high + spread);
+  const bottom = Math.min(low, ...nearby), top = Math.max(high, ...nearby);
+  const pad = (top - bottom || spread) * .17;
+  const min = bottom >= 0 ? Math.max(0, bottom - pad) : bottom - pad;
+  const max = top + pad;
+  const first = Math.min(...dates), last = Math.max(...dates);
+  const timePad = Math.max((last - first) * area.datePad, 86400000);
+  return { min, max, x: lin(first - timePad, last + timePad, area.left, area.right),
+    y: lin(min, max, area.bottom, area.top) };
+}
+function labTrend(svg, m, area, scale, radius) {
+  const {min, max, x, y} = scale;
+  const low = Math.max(min, m.lo ?? min), high = Math.min(max, m.hi ?? max);
+  if ((m.lo != null || m.hi != null) && high > low && (low > min || high < max)) {
+    S("rect", { x: area.left, y: y(high), width: area.right - area.left, height: y(low) - y(high), fill: "#e5eeea" }, svg);
+  }
+  for (const bound of [m.lo, m.hi]) {
+    if (bound != null && bound > min && bound < max) {
+      S("line", { x1: area.left, x2: area.right, y1: y(bound), y2: y(bound), stroke: "#82a9a6", "stroke-dasharray": "3 3", "vector-effect": "non-scaling-stroke" }, svg);
+    }
+  }
+  if (m.pts.length > 1) S("polyline", { points: m.pts.map(([d,v]) => `${x(pd(d))},${y(v)}`).join(" "), stroke: "#557678", "stroke-width": 1.5, fill: "none", "vector-effect": "non-scaling-stroke" }, svg);
+  m.pts.forEach(([d,v], i) => {
+    const outside = v < (m.lo ?? -Infinity) || v > (m.hi ?? Infinity);
+    const dot = S("circle", { cx:x(pd(d)), cy:y(v), r:i === m.pts.length-1 ? radius : radius * .74, fill: outside ? "#bc4c36" : "#14687f", stroke:"#fffcf3", "stroke-width":1 }, svg);
+    S("title", {}, dot).textContent = `${fd(d, 1)} · ${v} ${m.unit}`;
   });
+}
+function spark(svg, m) {
+  svg.setAttribute("viewBox", "0 0 180 38");
+  svg.setAttribute("aria-hidden", "true");
+  const area = {left:5,right:175,top:5,bottom:33,datePad:.05};
+  labTrend(svg, m, area, labScales(m, area), 3.3);
 }
 
 /* Body-system charts use the same data as the detailed views. */
@@ -1600,7 +1490,6 @@ const labForChart = {
   antibody: "Hepatitis B surface antibody"
 };
 const fullGlucoseDay = SIM.CGM[DAY.length - 2];
-$("analysisGlucosePeak").textContent = Math.max(...fullGlucoseDay.filter(Number.isFinite)).toFixed(2);
 document.querySelectorAll("[data-system-chart]").forEach(svg => {
   const key = svg.dataset.systemChart;
   const lab = labForChart[key] ? byName(labForChart[key]) : null;
@@ -1796,7 +1685,7 @@ ring(0, 0, 1, "", "Activity · so far", "", "", `Move 312 / 700 kcal · Exercise
   const camera = track.querySelector("#model-camera");
   const readings = track.querySelector(".model-readings");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-  const views = {body: [-210,-38,920,1420], lungs: [-24,113,570,450], heart: [44,128,520,425], liver: [0, 290, 500, 415], kidneys: [4, 355, 500, 415], gut: [0, 399, 500, 445], blood: [-155, -24, 820, 1370], muscle: [-24, 605, 450, 410], brain: [45, -32, 410, 340]};
+  const views = {body: [-60,-24,620,1392], lungs: [-24,113,570,450], heart: [44,128,520,425], liver: [0, 290, 500, 415], kidneys: [4, 355, 500, 415], gut: [0, 399, 500, 445], blood: [-155, -24, 820, 1370], muscle: [-24, 605, 450, 410], brain: [45, -32, 410, 340]};
   const lab = (name, label = name) => {
     const reading = byName(name);
     return ROW(label, reading.v, reading.unit, reading.lo, reading.hi, "N1 lab · " + fd(reading.date));
@@ -1831,19 +1720,35 @@ ring(0, 0, 1, "", "Activity · so far", "", "", `Move 312 / 700 kcal · Exercise
     cards.push(card);
   });
 
+  const selectors = track.querySelector(".model-selectors");
+  const buttons = systems.map(([, name], index) => {
+    const button = H("button", {type:"button", "aria-pressed":String(index === 0)});
+    button.textContent = name;
+    button.onclick = () => {
+      const top = parseFloat(getComputedStyle(layout).top);
+      const distance = track.getBoundingClientRect().height - layout.getBoundingClientRect().height;
+      const start = track.getBoundingClientRect().top + scrollY - top;
+      scrollTo({top:start + distance * index / (systems.length - 1),behavior:reduced.matches ? "instant" : "smooth"});
+    };
+    selectors.appendChild(button);
+    return button;
+  });
+
   let active = 0, frame = 0, previousBox = "";
   function draw() {
     frame = 0;
     const rect = track.getBoundingClientRect();
     const top = parseFloat(getComputedStyle(layout).top);
-    const distance = rect.height - innerHeight * .72;
+    const distance = rect.height - layout.getBoundingClientRect().height;
     if (distance <= 0) return;
     const progress = clamp((top - rect.top) / distance,0,1) * (systems.length-1);
     const next = Math.min(systems.length-1,Math.round(progress));
     if (next !== active) {
+      buttons[active].setAttribute("aria-pressed","false");
       cards[active].hidden = true;
       images[active].removeAttribute("data-active");
       active = next;
+      buttons[active].setAttribute("aria-pressed","true");
       cards[active].hidden = false;
       images[active].setAttribute("data-active","");
       camera.setAttribute("aria-label", systems[active][1] + " anatomical view");
@@ -1871,26 +1776,26 @@ ring(0, 0, 1, "", "Activity · so far", "", "", `Move 312 / 700 kcal · Exercise
    LABS
    ========================================================= */
 const GROUPS = ["Lipids","Glucose control","Kidney","Liver & protein","Electrolytes & minerals","Blood count","Inflammation","Vitamins & iron","Thyroid","Tumour markers","Infection & immunity","Urine"];
-const flagged = L.filter(m => m.flag);
-const spot = $("spot");
-flagged.forEach(m => {
-  const c = H("div", { class: "spotc" }, `<div class="flag">${m.flag.toUpperCase()} · ${fd(m.date, 1)}</div><div class="nm">${m.name}</div><div class="v">${fmt(m.v)}<small>${m.unit}</small></div><div class="rg">Range ${rng(m.lo, m.hi)}${m.prev ? " · was " + fmt(m.prev[1]) + " in " + MON[+m.prev[0].slice(5, 7) - 1] : ""}</div><svg></svg>`);
-  spark(c.querySelector("svg"), m, 240, 54); c.onclick = () => openDrawer(m); spot.appendChild(c);
+const category = $("labCategory"), labSearch = $("labSearch");
+const flaggedCount = L.filter(m => m.flag).length;
+["All markers", "Outside lab range", ...GROUPS].forEach(g => {
+  category.appendChild(H("option", {value:g}, g === "Outside lab range" ? `${g} (${flaggedCount})` : g));
 });
-let curG = "All", q = "";
-const filt = $("filters");
-["All", "Out of range", ...GROUPS].forEach(g => { const b = H("button", {}, g == "Out of range" ? `Out of range · ${flagged.length}` : g); b.onclick = () => { curG = g; renderMatrix(); [...filt.querySelectorAll("button")].forEach(x => x.classList.toggle("on", x == b)); }; if (g == "All") b.classList.add("on"); filt.appendChild(b); });
-const inp = H("input", { placeholder: "Search 62 numeric markers…", type: "search" }); inp.oninput = () => { q = inp.value.toLowerCase(); renderMatrix(); }; filt.appendChild(inp);
+category.onchange = labSearch.oninput = renderMatrix;
 function renderMatrix() {
-  const mEl = $("matrix"); mEl.innerHTML = "";
-  const list = L.filter(m => (curG == "All" || (curG == "Out of range" ? m.flag : m.group == curG)) && (!q || m.name.toLowerCase().includes(q)))
-    .sort((a, b) => (!!b.flag - !!a.flag) || GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
+  const matrix = $("matrix"), group = category.value, query = labSearch.value.trim().toLowerCase();
+  matrix.replaceChildren();
+  const list = L.filter(m => (group === "All markers" || (group === "Outside lab range" ? m.flag : m.group === group)) && m.name.toLowerCase().includes(query))
+    .sort((a,b) => (!!b.flag - !!a.flag) || GROUPS.indexOf(a.group) - GROUPS.indexOf(b.group));
+  if (!list.length) matrix.appendChild(H("p", {role:"status"}, "No matching markers."));
   list.forEach(m => {
-    let delta = "";
-    if (m.prev) { const d = m.v - m.prev[1], pc = m.prev[1] ? d / m.prev[1] * 100 : 0; delta = Math.abs(pc) < 2 ? "→ stable" : (d > 0 ? "↑ " : "↓ ") + Math.abs(pc).toFixed(0) + "%"; }
-    const t = H("div", { class: "tile" + (m.flag ? " f" : "") }, `${m.flag ? `<span class="fw">${m.flag.toUpperCase()}</span>` : ""}<div class="g">${m.group}</div><div class="nm" title="${m.name}">${m.name}</div><div class="row"><div class="v">${fmt(m.v)}<small>${m.unit}</small></div><div class="d">${delta}</div></div><svg></svg><div class="row" style="margin-top:4px"><span class="d">${rng(m.lo, m.hi)}</span><span class="d">${fd(m.date)}</span></div>`);
-    spark(t.querySelector("svg"), m, 200, 26); t.onclick = () => openDrawer(m); mEl.appendChild(t);
-    t.classList.add("reveal", "in");
+    const status = m.flag === "high" ? "Above range" : m.flag === "low" ? "Below range" : "";
+    const t = H("button", { type:"button", class:"tile" }, `<span class="row"><span class="g">${m.group}</span>${status ? `<span class="d fw">${status}</span>` : ""}</span>
+      <span class="nm">${m.name}</span><span class="v">${m.v}<small>${m.unit}</small></span><svg></svg>
+      <span class="row"><span class="d">${rng(m.lo,m.hi)}</span><span class="d">${fd(m.date)}</span></span>`);
+    spark(t.querySelector("svg"), m);
+    t.onclick = () => openDrawer(m);
+    matrix.appendChild(t);
   });
 }
 renderMatrix();
@@ -1900,16 +1805,30 @@ DRAWS.forEach(([d, l, n]) => { const f = L.filter(m => m.pts.some(p => p[0] == d
 /* drawer */
 function openDrawer(m) {
   $("dg").textContent = m.group + " · " + m.unit; $("dn").textContent = m.name;
-  const svg = $("dchart"); svg.innerHTML = ""; const w = 800, h = 300, l = 50, r = 20, t = 20, b = 36;
-  const vals = m.pts.map(p => p[1]); let a = Math.min(...vals), bb = Math.max(...vals); if (m.lo != null) a = Math.min(a, m.lo); if (m.hi != null) bb = Math.max(bb, m.hi); const pad = (bb - a) * .25 || 1; a -= pad; bb += pad; if (a < 0 && Math.min(...vals) >= 0) a = 0;
-  const x = lin(pd("2025-04-15"), pd("2026-12-15"), l, w - r), y = lin(a, bb, h - b, t);
-  for (let k = 0; k <= 4; k++) { const v = a + (bb - a) * k / 4; S("line", { x1: l, x2: w - r, y1: y(v), y2: y(v), stroke: "#E4E1D3" }, svg); S("text", { x: l - 8, y: y(v) + 4, "text-anchor": "end", "font-size": 11, fill: "#8F8C7F", "font-family": "DM Mono" }, svg).textContent = fmt(v); }
-  const lo = m.lo ?? a, hi = m.hi ?? bb; S("rect", { x: l, width: w - l - r, y: y(hi), height: y(lo) - y(hi), fill: "rgba(0,150,214,.1)" }, svg);
-  S("text", { x: w - r - 6, y: y(hi) + 14, "text-anchor": "end", "font-size": 11, fill: "#006E9C", "font-family": "DM Mono" }, svg).textContent = "REFERENCE " + rng(m.lo, m.hi);
-  ["2025-06-01", "2025-10-01", "2026-02-01", "2026-06-01", "2026-10-01"].forEach(d => S("text", { x: x(pd(d)), y: h - 10, "text-anchor": "middle", "font-size": 11, fill: "#8F8C7F", "font-family": "DM Mono" }, svg).textContent = fd(d.slice(0, 8) + "01", 1).slice(2));
-  S("path", { d: m.pts.map((p, i) => (i ? "L" : "M") + x(pd(p[0])) + "," + y(p[1])).join(""), fill: "none", stroke: "#1C1B17", "stroke-width": 2 }, svg);
-  m.pts.forEach(p => { const out = (m.hi != null && p[1] > m.hi) || (m.lo != null && p[1] < m.lo); S("circle", { cx: x(pd(p[0])), cy: y(p[1]), r: 7, fill: out ? "#E0573C" : "#1C1B17", stroke: "#F3F2E9", "stroke-width": 3 }, svg); S("text", { x: x(pd(p[0])), y: y(p[1]) - 14, "text-anchor": "middle", "font-size": 15, fill: "#1C1B17", "font-family": "Newsreader" }, svg).textContent = fmt(p[1]); });
-  $("dt").innerHTML = `<tr><th>Date</th><th>Value</th><th>Reference</th><th>Status</th><th>Source</th></tr>` + m.pts.map(p => { const out = (m.hi != null && p[1] > m.hi) ? "Above range" : (m.lo != null && p[1] < m.lo) ? "Below range" : "In range"; return `<tr><td>${fd(p[0], 1)}</td><td><b>${fmt(p[1])}</b> ${m.unit}</td><td>${rng(m.lo, m.hi)}</td><td style="color:${out == "In range" ? "inherit" : "var(--flag)"}">${out}</td><td>N1 · laboratory report</td></tr>`; }).join("");
+  const svg = $("dchart");
+  svg.replaceChildren();
+  const width = Math.max(245, Math.round(svg.clientWidth)), height = width < 440 ? 215 : 270;
+  const area = {left:width < 440 ? 38 : 52,right:width-18,top:28,bottom:height-32,datePad:width < 440 ? .22 : .13};
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.style.height = `${height}px`;
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `${m.name} by lab date, in ${m.unit}`);
+  const scale = labScales(m,area), {min,max,x,y} = scale;
+  const rough = (max - min) / 4, magnitude = 10 ** Math.floor(Math.log10(rough));
+  const step = ([1,2,2.5,5,10].find(v => v >= rough / magnitude) || 10) * magnitude;
+  const decimals = Math.max(0, -Math.floor(Math.log10(step)) + (step / magnitude === 2.5 ? 1 : 0));
+  for (let i = Math.ceil(min / step); i <= Math.floor(max / step); i++) {
+    const v = i * step, yy = y(v);
+    S("line", {x1:area.left,x2:area.right,y1:yy,y2:yy,stroke:"#dfded2"},svg);
+    S("text", {x:area.left-6,y:yy+4,"text-anchor":"end","font-size":11,fill:"#54584e"},svg).textContent = String(Number(v.toFixed(decimals)));
+  }
+  labTrend(svg,m,area,scale,5);
+  m.pts.forEach(([date,value]) => {
+    const at = x(pd(date));
+    S("text", {x:at,y:height-10,"text-anchor":"middle","font-size":11,fill:"#54584e"},svg).textContent = fd(date,1).replace(/ (20)([0-9]{2})$/, " ’$2");
+    S("text", {x:at,y:y(value)-10,"text-anchor":"middle","font-size":12,fill:"#1c1b17"},svg).textContent = value;
+  });
+  $("dt").innerHTML = `<tr><th>Date</th><th>Value</th><th>Lab range</th><th>Status</th><th>Source</th></tr>` + m.pts.map(p => { const out = (m.hi != null && p[1] > m.hi) ? "Above range" : (m.lo != null && p[1] < m.lo) ? "Below range" : "In range"; return `<tr><td>${fd(p[0], 1)}</td><td><b>${fmt(p[1])}</b> ${m.unit}</td><td>${rng(m.lo, m.hi)}</td><td style="color:${out == "In range" ? "inherit" : "var(--flag)"}">${out}</td><td>N1 · laboratory report</td></tr>`; }).join("");
   $("drawer").classList.add("on");
 }
 window.openLab = n => { const m = byName(n); if (m) openDrawer(m); };
