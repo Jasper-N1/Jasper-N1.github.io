@@ -462,7 +462,21 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 @media(min-width:1780px){
   .example-tools{position:fixed;top:calc(var(--bar) + 12px);left:max(20px,calc(var(--edge) - 276px));width:224px;margin:0;z-index:9}
 }
-@media(max-width:1779px){
+@media(min-width:901px) and (max-width:1779px){
+  .examples-layout{display:grid;grid-template-columns:clamp(188px,17vw,224px) minmax(0,1fr);gap:clamp(24px,3vw,48px);width:calc(100% - 2 * var(--g));max-width:1472px;margin-inline:auto;align-items:start}
+  .example-tools{position:sticky;top:calc(var(--bar) + 12px);z-index:9;width:100%;margin:12px 0 0}
+  .examples-main{min-width:0;container-type:inline-size}
+  .examples-main .wrap{width:100%}
+}
+@container (max-width:990px){
+  .spot,.draws,.logs,.exlib{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sechead,.exgrid,.tsgrid{grid-template-columns:minmax(0,1fr)}
+  .srcs{justify-content:flex-start}
+  .sxlist>div{grid-template-columns:80px minmax(0,1fr) 60px}
+  .sxlist>div>:nth-child(n+4){display:none}
+  #wear .card,#train .card,#lab .card,.provenance-table{overflow-x:auto}
+}
+@media(max-width:900px){
   .example-tools-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 8px;max-height:150px}
   .example-tools-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
   .example-tools-actions .example-tools-label{grid-column:1/-1}
@@ -471,7 +485,7 @@ select,.sel{font:14px var(--sans);text-transform:none;letter-spacing:0;color:var
 #day::backdrop{background:#14232b70}
 #day .sechead{margin-bottom:20px}
 #jyPreview{display:none;min-height:60vh;padding:clamp(96px,12vw,180px) 0}
-body[data-example="jy"] > section:not(#jyPreview),body[data-example="jy"] > footer,body[data-example="jy"] .example-tools-panel{display:none}
+body[data-example="jy"] .examples-main > section:not(#jyPreview),body[data-example="jy"] .examples-main > footer,body[data-example="jy"] .example-tools-panel{display:none}
 body[data-example="jy"] .example-name{border-radius:9px;border-bottom:0}
 body[data-example="jy"] #jyPreview{display:block}
 #hero{padding-top:clamp(76px,6vw,108px)}
@@ -552,6 +566,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
 </nav>
 
+<div class="examples-layout">
 <aside class="example-tools" aria-label="Example navigation">
   <div class="example-choice">
     <button class="example-name" id="examplePicker" type="button" aria-label="Example twin: Jasper" aria-expanded="false" aria-controls="exampleOptions">
@@ -593,6 +608,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </aside>
 
+<main class="examples-main">
 <section id="jyPreview" aria-labelledby="jyPreviewTitle">
   <div class="wrap">
     <h2 id="jyPreviewTitle" tabindex="-1">Work in progress</h2>
@@ -1063,6 +1079,8 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   <div><span class="logo">digitaltwin<i style="color:var(--blue);font-style:normal">.</i>care</span><br>Example page built from Jasper Middendorp's own N1 record, read on 26 November 2026.</div>
   <div>Labs, weights, body fat, blood pressure, and supplements are real records in N1. Meals, schedule and the training plan come from the health note in N1. Whoop, Apple Watch Ultra, macros, session logs and genetics are simulated for this example and marked as such. This page shows data; it is not medical advice. Nothing in N1 was changed.</div>
 </div></footer>
+</main>
+</div>
 
 <div class="drawer" id="drawer"><div class="dbox"><div class="top"><div><div class="k" id="dg"></div><h3 id="dn"></h3></div><button class="x" id="dx_">×</button></div><svg id="dchart" viewBox="0 0 800 300"></svg><table class="dtable" id="dt"></table></div></div>
 <div class="drawer" id="gd"><div class="dbox gbox"><button class="x gx" id="gdx">×</button><div id="gdb"></div></div></div>
