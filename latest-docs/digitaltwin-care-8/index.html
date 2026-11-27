@@ -856,14 +856,20 @@
   #twinHero { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: none; }
   #heroStream { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; display: none; }
 
-  /* Capture log: fixed columns so nothing shifts, and split-flap characters */
-  .capture-data { table-layout: fixed; width: auto !important; }
-  .capture-data th:nth-child(1) { width: 10ch; } .capture-data th:nth-child(2) { width: 17ch; } .capture-data th:nth-child(3) { width: 30ch; }
-  .capture-data td { white-space: pre !important; overflow: hidden; perspective: 200px; }
-  .capture-data .fc { display: inline-block; transform-origin: 50% 55%; }
-  .capture-data .fc.fl { animation: fcfl .11s ease-in-out; }
-  @keyframes fcfl { 0% { transform: rotateX(0); } 50% { transform: rotateX(84deg); opacity: .35; } 100% { transform: rotateX(0); } }
-  @media (prefers-reduced-motion: reduce) { .capture-data .fc.fl { animation: none; } }
+  /* Capture log: source icons and a single active reading. */
+  .capture-data { table-layout: fixed; width: 100% !important; }
+  .capture-data th:nth-child(1) { width: 9ch; }
+  .capture-data th:nth-child(2) { width: 16ch; }
+  .capture-data td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .capture-data .source-icon { width: 15px; height: 15px; vertical-align: -.21em; margin-right: 7px; color: #537786; }
+  .capture-data tr.hot .source-icon { color: var(--blue); }
+  .capture-data .capture-region { color: #006e9c; text-align: left; }
+  @media(max-width: 560px) {
+    .capture-data th:nth-child(1) { width: 9ch; }
+    .capture-data th, .capture-data td { padding-right: 5px !important; }
+    .capture-data th:nth-child(2) { width: 13ch; }
+    .capture-data .source-icon { width: 12px; height: 12px; margin-right: 4px; }
+  }
 
   /* ---- full-screen scene: you, and your twin beside you ---- */
   .fs { position: relative; z-index: 1; height: 160vh !important; min-height: 0 !important; overflow: visible !important; background: var(--bg); cursor: auto; }
@@ -1221,7 +1227,7 @@
         <div class="capture-flow capture-flow-out" aria-hidden="true"></div>
         <div class="capture-readings" role="region" aria-label="Sample health data" tabindex="0">
           <table class="capture-data">
-            <caption>Sample health data</caption>
+            <caption>Sample health records and the body systems they inform</caption>
             <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col">Reading</th></tr></thead>
             <tbody>
               <tr style="--reading: 0"><td>09:48:32</td><td>FAMILY HISTORY</td><td>FATHER · HEART ATTACK AT 58</td></tr>
@@ -1885,7 +1891,7 @@ if (LITE) document.documentElement.classList.add("lite");
         if (y1 > 0 && y0 < ch) { const gr = g.createLinearGradient(0, y0, 0, y1); gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(1, "rgba(0,0,0,1)");
           g.globalCompositeOperation = "destination-in"; g.fillStyle = gr; g.fillRect(0, 0, cw, ch); } } });
     requestAnimationFrame(wireLoop); })(0);
-  let lineBot = null, bmClip = null, heroLand = () => false, organLand = () => {}, land3d = () => {}, t3Active = false;
+  let lineBot = null, bmClip = null, heroLand = () => false, land3d = () => {}, t3Active = false;
   // the 3D walking twin (twin3d.js, from the digital-twin pages): which body region each reading lights
   const RX3 = { brain: "Brain|Head", heart: "Heart", lungs: "lung", liver: "Liver", stomach: "Stomach", gut: "Intestines", pancreas: "Stomach", kidneys: "kidney",
     pelvis: "Hips", knee: "Right knee", vessels: "Heart", bones: "thigh", legs: "Heart|thigh", thigh: "thigh", calf: "calf", foot: "foot", shoulder: "shoulder",
@@ -2060,88 +2066,127 @@ if (LITE) document.documentElement.classList.add("lite");
     impRaf = requestAnimationFrame(impLoop);
   }
 
-  // ---- Capture: data points travel along the field lines, through the person and the table, into the twin ----
+  // ---- Capture: each sample record sends one signal to a matching area of the model ----
   const capCv = steps.querySelector(".capture-streams"), cg = capCv.getContext("2d");
-  const capRows = steps.querySelectorAll(".capture-data tbody tr");
-  let capOn = false, capRaf = 0, capLast = 0, capSpawn = 0, capPing = 0;
-  const pts = [];
-  const LOG = [["FOOD LOG", "LUNCH · 640 KCAL"], ["MEAL PHOTO", "PROTEIN 38 G"], ["FOOD LOG", "ALCOHOL · 2 UNITS"], ["BP CUFF", "BP 124 / 79"], ["SYMPTOM DIARY", "HEADACHE · MILD"], ["MOOD JOURNAL", "MOOD · GOOD"], ["WATER LOG", "WATER 1.8 L"], ["CYCLE APP", "CYCLE DAY 14"], ["SPIROMETER", "FEV1 3.9 L"], ["SUPPLEMENTS", "VITAMIN D3 2,000 IU"], ["APPLE WATCH", "HRV 68 MS"], ["QUEST LABS", "LDL 3.61 MMOL/L"], ["OURA RING", "DEEP SLEEP 1 H 12"], ["LIBRE CGM", "GLUCOSE 5.2 MMOL/L"], ["MRI · KNEE", "MENISCUS · MILD WEAR"], ["DNA KIT", "APOE · E3 / E3"], ["GP LETTER", "BP RECHECK IN 3 MONTHS"], ["PHARMACY", "ATORVASTATIN 10 MG"], ["WITHINGS", "WEIGHT 78.4 KG"], ["FAMILY HISTORY", "FATHER · HEART ATTACK AT 58"], ["FOOD LOG", "FIBRE 18 G / DAY"], ["AIR QUALITY", "PM2.5 · 31 µG/M³"], ["QUESTIONNAIRE", "STRESS · MODERATE"], ["DEXA SCAN", "T-SCORE −2.1"], ["STRAVA", "ZONE 2 · 42 MIN"], ["CT CALCIUM", "CAC SCORE 12"]];
-  let capNext = 0; const capFont = () => `500 ${Math.round(Math.max(11.5, Math.min(14, innerWidth / 1440 * 13.2)))}px 'DM Mono', monospace`;
-  // A new reading replaces a random row: its source goes dark, its value turns blue and fades back,
-  // and it leaves its row as a data point riding the nearest field line into the twin.
-  // split-flap: each character runs through a few others before landing, left to right
-  const FLIPCH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·:/";
-  function flipTo(el, txt) {
-    clearTimeout(el._done); (el._t || []).forEach(clearTimeout); el._t = [];
-    if (motion.matches) { el.textContent = txt; return; }
-    const old = el.textContent, n = Math.max(old.length, txt.length); el.textContent = "";
-    const spans = []; for (let i = 0; i < n; i++) { const s = document.createElement("span"); s.className = "fc"; s.textContent = old[i] || " "; el.appendChild(s); spans.push(s); }
-    let last = 0;
-    spans.forEach((s, i) => { const target = txt[i] || " "; if (s.textContent === target) return; const steps = 2 + ((i * 7) % 3);
-      for (let k = 1; k <= steps; k++) { const at = i * 16 + k * 62; last = Math.max(last, at);
-        el._t.push(setTimeout(() => { s.textContent = k === steps ? target : FLIPCH[(Math.random() * FLIPCH.length) | 0]; s.classList.remove("fl"); void s.offsetWidth; s.classList.add("fl"); }, at)); } });
-    el._done = setTimeout(() => { el.textContent = txt; }, last + 160);
+  const capRows = [...steps.querySelectorAll(".capture-data tbody tr")];
+  let capOn = false, capRaf = 0, capLast = 0, capNext = 0, capIndex = 0, capRowIndex = 0;
+  let captureFlight = null, captureFocus = null;
+  const captureRecords = [
+    ["ECG", "SINUS RHYTHM", "heart", "heart"],
+    ["SYMPTOM LOG", "HEADACHE · MILD", "nerves", "note"],
+    ["SPIROMETRY", "FEV1 · 3.9 L", "lungs", "lungs"],
+    ["LAB REPORT", "CREATININE · 119.4 µMOL/L", "kidneys", "lab"],
+    ["CGM", "GLUCOSE · 5.2 MMOL/L", "metabolic", "sensor"],
+    ["MRI", "KNEE · MENISCUS", "knee", "scan"],
+    ["LIPID PANEL", "LDL · 2.98 MMOL/L", "heart", "lab"],
+    ["SLEEP TRACKER", "SLEEP · 6 H 40", "nerves", "moon"],
+    ["HOME CUFF", "BP · 132 / 62", "heart", "heart"],
+    ["FOOD LOG", "FIBRE · 18 G", "gut", "food"],
+    ["LIVER PANEL", "ALT · 22 U/L", "liver", "lab"],
+    ["DXA SCAN", "BODY COMPOSITION", "bones", "scan"],
+    ["FAMILY HISTORY", "CARDIAC HISTORY", "heart", "note"],
+    ["ACTIVITY LOG", "WALK · 42 MIN", "legs", "activity"],
+    ["GENETIC REPORT", "APOE · E3 / E3", "nerves", "dna"],
+    ["PHARMACY", "MEDICATION RECORD", "liver", "pill"],
+    ["AIR QUALITY", "PM2.5 · 31 µG/M³", "lungs", "lungs"],
+    ["GP LETTER", "FOLLOW-UP · BP", "heart", "note"],
+    ["WEARABLE", "RESTING HR · 53 BPM", "heart", "sensor"],
+    ["HYDRATION LOG", "FLUID · 1.8 L", "kidneys", "sensor"]
+  ];
+  const captureIcons = {
+    heart:"M3 8a4 4 0 0 1 7-2l2 2 2-2a4 4 0 0 1 6 6l-8 8-8-8a4 4 0 0 1-1-4Z",
+    note:"M6 3h8l4 4v14H6z M9 11h6m-6 4h6",
+    lungs:"M12 3v7m-2-2C6 5 3 11 3 17c0 3 7 3 7 0V8Zm4 0c4-3 7 3 7 9 0 3-7 3-7 0V8Z",
+    lab:"M9 3h6m-5 0v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 15h8",
+    sensor:"M3 12a9 9 0 0 1 18 0M6 12a6 6 0 0 1 12 0M9 12a3 3 0 0 1 6 0m-3 4v4",
+    scan:"M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 12h10",
+    moon:"M19 15A8 8 0 0 1 9 5a8 8 0 1 0 10 10Z",
+    food:"M6 3v7m-3-7v4a3 3 0 0 0 6 0V3m-3 7v11M18 3c-3 2-4 6-4 10h4m0-10v18",
+    activity:"M2 13h5l3-7 4 13 3-6h5",
+    dna:"M6 3c0 8 12 10 12 18M18 3c0 8-12 10-12 18M7 5h10M8 19h8M9 9h6m-6 6h6",
+    pill:"M5 19a5 5 0 0 1 0-7l7-7a5 5 0 0 1 7 7l-7 7a5 5 0 0 1-7 0Zm4-10 6 6"
+  };
+  const captureRegions = {
+    heart:[[.60,.285,.15,.075]],
+    nerves:[[.54,.085,.18,.075],[.50,.34,.08,.17]],
+    lungs:[[.40,.265,.18,.09],[.63,.265,.18,.09]],
+    kidneys:[[.39,.422,.11,.046],[.60,.422,.11,.046]],
+    metabolic:[[.55,.39,.19,.065]],
+    knee:[[.40,.70,.13,.072]],
+    gut:[[.50,.46,.21,.085]],
+    liver:[[.41,.36,.15,.06]],
+    bones:[[.46,.51,.24,.07],[.41,.65,.085,.11],[.61,.68,.085,.11]],
+    legs:[[.41,.72,.145,.19],[.62,.75,.13,.17]]
+  };
+  const capturePoster = new Image(); capturePoster.decoding = "async"; capturePoster.src = "twin-f0.webp";
+  const reveal = document.createElement("canvas"); reveal.width = 250; reveal.height = 672;
+  const revealG = reveal.getContext("2d");
+  function captureBody() {
+    const height = cur.size * .936 / .956, width = height * 500 / 1344;
+    return {height, width, left: cur.px / 100 * innerWidth - width / 2,
+      top: cur.top - .47 * cur.size - .019 * height};
   }
-  const ORG = {
-    brain: [[.495, .08, .062, .045]], heart: [[.535, .29, .042, .032]], lungs: [[.445, .285, .058, .062], [.56, .285, .052, .062]],
-    liver: [[.45, .37, .072, .032]], stomach: [[.545, .38, .042, .032]], gut: [[.495, .455, .085, .048]], pancreas: [[.505, .405, .06, .016]],
-    kidneys: [[.44, .415, .022, .03], [.555, .415, .022, .03]], pelvis: [[.495, .54, .065, .03]], knee: [[.405, .735, .042, .032]],
-    vessels: [[.535, .29, .04, .03], [.508, .4, .011, .11], [.42, .66, .011, .16], [.575, .66, .011, .16], [.25, .38, .01, .12], [.74, .38, .01, .12]],
-    bones: [[.495, .39, .011, .17], [.495, .54, .1, .028], [.41, .66, .014, .1], [.58, .66, .014, .1], [.41, .83, .012, .08], [.6, .83, .012, .08]],
-    legs: [[.41, .64, .045, .085], [.58, .64, .045, .085], [.535, .29, .04, .03]], body: [[.495, .36, .16, .17]],
-    thigh: [[.41, .64, .05, .085]], calf: [[.405, .82, .04, .08]], foot: [[.38, .935, .05, .02]], shoulder: [[.6, .225, .06, .03]], arm: [[.2, .42, .035, .14]],
-    hand: [[.19, .53, .028, .035]], neck: [[.495, .18, .035, .018]], torso: [[.495, .36, .145, .15]] };
-  const organFor = r => { const s = (r[0] + " " + r[1]).toUpperCase(), t = [
-      [/HEADACHE|MOOD|SLEEP|STRESS|APOE/, "brain"], [/FATHER|HEART|HRV|CAC/, "heart"], [/FEV1|SPIRO|PM2|AIR/, "lungs"],
-      [/ALCOHOL|ATORVA|ALT|LIVER/, "liver"], [/LUNCH|PROTEIN|KCAL|MEAL/, "stomach"], [/FIBRE|FIBER/, "gut"], [/GLUCOSE|HBA1C|CGM/, "pancreas"],
-      [/WATER|EGFR|KIDNEY/, "kidneys"], [/CYCLE/, "pelvis"], [/KNEE|MENISCUS/, "knee"], [/BP |LDL|BLOOD/, "vessels"],
-      [/DEXA|T-SCORE/, "thigh"], [/VITAMIN D/, "bones"], [/ZONE|STRAVA|VO2/, "legs"], [/STEPS/, "calf"], [/WEIGHT|WITHINGS/, "torso"], [/GRIP|STRENGTH/, "hand"]];
-    for (const [re, k] of t) if (re.test(s)) return k; return "body"; };
-  function capReading(now, m, cr, x1) {
-    if (!capRows.length) return;
-    const row = capRows[(Math.random() * capRows.length) | 0], r = LOG[(Math.random() * LOG.length) | 0], c = row.cells;
-    flipTo(c[0], new Date().toTimeString().slice(0, 8)); flipTo(c[1], r[0]); flipTo(c[2], r[1]);
-    row.classList.add("hot"); setTimeout(() => row.classList.remove("hot"), 700);
-    cg.font = capFont(); const rc = c[2].getBoundingClientRect(), xa = rc.left + cg.measureText(r[1]).width + 12, ya = rc.top + rc.height * .35;
-    let li = 0, best = 1e9; for (let k = 0; k < FIELD.length; k++) { const d = Math.abs(fieldY(k, xa + 60, m) - ya); if (d < best) { best = d; li = k; } }
-    const org = organFor(r), e = ORG[org][0];
-
+  function fillCaptureRow(row, record, time) {
+    const [name, value,, icon] = record, [stamp, source, reading] = row.cells;
+    if (time) stamp.textContent = time;
+    source.innerHTML = `<svg class="source-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${captureIcons[icon]}"/></svg>`;
+    source.append(document.createTextNode(name)); reading.textContent = value;
+  }
+  capRows.forEach((row,i) => fillCaptureRow(row,captureRecords[i]));
+  function capReading(now) {
+    const row = capRows[capRowIndex++ % capRows.length], record = captureRecords[capIndex++ % captureRecords.length];
+    fillCaptureRow(row, record, new Date().toTimeString().slice(0,8));
+    capRows.forEach(r => r.classList.toggle("hot", r === row));
+    captureFlight = {start:now, row, region:record[2]};
   }
   function capLoop(now) {
-    if (!capOn) { capRaf = 0; cg.clearRect(0, 0, capCv.width, capCv.height); pts.length = 0; return; }
-    const dt = capLast ? Math.min(.05, (now - capLast) / 1000) : 0; capLast = now;
-    const dpr = Math.min(2, devicePixelRatio || 1), cr = capCv.getBoundingClientRect(), W = cr.width, H = cr.height;
-    if (capCv.width !== Math.round(W * dpr) || capCv.height !== Math.round(H * dpr)) { capCv.width = Math.round(W * dpr); capCv.height = Math.round(H * dpr); }
-    cg.setTransform(dpr, 0, 0, dpr, 0, 0); cg.clearRect(0, 0, W, H);
-    const m = fmap(), tb = steps.querySelector(".capture-readings").getBoundingClientRect(), pr = { left: -999, width: 0, top: 0, bottom: 0, height: 0 };
-    const x0 = pr.left + pr.width * .5, x1 = base ? base.px / 100 * innerWidth : W * .83;
-    // lines that cross the person's body
-    const cand = []; for (let k = 0; k < FIELD.length; k++) { const y = fieldY(k, x0, m); if (y > pr.top + pr.height * .12 && y < pr.bottom - pr.height * .1) cand.push(k); }
-    capNext -= dt; if (capNext <= 0) { capNext = .16 + Math.random() * .14; capReading(now, m, cr, x1); }
-    capSpawn -= dt;
-    if (false) { capSpawn = .09 + Math.random() * .1; pts.push({ li: cand[(Math.random() * cand.length) | 0], x: x0 - 30, v: 170 + Math.random() * 120, hit: false }); }
-    cg.lineCap = "butt";
-    for (let i = pts.length - 1; i >= 0; i--) {
-      const q = pts[i]; q.x += q.v * dt;
-      let tgt = null;
-      if (q.org && cur) {
-        if (T3on()) { if (q.k == null) q.k = T3.pick(RX3[q.org]); const p3 = T3.xy(q.k); tgt = { x: p3[0], y: p3[1] }; }
-        else { const Hm = cur.size, Wm = Hm * 360 / 738; tgt = { x: cur.px / 100 * innerWidth - Wm / 2 + q.tu * Wm, y: cur.top - Hm / 2 + q.tv * Hm }; } }
-      if (tgt) { if (q.x >= tgt.x) { if (q.k != null && T3on()) land3d(q.k, RX3[q.org], tgt.x, tgt.y); else organLand(q.org, tgt.x, tgt.y); pts.splice(i, 1); continue; } }
-      else if (q.x > x1 + 10) { pts.splice(i, 1); continue; }
-      if (!q.hit && q.x > tb.left + 20) { q.hit = true; if (now - capPing > 260 && capRows.length) { capPing = now; const r = capRows[(Math.random() * capRows.length) | 0]; r.classList.add("hot"); setTimeout(() => r.classList.remove("hot"), 500); } }
-      const fin = q.fromRow ? Math.min(1, (q.x - q.xa + 4) / 30) : Math.min(1, (q.x - x0 + 30) / 80), fout = tgt ? 1 : Math.min(1, (x1 - q.x) / 90), al = Math.max(0, Math.min(fin, fout));
-      if (al <= 0) continue;
-      // dotted trail
-      const Yq = x => { let y = fieldY(q.li, x, m);
-        if (tgt) { const st = Math.max(0, Math.min(1, (x - (tgt.x - 240)) / 240)), e = st * st * (3 - 2 * st); y += (tgt.y - y) * e; }
-        if (!q.fromRow) return y; const u = Math.max(0, Math.min(1, (x - q.xa) / 70)); return q.ya + (y - q.ya) * u * u * (3 - 2 * u); };
-      for (let j = 1; j <= 7; j++) { const tx = q.x - j * 7; if (q.fromRow && tx < q.xa) break; const ty = Yq(tx) - cr.top; cg.fillStyle = `rgba(0,150,214,${al * (1 - j / 8) * .7})`; cg.fillRect(tx - 1, ty - 1, 2, 2); }
-      // square-ended dash along the line
-      const ya = Yq(q.x - 9) - cr.top, yb = Yq(q.x) - cr.top;
-      cg.strokeStyle = `rgba(0,150,214,${al})`; cg.lineWidth = 2.4; cg.beginPath(); cg.moveTo(q.x - 9, ya); cg.lineTo(q.x, yb); cg.stroke();
+    if (!capOn) {
+      capRaf = 0; cg.clearRect(0,0,capCv.width,capCv.height); captureFlight = captureFocus = null;
+      capNext = 0; capRows.forEach(row => row.classList.remove("hot")); return;
+    }
+    const dt = capLast ? Math.min(.05,(now-capLast)/1000) : 0; capLast = now;
+    const cr = capCv.getBoundingClientRect(), dpr = Math.min(2,devicePixelRatio || 1);
+    const w = Math.round(cr.width*dpr), h = Math.round(cr.height*dpr);
+    if (capCv.width !== w || capCv.height !== h) { capCv.width = w; capCv.height = h; }
+    cg.setTransform(dpr,0,0,dpr,0,0); cg.clearRect(0,0,cr.width,cr.height);
+    capNext -= dt;
+    if (capNext <= 0) { capNext = 1.55; capReading(now); }
+    if (captureFlight && cur) {
+      const {start,row,region} = captureFlight, body = captureBody();
+      const [u,v] = captureRegions[region][0], reading = row.cells[2].getBoundingClientRect();
+      const x1 = body.left + u * body.width - cr.left, y1 = body.top + v * body.height - cr.top;
+      const x0 = Math.min(reading.right + 4 - cr.left, x1 - 26), y0 = reading.top + reading.height * .28 - cr.top;
+      const progress = Math.min(1,(now-start)/580);
+      const position = p => [x0 + (x1-x0)*p, y0 + (y1-y0)*p*p*(3-2*p)];
+      if (progress === 1) {
+        captureFocus = {region, start:now};
+        captureFlight = null;
+      } else {
+        for (let j = 5; j >= 0; j--) {
+          const distance = Math.max(0,progress-j*.03), [x,y] = position(distance);
+          cg.fillStyle = `rgba(0,150,214,${(6-j)/6})`; cg.beginPath(); cg.arc(x,y,j ? 1.4 : 3.1,0,Math.PI*2); cg.fill();
+        }
+      }
     }
     capRaf = requestAnimationFrame(capLoop);
+  }
+  function revealCaptureRegion(now, body) {
+    if (!captureFocus || !capturePoster.naturalWidth) return;
+    const age = (now - captureFocus.start) / 1000;
+    const strength = Math.min(1,age * 9) * Math.max(0,1 - Math.max(0,age-.64)/.31);
+    if (strength <= 0) return;
+    const {width,height} = reveal;
+    revealG.clearRect(0,0,width,height);
+    for (const [u,v,rx,ry] of captureRegions[captureFocus.region]) {
+      revealG.save(); revealG.translate(u*width,v*height); revealG.scale(rx*width,ry*height);
+      const mask = revealG.createRadialGradient(0,0,.30,0,0,1);
+      mask.addColorStop(0,"#fff"); mask.addColorStop(.58,"rgba(255,255,255,.94)"); mask.addColorStop(1,"rgba(255,255,255,0)");
+      revealG.fillStyle = mask; revealG.fillRect(-1,-1,2,2); revealG.restore();
+    }
+    revealG.save(); revealG.globalCompositeOperation = "source-in";
+    revealG.drawImage(capturePoster,0,0,width,height); revealG.restore();
+    gg.save(); gg.globalAlpha = strength;
+    gg.drawImage(reveal,body.left,body.top,body.width,body.height); gg.restore();
   }
 
   // ---- Header: the line twin starts faint; data points ride the field lines into it, each one lights
@@ -2154,7 +2199,6 @@ if (LITE) document.documentElement.classList.add("lite");
   t3Cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:none";
   video.before(hsCv); light.after(heroCv); heroCv.after(glowCv); glowCv.after(t3Cv); const g3 = t3Cv.getContext("2d");
   const hg = null, hs = hsCv.getContext("2d"), gg = glowCv.getContext("2d");
-  const lit = [];
   const GW = 90, GH = 185, fill = new Float32Array(GW * GH), fresh = new Float32Array(GW * GH), fb = new Uint8Array(GW * GH), rb = new Uint8Array(GW * GH);
   let hero = null, heroRaf = 0, heroLast = 0, heroNext = 0, sil = null;
   const hp = [], rings = [];
@@ -2181,14 +2225,6 @@ if (LITE) document.documentElement.classList.add("lite");
   heroLand = (x, y) => { if (!cur || !sil) return false; const W = innerWidth, Hm = cur.size, Wm = Hm * 360 / 738, L = cur.px / 100 * W - Wm / 2, T = cur.top - Hm / 2, u = (x - L) / Wm, v = (y - T) / Hm;
     if (u > 0 && u < 1 && v > 0 && v < 1 && sil[((v * 185) | 0) * 90 + ((u * 90) | 0)]) { splat(u, v, .55); rings.push({ x, y, t: 0 }); return true; } return false; };
   land3d = (k, rx, x, y) => { T3.land(k, rx); rings.push({ x, y, t: 0 }); };
-  organLand = (org, x, y, quiet) => { const L0 = lit.find(o => o.org === org); if (L0) L0.t = performance.now(); else lit.push({ org, t: performance.now() }); for (const [u, v, ru, rv] of ORG[org] || ORG.body) {
-      const x0 = Math.max(0, ((u - ru * 1.4) * GW) | 0), x1 = Math.min(GW - 1, ((u + ru * 1.4) * GW) | 0), y0 = Math.max(0, ((v - rv * 1.4) * GH) | 0), y1 = Math.min(GH - 1, ((v + rv * 1.4) * GH) | 0);
-      for (let yy = y0; yy <= y1; yy++) for (let xx = x0; xx <= x1; xx++) { const d = Math.hypot((xx / GW - u) / ru, (yy / GH - v) / rv), w = Math.max(0, Math.min(1, (1.25 - d) / .45)), i = yy * GW + xx; if (w > fresh[i]) fresh[i] = w; fill[i] = Math.min(1, fill[i] + w * .35); } }
-    { const W = innerWidth, Hm = cur ? cur.size : 1, Wm = Hm * 360 / 738, L = cur ? cur.px / 100 * W - Wm / 2 : 0, T = cur ? cur.top - Hm / 2 : 0;
-      const u = (x - L) / Wm, v = (y - T) / Hm, cx = u * GW, cy = v * GH, Rr = 12;
-      for (let yy = Math.max(0, cy - Rr * 2 | 0); yy < Math.min(GH, cy + Rr * 2 + 1); yy++) for (let xx = Math.max(0, cx - Rr * 2 | 0); xx < Math.min(GW, cx + Rr * 2 + 1); xx++) {
-        const w = Math.exp(-((xx - cx) ** 2 + (yy - cy) ** 2) / (Rr * Rr)), i = yy * GW + xx; fill[i] = Math.min(1, fill[i] + w * .25); } }
-    if (!quiet) rings.push({ x, y, t: 0 }); };
   function heroLoop(now) {
     const blueTop = statement.getBoundingClientRect().top, H = innerHeight, W = innerWidth;
     const capMode = (steps.classList.contains("capture-in-view") || (steps.dataset.i === "1" && lineBot !== null && lineBot > 0)) && steps.getBoundingClientRect().top < H * .55;
@@ -2208,22 +2244,16 @@ if (LITE) document.documentElement.classList.add("lite");
       for (let i = rings.length - 1; i >= 0; i--) { const r = rings[i]; r.t += dt3; if (r.t > .5) { rings.splice(i, 1); continue; } hs.strokeStyle = `rgba(0,150,214,${(1 - r.t / .5) * .8})`; hs.lineWidth = 1.2; hs.beginPath(); hs.arc(r.x, r.y, 3 + r.t * 26, 0, 7); hs.stroke(); }
       heroRaf = requestAnimationFrame(heroLoop); return; }
     t3Active = false; t3Cv.style.display = "none"; both.forEach(v => v.classList.remove("is-3d"));
-    if (G2) { heroCv.style.display = "none"; hsCv.style.display = glowCv.style.display = "block";
-      const W2 = innerWidth, d2 = Math.min(2, devicePixelRatio || 1);
-      if (glowCv.width !== Math.round(W2 * d2) || glowCv.height !== Math.round(H * d2)) { glowCv.width = hsCv.width = Math.round(W2 * d2); glowCv.height = hsCv.height = Math.round(H * d2); }
-      if (!heroLoop.was) lit.length = 0; heroLoop.was = true;
-      const dt2 = heroLast ? Math.min(.05, (now - heroLast) / 1000) : 0; heroLast = now;
-      const Hm = cur.size, Wm = Hm * 360 / 738, L = cur.px / 100 * W2 - Wm / 2, T = cur.top - Hm / 2;
-      gg.setTransform(d2, 0, 0, d2, 0, 0); gg.clearRect(0, 0, W2, H);
-      { const cp = lineBot === null ? "" : `inset(0 0 ${Math.max(0, H - lineBot).toFixed(1)}px 0)`; if (glowCv.style.clipPath !== cp) glowCv.style.clipPath = cp; }
-      for (const o of lit) { const age = (now - o.t) / 1000, a = .28 + .5 * Math.exp(-age / 1.4);
-        for (const [u, v, ru, rv] of ORG[o.org] || ORG.body) { const x = L + u * Wm, y = T + v * Hm, rx = ru * Wm * 1.15, ry = rv * Hm * 1.15;
-          gg.save(); gg.translate(x, y); gg.scale(1, ry / rx); const g = gg.createRadialGradient(0, 0, 0, 0, 0, rx);
-          g.addColorStop(0, `rgba(0,150,214,${a * .75})`); g.addColorStop(.7, `rgba(0,150,214,${a * .45})`); g.addColorStop(1, "rgba(0,150,214,0)");
-          gg.fillStyle = g; gg.beginPath(); gg.arc(0, 0, rx, 0, 7); gg.fill(); gg.restore(); } }
-      hs.setTransform(d2, 0, 0, d2, 0, 0); hs.clearRect(0, 0, W2, H);
-      for (let i = rings.length - 1; i >= 0; i--) { const r = rings[i]; r.t += dt2; if (r.t > .5) { rings.splice(i, 1); continue; } hs.strokeStyle = `rgba(0,150,214,${(1 - r.t / .5) * .8})`; hs.lineWidth = 1.2; hs.beginPath(); hs.arc(r.x, r.y, 3 + r.t * 26, 0, 7); hs.stroke(); }
-      heroRaf = requestAnimationFrame(heroLoop); return; }
+    if (G2) {
+      heroCv.style.display = hsCv.style.display = "none"; glowCv.style.display = "block";
+      const d = Math.min(1.5,devicePixelRatio || 1), w = Math.round(W*d), h = Math.round(H*d);
+      if (glowCv.width !== w || glowCv.height !== h) { glowCv.width = w; glowCv.height = h; }
+      gg.setTransform(d,0,0,d,0,0); gg.clearRect(0,0,W,H);
+      const cp = lineBot === null ? "" : `inset(0 0 ${Math.max(0,H-lineBot).toFixed(1)}px 0)`;
+      if (glowCv.style.clipPath !== cp) glowCv.style.clipPath = cp;
+      revealCaptureRegion(now,captureBody());
+      heroRaf = requestAnimationFrame(heroLoop); return;
+    }
     glowCv.style.display = "none";
     if (video.paused && video.src && !motion.matches && now - (heroLoop.kick || 0) > 700) { heroLoop.kick = now; video.play().catch(() => {}); }
     if (video.readyState < 2) { heroRaf = requestAnimationFrame(heroLoop); return; }
