@@ -1049,6 +1049,8 @@
   .story:not(.is-current) figcaption { opacity: .77; }
   .story figcaption { padding: 17px 0 0; }
   .story-topic { margin: 0; color: var(--blue-text); font: 500 11px/1.35 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+  .story-profile .story-photo { object-position: center 25%; }
+  .story-profile h3 { margin: 0; color: var(--ink); font: 400 clamp(23px, 1.9vw, 32px)/1.2 var(--serif); }
   .story blockquote { margin: 10px 0 16px; color: var(--ink); font: 400 clamp(19px, 1.65vw, 29px)/1.24 var(--serif); }
   .story-caption { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 6px 18px;
     justify-content: space-between; padding: 12px 0 0; border-top: 1px solid #d3d2c7; }
@@ -1326,7 +1328,15 @@
     <h2 id="s5h">What people learn from their twin</h2>
   </header>
   <div class="story-reel" id="story-reel" role="region" aria-label="Illustrative stories" tabindex="0">
-      <figure class="story is-current">
+      <figure class="story story-profile is-current">
+        <img class="story-photo" src="twin-hero-portrait-extended.webp" alt="Jasper in a burgundy sweater" loading="lazy" decoding="async">
+        <figcaption><h3>Jasper</h3></figcaption>
+      </figure>
+      <figure class="story story-profile">
+        <img class="story-photo" src="twin-hero-imageJY-extended.webp" alt="JY in a black shirt" loading="lazy" decoding="async">
+        <figcaption><h3>JY</h3></figcaption>
+      </figure>
+      <figure class="story">
         <img class="story-photo" src="t-plunge.webp" alt="A man sitting in an outdoor ice bath" loading="lazy" decoding="async" style="object-position:30% 40%">
         <figcaption>
           <p class="story-topic">Cold exposure · HRV</p>
@@ -1406,7 +1416,7 @@
   </div>
   <div class="story-navigation" aria-label="Testimonial navigation">
     <div class="story-progress" role="group" aria-label="Choose a story"></div>
-    <span class="story-count">1 / 7</span>
+    <span class="story-count">1 / 9</span>
     <button type="button" class="story-pause" aria-label="Pause story autoplay" aria-pressed="false">Pause</button>
     <button type="button" class="story-prev" aria-label="Previous story" aria-controls="story-reel">←</button>
     <button type="button" class="story-next" aria-label="Next story" aria-controls="story-reel">→</button>
