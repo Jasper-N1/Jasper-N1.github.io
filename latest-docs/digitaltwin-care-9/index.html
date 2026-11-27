@@ -370,10 +370,21 @@
   .plat .pviz { position: relative; aspect-ratio: 718 / 470; background: #F7F6F0; border: 1px solid rgba(28,27,23,.16); border-radius: 6px; overflow: hidden; }
   .plat .ph2 { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid rgba(28,27,23,.09); background: #F7F6F0; font: 500 var(--fs-label) var(--mono); letter-spacing: var(--ls-l); color: #66645D; } .plat .ph2 span:first-child { color: var(--blue-text); }
   .plat .pviz canvas { position: absolute; left: 0; right: 0; bottom: 0; top: 41px; width: 100%; height: calc(100% - 41px); }
-  .plat .sensing-scan { background: rgba(238,247,246,.48); border-color: #83aeb8; }
+  .plat .sensing-scan { background: rgba(250,241,231,.44); border-color: #9eaaa7; }
   .sensing-scan .ph2 { background: rgba(247,250,246,.90); border-bottom-color: #83aeb84d; }
   .plat .intervention-viz { display:grid; grid-template-rows:41px 1fr auto; min-height:326px; background:#0c2634; }
   .intervention-viz .ph2 { background:#f7f6f0; }
+  .plat .intervention-viz { background:rgba(237,246,242,.46); border-color:#83aeb8; }
+  .plat .intervention-viz .intervention-heat { height:calc(100% - 79px); }
+  .intervention-score { position:relative; z-index:1; margin:8px 8px 8px 36%; border-radius:7px; background:#0c2634; }
+  .intervention-viz .viz-tabs { position:relative; z-index:1; background:#0c2634; }
+  @media(max-width:580px) {
+    .plat .intervention-viz { aspect-ratio:auto; grid-template-rows:41px minmax(140px,34vw) auto auto; }
+    .plat .intervention-viz .intervention-heat { height:max(140px,34vw); }
+    .intervention-viz .intervention-score { grid-row:3; margin:0 8px 8px; }
+    .intervention-viz .viz-tabs { grid-row:4; }
+  }
+
   .intervention-score { grid-row:2; padding:clamp(14px,2vw,28px); color:#eaf5f6; display:grid; align-content:center; gap:clamp(10px,1.5vw,18px); }
   .score-overview { display:grid; grid-template-columns:clamp(90px,20%,143px) minmax(0,1fr); align-items:center; gap:clamp(12px,2vw,26px); }
   .score-dial { width:100%; aspect-ratio:1; position:relative; display:grid; place-items:center;
@@ -1228,11 +1239,12 @@
   <div class="pin2">
 
     <div class="prow"><div class="ptx" data-bounce><h3>Continuous data</h3><p class="pbody">Your twin automatically brings in new readings from connected sensors and wearables alongside your lab results and other health records. It shows what’s missing, why it matters, and what information could fill the gap.</p></div>
-      <div class="pviz sensing-scan" data-bounce><div class="ph2"><span>Sensing layer</span><span>Live</span></div><canvas data-viz="stream" role="img" aria-label="A heat map on the digital twin with sample records flowing down the right side"></canvas></div></div>
+      <div class="pviz sensing-scan" data-bounce><div class="ph2"><span>Sensing layer</span><span>Live</span></div><canvas data-viz="stream" role="img" aria-label="Illustrative CT-style anatomy aligned with the moving digital twin, with incoming sample records on the right"></canvas></div></div>
     <div class="prow rev"><div class="pviz" data-bounce><div class="ph2"><span>Reasoning layer</span><span>Updated continuously</span></div><canvas data-viz="base" aria-label="A layered neural network animation showing several readings converging on a personal range check"></canvas></div>
       <div class="ptx" data-bounce><h3>Deep medically validated intelligence</h3><p class="pbody">Continuous data lets the AI learn an individual baseline and normal range, then flag a deviation well before a population-based reference range would register an issue.</p></div></div>
     <div class="prow"><div class="ptx" data-bounce><h3>Actionable insights tailored to you</h3><p class="pbody">The system acts on the live data stream. Because it keeps monitoring, it tracks the response to every intervention and adjusts continuously.</p></div>
       <div class="pviz intervention-viz" data-bounce><div class="ph2"><span>Intervention layer</span><span>Closed loop</span></div>
+        <canvas class="intervention-heat" data-viz="thermal" role="img" aria-label="Illustrative heat map on the moving digital twin showing areas of focus"></canvas>
         <div class="intervention-score" style="--score-accent:#88dfba;--score-fill:56%">
           <div class="score-overview">
             <div class="score-dial"><strong class="score-number">56%</strong></div>
@@ -1755,6 +1767,7 @@ if (LITE) document.documentElement.classList.add("lite");
   hiImg.style.cssText = floatingTwinStyle;
   hiCv.after(hiImg); let hiMode = "gl";
   const hiWrap = document.createElement("canvas"), hiVid = { paused: false, play: () => Promise.resolve() }, hg2 = hiWrap.getContext("2d");
+  hiWrap.id = "twin-colour-frame";
   hiWrap.setAttribute("aria-hidden", "true");
   hiWrap.style.cssText = floatingTwinStyle;
   hiImg.after(hiWrap);
@@ -1806,7 +1819,7 @@ if (LITE) document.documentElement.classList.add("lite");
   function clearWalk() {
     for (const sheet of sheets.values()) sheet.image?.close?.();
     sheets.clear();
-    lastFrame = -1; nextFrameAt = 0; hiVidOK = false;
+    lastFrame = -1; nextFrameAt = 0; hiVidOK = false; hiWrap.removeAttribute("data-frame");
   }
   function walkSheet(index) {
     if (sheets.has(index)) return sheets.get(index).image;
@@ -1852,7 +1865,7 @@ if (LITE) document.documentElement.classList.add("lite");
     const k = frame & 3;
     hg2.clearRect(0, 0, cw, ch);
     hg2.drawImage(image, (k & 1) * 500, (k >> 1) * 1344, 500, 1344, 0, 0, cw, ch);
-    lastFrame = frame;
+    lastFrame = frame; hiWrap.dataset.frame = frame;
     frame = (frame + 1) % frameCount;
     nextFrameAt = Math.max(now - frameTime, nextFrameAt || now) + frameTime;
     hiVidOK = true;
@@ -1928,9 +1941,10 @@ if (LITE) document.documentElement.classList.add("lite");
   const wireCv = both.map((v, i) => { const c = document.createElement("canvas"); c.className = "wire-cv"; c.setAttribute("aria-hidden", "true"); v.after(c); return c; });
   const wireG = wireCv.map(c => c.getContext("2d"));
   const wirePainted = [null, null];
+  const scanOrCapture = () => steps.classList.contains("capture-in-view") || document.body.hasAttribute("data-twin-scan");
   (function wireLoop(now) {
     // the wire twin is made from the blue twin's own frames, so both show the same frame: perfectly in step
-    const capturing = steps.classList.contains("capture-in-view") && !motion.matches && !document.hidden;
+    const capturing = scanOrCapture() && !motion.matches && !document.hidden;
     // Advance the colour sprite here so both layers paint the same walking frame.
     if (capturing) {
       const upcoming = Math.floor(frame * 124 / 186);
@@ -2052,7 +2066,7 @@ if (LITE) document.documentElement.classList.add("lite");
     const onScreen = Math.max(top, clipTop, 0) < Math.min(top + Hh, clipBot, H);
     const covered = bandTop <= top + .015 * Hh && bandBot >= top + .985 * Hh;
     // The wire render loop owns sprite playback during Capture.
-    if (!steps.classList.contains("capture-in-view")) {
+    if (!scanOrCapture()) {
       if (hiMode === "img" && onScreen && !covered && !motion.matches && !document.hidden) drawFrame(now);
       else if (sheets.size) clearWalk();
     }
@@ -2557,7 +2571,11 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
 (() => { // platform visuals, in the site's line language: wavy field lines, hatching, ink and one blue, mono labels
   const BL = "#0096D6", INK = "28,27,23", MONO = "500 10px 'DM Mono', monospace";
   const viz = [...document.querySelectorAll(".plat canvas")].map(cv => ({ cv, g: cv.getContext("2d"), kind: cv.dataset.viz, vis: false, W: 0, H: 0, st: {} }));
-  const io = new IntersectionObserver(es => es.forEach(e => { const v = viz.find(v => v.cv === e.target); v.vis = e.isIntersecting; }), { rootMargin: "100px" }); viz.forEach(v => io.observe(v.cv));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => { const v = viz.find(item => item.cv === entry.target); v.vis = entry.isIntersecting; });
+    document.body.toggleAttribute("data-twin-scan",viz.some(v=>v.vis && (v.kind==="stream" || v.kind==="thermal")));
+  }, { rootMargin:"100px" });
+  viz.forEach(v => io.observe(v.cv));
   const fit = v => { const d = Math.min(2, devicePixelRatio || 1), W = v.cv.clientWidth, H = v.cv.clientHeight; if (W === v.W && H === v.H) return; v.W = W; v.H = H; v.cv.width = W * d; v.cv.height = H * d; v.g.setTransform(d, 0, 0, d, 0, 0); v.st = {}; };
   const label = (g, s, x, y, col = `rgba(${INK},.62)`, al = "left") => { g.font = MONO; g.fillStyle = col; g.textAlign = al; g.fillText(s, x, y); };
   const panelModel = new Image();
@@ -2565,6 +2583,20 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   panelModel.src = "twin-f0.webp";
   const scanWire = document.querySelector(".wire-cv");
   const scanVideo = document.getElementById("body-video");
+  const scanColourFrame = document.getElementById("twin-colour-frame");
+  function imagingBox(v) {
+    const card = v.cv.getBoundingClientRect();
+    const wire = scanWire?.getBoundingClientRect();
+    const hasWire = wire && wire.width > 0 && wire.height > 0;
+    const box = hasWire ? wire : scanVideo.getBoundingClientRect();
+    const sx = v.W / (card.width || v.W || 1), sy = v.H / (card.height || v.H || 1);
+    return {x:(box.left-card.left)*sx, y:(box.top-card.top)*sy, w:box.width*sx, h:box.height*sy, hasWire};
+  }
+  function drawImagingModel(g, box, source) {
+    const height=box.h*.936/.956, width=height*500/1344;
+    g.drawImage(source,box.x+(box.w-width)/2,box.y+box.h*.03-height*.019,width,height);
+  }
+
   const scanFeeds = [
     ["LIPID PANEL", .55, .28], ["RESTING HEART RATE", .55, .29], ["KNEE SCAN", .43, .72],
     ["MEDICATION RECORD", .45, .39], ["FOLLOW-UP NOTE", .54, .45], ["GENETIC REPORT", .50, .11]
@@ -2576,34 +2608,13 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     st.elapsed = still ? duration : ((st.elapsed || 0) + dt) % duration;
     const index = Math.min(scanFeeds.length - 1, Math.floor(st.elapsed / interval));
     const fade = still ? 1 : Math.min(1, (st.elapsed % interval) / .36);
-    const windowBox = cv.getBoundingClientRect();
-    const wireBox = scanWire?.getBoundingClientRect();
-    const visibleWire = wireBox && wireBox.width > 0 && wireBox.height > 0;
-    const body = visibleWire ? wireBox : scanVideo.getBoundingClientRect();
-    const sx = W / (windowBox.width || W || 1), sy = H / (windowBox.height || H || 1);
-    const x = (body.left - windowBox.left) * sx, y = (body.top - windowBox.top) * sy;
-    const w = body.width * sx, h = body.height * sy;
-    if (w > 0 && h > 0 && x < W && x + w > 0 && y < H && y + h > 0) {
-      const radius = Math.max(18, w * .32);
-      scanFeeds.forEach(([,u,z], i) => {
-        const px = x + u * w, py = y + z * h;
-        // Keep a low thermal baseline across the whole visible model.
-        const strength = i === index ? .46 + .54 * fade : .23;
-        const heat = g.createRadialGradient(px,py,0,px,py,radius);
-        heat.addColorStop(0, `rgba(251,92,48,${strength})`);
-        heat.addColorStop(.32, `rgba(250,178,58,${strength * .84})`);
-        heat.addColorStop(.63, `rgba(20,196,166,${strength * .78})`);
-        heat.addColorStop(1, "rgba(0,150,214,0)");
-        g.fillStyle = heat; g.fillRect(px-radius,py-radius,radius*2,radius*2);
-      });
-      g.save(); g.globalCompositeOperation = "destination-in";
-      if (visibleWire) {
-        g.filter = "blur(1.5px)";
-        g.drawImage(scanWire,x,y,w,h);
-      } else if (panelModel.naturalWidth) {
-        const modelHeight = h * .936 / .956, modelWidth = modelHeight * 500 / 1344;
-        g.drawImage(panelModel, x + (w-modelWidth)/2, y + h*.03 - modelHeight*.019, modelWidth, modelHeight);
-      } else g.clearRect(0,0,W,H);
+    const box = imagingBox(v), {x,y,w,h} = box;
+    const source = !still && scanColourFrame?.hasAttribute("data-frame") ? scanColourFrame : panelModel;
+    if (w > 0 && h > 0 && (source === scanColourFrame || panelModel.naturalWidth)) {
+      g.save();
+      g.filter = "grayscale(.8) sepia(.48) saturate(1.44) contrast(1.12)";
+      g.globalAlpha = .9;
+      drawImagingModel(g,box,source);
       g.restore();
     }
 
@@ -2636,8 +2647,38 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       g.moveTo(cx,cy+dy*10); g.lineTo(cx,cy); g.lineTo(cx+dx*10,cy);
     }
     g.stroke();
-    g.fillStyle = "rgba(247,250,246,.88)"; g.fillRect(W-174,H-49,154,29);
+    label(g,"CT-STYLE ANATOMY",21,H-33,BL);
+    label(g,"ILLUSTRATION",21,H-20);
+    g.fillStyle = "rgba(247,250,246,.88)"; g.fillRect(W-157,H-49,137,29);
     label(g,scanFeeds[index][0],W-26,H-31,BL,"right");
+  };
+  const thermalRegions = [
+    [[.50,.105],[.55,.28]], [[.55,.27],[.48,.38]], [[.49,.51],[.43,.69],[.59,.72]]
+  ];
+  const thermal = (v,t) => {
+    const {g,W,H} = v, box=imagingBox(v), {x,y,w,h,hasWire}=box;
+    const selected = buttons.findIndex(button=>button.getAttribute("aria-pressed")==="true");
+    if (w > 0 && h > 0 && x<W && y<H && x+w>0 && y+h>0) {
+      const intensity = networkMotion.matches ? .87 : .83 + Math.sin(t*2.2)*.12;
+      const radius=Math.max(18,w*.36);
+      thermalRegions[Math.max(0,selected)].forEach(([u,z])=>{
+        const cx=x+u*w, cy=y+z*h;
+        const color=g.createRadialGradient(cx,cy,0,cx,cy,radius);
+        color.addColorStop(0,`rgba(250,71,45,${intensity})`);
+        color.addColorStop(.34,`rgba(255,161,44,${intensity*.85})`);
+        color.addColorStop(.66,`rgba(39,196,168,${intensity*.72})`);
+        color.addColorStop(1,"rgba(0,150,214,0)");
+        g.fillStyle=color;g.fillRect(cx-radius,cy-radius,2*radius,2*radius);
+      });
+      g.save();g.globalCompositeOperation="destination-in";
+      if(hasWire){g.filter="blur(1.3px)";g.drawImage(scanWire,x,y,w,h);}
+      else if(panelModel.naturalWidth) drawImagingModel(g,box,panelModel);
+      else g.clearRect(0,0,W,H);
+      g.restore();
+    }
+    g.fillStyle="rgba(247,250,246,.86)";g.fillRect(9,10,102,34);
+    label(g,"HEAT MAP",15,23,BL);
+    label(g,"AREAS OF FOCUS",15,36);
   };
   // 2. a reading propagates through the network to a personal-range check
   const networkMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -2760,7 +2801,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     },6000);
   },{threshold:.3}).observe(dashboard);
 
-  const F = { stream, base: network }; let last = performance.now();
+  const F = { stream, base: network, thermal }; let last = performance.now();
   (function frame(now) { requestAnimationFrame(frame); const t = now / 1000, dt = Math.min(.05, (now - last) / 1000); last = now;
     viz.forEach(v => { if (!v.vis) return; fit(v); v.g.clearRect(0, 0, v.W, v.H); F[v.kind](v, t, dt); }); })(last);
 })();
