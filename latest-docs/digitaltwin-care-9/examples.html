@@ -140,9 +140,39 @@ section{position:relative}
  
 /* medical analysis */
 #medical-analysis .sechead{margin-bottom:26px}
- .clinical-intro,.clinical-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ #patient-profile{padding:clamp(24px,4.4vw,62px) 0;border-top:var(--hair-soft);scroll-margin-top:80px}
+#patient-profile h2{font-size:clamp(35px,5vw,67px);line-height:1;margin:8px 0 10px}
+.profile-lead{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:end;gap:clamp(16px,4vw,48px);margin-bottom:22px}
+.profile-deck{color:var(--ink2);max-width:58ch;margin:0;font-size:clamp(14px,1.6vw,18px)}
+.profile-facts,.profile-weight{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.profile-facts>div{padding:8px 0 4px;border-top:2px solid #85aba9}
+.profile-facts dt,.profile-weight dt{font:500 10px/1.35 var(--mono);color:var(--ink2)}
+.profile-facts dd,.profile-weight dd{margin:4px 0 0;font:400 clamp(25px,3.5vw,47px)/1 var(--serif);color:var(--action)}
+.profile-facts small{font:500 12px var(--sans)}
+.profile-panels{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:12px}
+.profile-progress,.profile-routine{border:var(--hair-soft);border-radius:9px;padding:clamp(14px,2vw,25px);background:var(--paper)}
+.profile-progress{background:#e8efeb}
+.profile-panels h3{font-size:clamp(21px,2.5vw,33px);line-height:1.08;margin:0 0 10px}
+.profile-panels p{color:var(--ink2);font-size:13px;margin:0 0 10px}
+.profile-progress a{display:inline-block;margin-top:12px;color:var(--action);font-size:12px;text-underline-offset:3px}
+.profile-track{height:6px;margin:14px 0 10px;background:#c7dad6;border-radius:8px}
+.profile-track span{display:block;width:76.54%;height:100%;border-radius:inherit;background:#267e75}
+.profile-weight dd{font-size:clamp(20px,2.6vw,34px)}
+.profile-routine dl{margin:0 0 8px}
+.profile-routine dl>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border-top:var(--hair-soft);padding:8px 0;font-size:13px}
+.profile-routine dd{margin:0;color:var(--ink2);text-align:right}
+.profile-sessions{display:inline-flex;gap:3px;margin-right:5px;vertical-align:2px}
+.profile-sessions i{display:block;background:#378780;width:6px;height:6px;border-radius:50%}
+.profile-context{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:17px 0 0}
+.profile-context>div{padding-top:9px;border-top:var(--hair-soft)}
+.profile-context dt{font-weight:600;font-size:13px}
+.profile-context dd{margin:3px 0 0;color:var(--ink2);font-size:12px;line-height:1.45}
+@media(max-width:720px){
+ .profile-lead,.profile-panels{grid-template-columns:1fr;gap:13px}
+ .profile-context{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.clinical-intro,.clinical-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .clinical-intro{align-items:start}
-.clinical-story{display:grid;gap:14px}
 .clinical-columns.clinical-impression{grid-template-columns:minmax(0,1fr)}
 .clinical-columns{margin-top:18px;align-items:start}
 .clinical-brief h3,.clinical-heading{font-size:clamp(25px,3vw,36px);line-height:1.07;margin:0 0 12px}
@@ -159,11 +189,11 @@ section{position:relative}
 .clinical-source{font:500 11px/1.4 var(--mono);color:var(--ink2);margin:10px 0 14px}
 .clinical-support{background:#e8eeea;border-radius:8px;padding:14px}
 .clinical-support span{font-size:12px;display:block;margin-top:5px;color:var(--ink2)}
-.clinical-problems,.clinical-profile{margin:0}
-.clinical-problems>div,.clinical-profile>div{padding:9px 0;border-top:var(--hair-soft)}
-.clinical-problems dt,.clinical-profile dt{font-size:13px;font-weight:600}
+.clinical-problems{margin:0}
+.clinical-problems>div{padding:9px 0;border-top:var(--hair-soft)}
+.clinical-problems dt{font-size:13px;font-weight:600}
 .clinical-problems dt span{display:block;color:var(--action);font:500 10px var(--mono);margin-bottom:3px;text-transform:uppercase}
-.clinical-problems dd,.clinical-profile dd{margin:3px 0 0;font-size:13px;color:var(--ink2)}
+.clinical-problems dd{margin:3px 0 0;font-size:13px;color:var(--ink2)}
 .clinical-domains,.clinical-timeline{list-style:none;padding:0;margin:0}
 .clinical-domains li{display:flex;align-items:center;gap:10px;border-top:var(--hair-soft);padding:8px 0;font-size:13px}
 .clinical-status{min-width:54px;text-align:center;border-radius:12px;padding:3px 6px;font:500 10px var(--mono)}
@@ -634,6 +664,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       <div class="example-index-group" role="group" aria-labelledby="exampleGroup0">
         <p class="example-tools-label" id="exampleGroup0">Overview</p>
         <ul>
+          <li><a href="#patient-profile">Patient profile</a></li>
           <li><a href="#model">Explore the twin</a></li>
           <li><a href="#medical-analysis">Medical analysis</a></li>
           <li><a href="#labs">Lab markers</a></li>
@@ -703,6 +734,54 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
+<section id="patient-profile" aria-labelledby="patient-profile-title">
+  <div class="wrap">
+    <div class="profile-lead">
+      <div>
+        <p class="k">Patient profile</p>
+        <h2 id="patient-profile-title">Jasper Middendorp</h2>
+        <p class="profile-deck">Approaching forty, Jasper returned to training and started logging his weight. He wanted to stay mobile, build strength and feel fit enough to compete in Brazilian jiu-jitsu.</p>
+      </div>
+      <dl class="profile-facts">
+        <div><dt>Age at assessment</dt><dd>39</dd></div>
+        <div><dt>Height</dt><dd>190 <small>cm</small></dd></div>
+        <div><dt>Typical sleep</dt><dd>6–7 <small>h</small></dd></div>
+      </dl>
+    </div>
+
+    <div class="profile-panels">
+      <article class="profile-progress">
+        <h3>From the first weigh-in to the December goal</h3>
+        <p><strong>−6.2 kg</strong> between the first and latest logged weigh-ins.</p>
+        <div class="profile-track" aria-hidden="true"><span></span></div>
+        <dl class="profile-weight">
+          <div><dt>1 Sep · evening</dt><dd>88.1 kg</dd></div>
+          <div><dt>26 Nov · morning</dt><dd>81.9 kg</dd></div>
+          <div><dt>12 Dec · target</dt><dd>80 kg</dd></div>
+        </dl>
+        <a href="#body">Explore the weight log ↓</a>
+      </article>
+
+      <article class="profile-routine">
+        <h3>His training week</h3>
+        <dl>
+          <div><dt>Brazilian jiu-jitsu</dt><dd><span class="profile-sessions" aria-hidden="true"><i></i><i></i><i></i></span>3 evenings a week</dd></div>
+          <div><dt>Pilates</dt><dd><span class="profile-sessions" aria-hidden="true"><i></i></span>Saturdays</dd></div>
+          <div><dt>Dumbbell training</dt><dd>12-week plan · started 23 Nov</dd></div>
+        </dl>
+        <p>Next goal: a first masters BJJ tournament.</p>
+      </article>
+    </div>
+
+    <dl class="profile-context">
+      <div><dt>Daily life</dt><dd>Male · engineering manager · mostly seated work · never smoked or drank alcohol.</dd></div>
+      <div><dt>How he eats</dt><dd>Plant-forward slow carb, with soy, legumes, eggs, chicken and fish. Little dairy, no red meat or pork.</dd></div>
+      <div><dt>Clinical background</dt><dd>Supplements only and no known medication or food allergies. The health note reports no known family history of early heart, metabolic, kidney or bowel disease.</dd></div>
+      <div><dt>What he notices</dt><dd>Occasional calf cramps, low energy in some BJJ sessions, and lower-back discomfort after sitting for a long time.</dd></div>
+    </dl>
+  </div>
+</section>
+
 <section id="model" class="sec" aria-label="Explore the twin">
   <div class="wrap">
     <div class="model-track">
@@ -741,20 +820,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 
     <div class="clinical-intro">
       <article class="card clinical-brief">
-        <h3>Patient profile</h3>
-        <dl class="clinical-profile">
-          <div><dt>Age, sex and height</dt><dd>39 · male · 190 cm</dd></div>
-          <div><dt>Work</dt><dd>Engineering manager · largely seated</dd></div>
-          <div><dt>Alcohol and tobacco</dt><dd>Never</dd></div>
-          <div><dt>Medication and allergies</dt><dd>Supplements only · no known medication or food allergies</dd></div>
-          <div><dt>Family history</dt><dd>No known early heart, metabolic, kidney or bowel disease in the health note</dd></div>
-          <div><dt>Diet</dt><dd>Plant-forward slow carb · soy, legumes, eggs, chicken and fish · little dairy · no red meat or pork</dd></div>
-          <div><dt>Training</dt><dd>BJJ three evenings a week, Saturday Pilates and a 12-week dumbbell plan started 23 November</dd></div>
-          <div><dt>Symptoms noted</dt><dd>Occasional calf cramps, low energy during some BJJ sessions and lower-back discomfort after prolonged sitting</dd></div>
-        </dl>
-      </article>
-      <div class="clinical-story">
-      <article class="card clinical-brief">
         <h3>Reason for assessment</h3>
         <p>Jasper asked for a complete review of his health record: three blood panels over 18 months, home measurements since late August, his health note, and the available device, glucose, training and genetic data. His goals are long-term health, mobility, strength and healthy ageing, with weight and body fat as measures along the way.</p>
         <p>The full report goes system by system through the findings, explains the strength of the evidence and closes with a ranked plan. Device and glucose previews on this site are labeled where simulated.</p>
@@ -768,7 +833,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
           <li><time datetime="2026-11">November 2026</time><p>Started body-fat and home blood-pressure readings and a dumbbell plan. The third blood draw followed fasting and training. LDL fell, while creatinine and uric acid rose again.</p></li>
         </ol>
       </article>
-      </div>
     </div>
 
     <h3 class="clinical-heading">What changed</h3>
