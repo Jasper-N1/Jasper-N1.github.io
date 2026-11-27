@@ -2476,15 +2476,16 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const trail = (g, yAt, x, xmin, len, col) => window.__trail && window.__trail(g, yAt, x, xmin, len, col, 1);
   // field line shared by the panels: the same wave family as the page background
   const wave = (x, y0, t, W, H) => y0 + Math.sin(x / W * 7 + y0 * .05 + t * .5) * H * .025 + Math.sin(x / W * 15 - t * .7 + y0 * .03) * H * .01;
-  // 1. sources on the left; their readings ride the field lines and merge into one hatched stream
+  // 1. readings follow their source lanes and appear in the parsed list on arrival
   const PARSED = [["LAB PDF", "HBA1C", "5.4 %"], ["WATCH", "RESTING HR", "53 BPM"], ["MRI REPORT", "MENISCUS", "MILD WEAR"], ["PHARMACY", "ATORVASTATIN", "10 MG"], ["GP LETTER", "BP RECHECK", "3 MONTHS"], ["RING", "DEEP SLEEP", "1 H 12"], ["DNA KIT", "APOE", "E3 / E3"], ["LAB PDF", "LDL", "3.61 MMOL/L"], ["SCALE", "WEIGHT", "78.4 KG"], ["CGM", "GLUCOSE", "5.2 MMOL/L"]];
   const stream = (v, t, dt) => { const { g, W, H } = v, st = v.st, SRC = ["LAB REPORTS", "WEARABLES", "SCANS", "PRESCRIPTIONS", "LETTERS", "DNA"], n = SRC.length, ys = SRC.map((_, i) => H * (.14 + i * .72 / (n - 1))), px = W * .56, rows = 8, rh = (H * .8) / rows, ry = j => H * .12 + j * rh;
+    const start = W * .2, end = px - 10, lanes = ys.map(y => x => wave(x, y, t, W, H));
     st.rows = st.rows || []; st.p = st.p || []; st.nt = (st.nt || 0) - dt;
-    for (let i = 0; i < n; i++) { label(g, SRC[i], 14, ys[i] + 3.5, `rgba(${INK},.7)`); g.strokeStyle = "rgba(0,150,214,.22)"; g.lineWidth = .8; g.beginPath(); for (let x = W * .2; x <= px - 10; x += 4) { const y = wave(x, ys[i], t, W, H); x === W * .2 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke(); }
+    for (let i = 0; i < n; i++) { label(g, SRC[i], 14, ys[i] + 3.5, `rgba(${INK},.7)`); g.strokeStyle = "rgba(0,150,214,.22)"; g.lineWidth = .8; g.beginPath(); g.moveTo(start, lanes[i](start)); for (let x = start + 4; x < end; x += 4) g.lineTo(x, lanes[i](x)); g.lineTo(end, lanes[i](end)); g.stroke(); }
     g.strokeStyle = `rgba(${INK},.12)`; g.beginPath(); g.moveTo(px - 4, H * .08); g.lineTo(px - 4, H * .94); g.stroke(); label(g, "PARSED", px + 6, H * .07, BL);
-    while (st.nt <= 0) { st.nt += .28; const i = (Math.random() * n) | 0; st.p.push({ i, x: W * .2, v: W * (.42 + Math.random() * .12), d: PARSED[(Math.random() * PARSED.length) | 0] }); }
-    st.p = st.p.filter(p => { p.x += p.v * dt; if (p.x >= px - 10) { st.rows.unshift({ d: p.d, a: 0 }); st.rows.length = Math.min(st.rows.length, rows); return false; } return true; });
-    st.p.forEach(p => { const y0 = ys[p.i], yt = ry(0) + 3, yAt = x => { const u = Math.max(0, Math.min(1, (x - W * .38) / (px - 10 - W * .38))), k = u * u * (3 - 2 * u); return wave(x, y0, t, W, H) * (1 - k) + yt * k; }; trail(g, yAt, p.x, W * .2, 80, BL); });
+    while (st.nt <= 0) { st.nt += .28; const i = (Math.random() * n) | 0; st.p.push({ i, x: start, v: W * (.42 + Math.random() * .12), d: PARSED[(Math.random() * PARSED.length) | 0] }); }
+    st.p = st.p.filter(p => { p.x += p.v * dt; if (p.x >= end) { st.rows.unshift({ d: p.d, a: 0 }); st.rows.length = Math.min(st.rows.length, rows); return false; } return true; });
+    st.p.forEach(p => trail(g, lanes[p.i], p.x, start, 80, BL));
     st.rows.forEach((r, j) => { r.a = Math.min(1, r.a + dt * 3); const y = ry(j) + 6 - (1 - r.a) * 8; g.globalAlpha = r.a * (1 - j / (rows + 1));
       label(g, r.d[0], px + 6, y, `rgba(${INK},.5)`); label(g, r.d[1], px + 6 + W * .13, y, j ? `rgb(${INK})` : BL); label(g, r.d[2], W - 14, y, j ? `rgb(${INK})` : BL, "right"); g.globalAlpha = 1;
       g.strokeStyle = `rgba(${INK},.08)`; g.beginPath(); g.moveTo(px + 6, y + 10); g.lineTo(W - 14, y + 10); g.stroke(); }); };
