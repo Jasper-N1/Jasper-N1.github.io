@@ -2623,15 +2623,23 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     g.clearRect(0,0,w,h);
     const selected = buttons.findIndex(button=>button.getAttribute("aria-pressed")==="true");
     const intensity = reducedMotion.matches ? .87 : .83 + Math.sin(t*2.2)*.12;
-    // Cool coverage on the head and neck stays visible beneath the selected focus.
-    for (const [u,z,spread] of [[.50,.105,.25],[.50,.19,.20]]) {
-      const cx=u*w, cy=z*h, radius=w*spread;
-      const cool=g.createRadialGradient(cx,cy,0,cx,cy,radius);
-      cool.addColorStop(0,"rgba(37,157,199,.81)");
-      cool.addColorStop(.58,"rgba(39,181,186,.57)");
+    // Two soft lobes and a cooler neck keep the brain outline distinct.
+    const brainHeat = [
+      [.456,.082,.048,.036,.92], [.544,.082,.048,.036,.92],
+      [.474,.107,.042,.025,.74], [.526,.107,.042,.025,.74],
+      [.50,.171,.09,.057,.49]
+    ];
+    for (const [x,y,rx,ry,strength] of brainHeat) {
+      g.save();
+      g.translate(x*w,y*h);
+      g.scale(rx*w,ry*h);
+      const cool=g.createRadialGradient(0,0,.15,0,0,1);
+      cool.addColorStop(0,`rgba(31,154,199,${strength})`);
+      cool.addColorStop(.55,`rgba(38,180,184,${strength*.78})`);
       cool.addColorStop(1,"rgba(39,181,186,0)");
       g.fillStyle=cool;
-      g.fillRect(cx-radius,cy-radius,2*radius,2*radius);
+      g.fillRect(-1,-1,2,2);
+      g.restore();
     }
     const radius=w*.36;
     thermalRegions[Math.max(0,selected)].forEach(([u,z])=>{
