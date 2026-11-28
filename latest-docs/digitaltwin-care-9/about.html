@@ -85,13 +85,13 @@
   .people { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(10px, 1.45vw, 24px); margin: 0; padding: 0; list-style: none; }
   .person { display: block; text-decoration: none; }
   .person .ph { position: relative; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--card); }
-  .person .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .2s ease; }
-  .person .twin { opacity: 0; }
+  .person .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
   .person b { display: block; margin-top: 12px; font: 500 clamp(15px, 1.1vw, 17px) var(--sans); }
   .person span { display: block; margin-top: 3px; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--blue-text); }
   a.person:hover b { text-decoration: underline; text-underline-offset: 4px; }
-  .person:hover .twin, .person:focus-visible .twin, .person.on .twin { opacity: 1; }
-  .team .note { margin: 18px 0 0; font: 400 13px/1.5 var(--sans); color: var(--muted); }
+
+
 
   /* explore cards */
   .explore h2 { margin-bottom: clamp(24px, 3vw, 48px); }
@@ -152,7 +152,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .person .ph img { transition: none; }
+
   }
 </style>
 </head>
@@ -231,18 +231,17 @@
         <p>Our team works to turn fragmented health information into a record you can understand and use.</p>
       </header>
       <ul class="people">
-        <li><a class="person" href="https://hk.linkedin.com/in/jeanyvessireau" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/jean-yves-sireau.webp" width="500" height="500" alt="Jean-Yves Sireau" loading="lazy"><img class="twin" src="about/team/jean-yves-sireau-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Jean-Yves Sireau</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://www.linkedin.com/in/leah770979256/" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/leah-elise.webp" width="500" height="500" alt="Leah Elise" loading="lazy"><img class="twin" src="about/team/leah-elise-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Leah Elise</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://nl.linkedin.com/in/jaspermiddendorp" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/jasper-middendorp.webp" width="500" height="500" alt="Jasper Middendorp" loading="lazy"><img class="twin" src="about/team/jasper-middendorp-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Jasper Middendorp</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://my.linkedin.com/in/arvktr" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/arun-venkataraman.webp" width="500" height="500" alt="Arun Venkataraman" loading="lazy"><img class="twin" src="about/team/arun-venkataraman-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Arun Venkataraman</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://www.linkedin.com/in/dannette-kallay-0b180b204" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/dannette-kallay.webp" width="500" height="500" alt="Dr Dannette Kallay" loading="lazy"><img class="twin" src="about/team/dannette-kallay-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Dr Dannette Kallay</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://in.linkedin.com/in/darpanbafana" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/darpan-bafana.webp" width="500" height="500" alt="Darpan Bafana" loading="lazy"><img class="twin" src="about/team/darpan-bafana-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Darpan Bafana</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://my.linkedin.com/in/neshalinisathiabalan" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/neshalini-sathiabalan.webp" width="500" height="500" alt="Neshalini Sathiabalan" loading="lazy"><img class="twin" src="about/team/neshalini-sathiabalan-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Neshalini Sathiabalan</b><span>LinkedIn ↗</span></a></li>
-        <li><a class="person" href="https://my.linkedin.com/in/lau-siew-mei" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/siew-mei-lau.webp" width="500" height="500" alt="Lau Siew Mei" loading="lazy"><img class="twin" src="about/team/siew-mei-lau-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Lau Siew Mei</b><span>LinkedIn ↗</span></a></li>
-        <li><div class="person" tabindex="0"><div class="ph"><img src="about/team/shuang-yin.webp" width="500" height="500" alt="Shuang Yin" loading="lazy"><img class="twin" src="about/team/shuang-yin-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Shuang Yin</b><span>Team</span></div></li>
-        <li><div class="person" tabindex="0"><div class="ph"><img src="about/team/zabir.webp" width="500" height="500" alt="Zabir" loading="lazy"><img class="twin" src="about/team/zabir-twin.webp" width="500" height="500" alt="" loading="lazy"></div><b>Zabir</b><span>Team</span></div></li>
+        <li><a class="person" href="https://hk.linkedin.com/in/jeanyvessireau" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/jean-yves-sireau.webp" width="500" height="500" alt="Jean-Yves Sireau" loading="lazy"></div><b>Jean-Yves Sireau</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://www.linkedin.com/in/leah770979256/" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/leah-elise.webp" width="500" height="500" alt="Leah Elise" loading="lazy"></div><b>Leah Elise</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://nl.linkedin.com/in/jaspermiddendorp" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/jasper-middendorp.webp" width="500" height="500" alt="Jasper Middendorp" loading="lazy"></div><b>Jasper Middendorp</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://my.linkedin.com/in/arvktr" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/arun-venkataraman.webp" width="500" height="500" alt="Arun Venkataraman" loading="lazy"></div><b>Arun Venkataraman</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://www.linkedin.com/in/dannette-kallay-0b180b204" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/dannette-kallay.webp" width="500" height="500" alt="Dr Dannette Kallay" loading="lazy"></div><b>Dr Dannette Kallay</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://in.linkedin.com/in/darpanbafana" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/darpan-bafana.webp" width="500" height="500" alt="Darpan Bafana" loading="lazy"></div><b>Darpan Bafana</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://my.linkedin.com/in/neshalinisathiabalan" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/neshalini-sathiabalan.webp" width="500" height="500" alt="Neshalini Sathiabalan" loading="lazy"></div><b>Neshalini Sathiabalan</b><span>LinkedIn ↗</span></a></li>
+        <li><a class="person" href="https://my.linkedin.com/in/lau-siew-mei" target="_blank" rel="noopener noreferrer"><div class="ph"><img src="about/team/siew-mei-lau.webp" width="500" height="500" alt="Lau Siew Mei" loading="lazy"></div><b>Lau Siew Mei</b><span>LinkedIn ↗</span></a></li>
+        <li><div class="person"><div class="ph"><img src="about/team/shuang-yin.webp" width="500" height="500" alt="Shuang Yin" loading="lazy"></div><b>Shuang Yin</b><span>Team</span></div></li>
+        <li><div class="person"><div class="ph"><img src="about/team/zabir.webp" width="500" height="500" alt="Zabir" loading="lazy"></div><b>Zabir</b><span>Team</span></div></li>
       </ul>
-      <p class="note">Hover over or tap a portrait to reveal a digital twin where available.</p>
     </div>
   </section>
 
@@ -292,20 +291,6 @@
     <div class="legal"><p>Your twin helps you understand your health. It is not a medical device and does not diagnose or treat any condition. Always talk to a qualified healthcare professional about medical decisions.</p><span>© 2026 digitaltwin.care</span></div>
   </div>
 </footer>
-<script>
-  // Touch screens have no hover: a first tap shows the twin, a second tap follows the link.
-  document.querySelectorAll('.person:has(.twin)').forEach(function (p) {
-    p.addEventListener('touchstart', function () {}, { passive: true });
-    p.addEventListener('click', function (e) {
-      if (!window.matchMedia('(hover: none)').matches) return;
-      if (!p.classList.contains('on')) {
-        e.preventDefault();
-        document.querySelectorAll('.person.on').forEach(function (o) { o.classList.remove('on'); });
-        p.classList.add('on');
-      }
-    });
-  });
-</script>
 <script>
   const aboutVideo = document.getElementById("aboutVideo");
   const aboutPlayback = document.getElementById("aboutPlayback");
