@@ -605,62 +605,9 @@
   }
   .capture-scene { display: none; }
   .s3[data-i="0"] .capture-scene { position: absolute; inset: 0; display: block; }
-  .capture-person { position: absolute; left: 18%; top: 57%; width: 25%; height: 64%; transform: translate(-50%, -50%); object-fit: contain; }
-  .capture-readings {
-    position: absolute; z-index: 1; left: 50%; top: 55%; width: min(27%, 410px); max-height: 56%;
-    transform: translate(-50%, -50%); overflow: auto; background: #f3f2e9eb;
-  }
-  .capture-data { width: 100%; border-collapse: collapse; text-align: left; font: 400 clamp(9.5px, .74vw, 11.5px)/1.35 var(--mono); }
-  .capture-data caption { text-align: left; padding: 6px 8px; text-transform: uppercase; color: #006e9c; }
-  .capture-data th, .capture-data td { padding: clamp(3px, .72vh, 8px) 8px; border-bottom: 1px solid #0096d638; }
-  .capture-data th { font-weight: 500; color: #5b5850; text-transform: uppercase; }
-  .capture-data td:first-child { color: #5b5850; white-space: nowrap; }
-  .capture-data td:last-child { overflow-wrap: anywhere; }
-  .capture-flow {
-    position: absolute; top: 47%; height: 5px; overflow: hidden;
-    background: linear-gradient(90deg, transparent, #0096d669 12%, #0096d669 88%, transparent) center / 100% 1px no-repeat;
-    pointer-events: none;
-  }
-  .capture-flow-in { left: 22%; right: calc(50% + min(13.5%, 205px)); }
-  .capture-flow-out { left: calc(50% + min(13.5%, 205px)); right: 19%; }
-  .capture-flow::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent 55%, #73d8fa 80%, #0096d6 100%);
-    transform: translateX(-100%); animation: capture-packet 1.8s linear infinite;
-    animation-play-state: paused;
-  }
-  .capture-flow-out::after { animation-delay: .6s; }
-  .capture-data tbody tr {
-    animation: capture-reading 18s linear infinite;
-    animation-delay: calc(var(--reading) * 1.8s);
-    animation-play-state: paused;
-  }
-  .capture-in-view .capture-flow::after, .capture-in-view .capture-data tbody tr { animation-play-state: running; }
-  @keyframes capture-packet {
-    0% { transform: translateX(-100%); }
-    42%, 100% { transform: translateX(100%); }
-  }
-  @keyframes capture-reading {
-    0%, 9%, 100% { background-color: transparent; }
-    3%, 5% { background-color: #0096d62e; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .capture-flow::after, .capture-data tbody tr { animation: none; }
-  }
-  @media (max-width: 800px) {
-    .capture-person { left: 28%; top: 46%; width: 35%; height: 38%; }
-    .capture-readings { inset: auto var(--g) 4%; width: auto; max-height: 29%; transform: none; }
-    .capture-data { font-size: clamp(10px, 2.6vw, 13px); }
-    .capture-data th, .capture-data td { padding: 5px 7px; }
-    .capture-data caption { padding: 4px 7px 6px; }
-    .capture-flow { top: 47%; }
-    .capture-flow-in { left: 38%; right: 50%; }
-    .capture-flow-out { left: 50%; right: 38%; }
-  }
   @media (max-width: 800px) and (max-height: 660px) {
-    .capture-person { height: 28%; top: 43%; }
-    .capture-flow { top: 44%; }
-    .capture-readings { max-height: 37%; }
+
+
   }
   .analyse-scene { display: none; }
   .s3[data-i="2"] .analyse-scene {
@@ -828,39 +775,18 @@
 
   /* ---- Capture: data points streaming along the field lines ---- */
   .capture-streams { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-  .capture-person, .capture-readings { z-index: 1; }
-  .capture-flow { display: none !important; }
-  .capture-data tbody tr.ping { animation: none !important; background-color: #0096d633 !important; transition: background-color .2s; }
-
-  /* ---- Capture log, as before: plain live rows, no box ---- */
-  .capture-readings { background: none !important; overflow: visible !important; width: min(36%, 540px) !important; max-height: none !important; }
-  .capture-data { font: 500 clamp(11.5px, .92vw, 14px)/1.3 var(--mono) !important; }
-  .capture-data caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .capture-data th, .capture-data td { border: 0 !important; padding: 0 18px clamp(14px, 2.6vh, 24px) 0 !important; background: none !important; animation: none !important; }
-  .capture-data thead th { padding-bottom: clamp(18px, 3.2vh, 30px) !important; color: rgba(28,27,23,.45) !important; font-weight: 500; }
-  .capture-data tbody tr { animation: none !important; background: none !important; }
-  .capture-data td:nth-child(1) { color: rgba(28,27,23,.45) !important; }
-  .capture-data td:nth-child(2) { color: rgba(28,27,23,.62); transition: color 1.2s; }
-  .capture-data td:nth-child(3) { color: var(--ink); transition: color 1.2s; white-space: nowrap; }
-  .capture-data tr.hot td:nth-child(2) { color: var(--ink); transition: none; }
-  .capture-data tr.hot td:nth-child(3) { color: var(--blue); transition: none; }
   .prog { display: none !important; }
 
   /* steps stage: the Improve canvas only on Improve (beats the generic ".s3 .stage canvas" rule) */
   .s3 .stage .improve-viz { display: none; }
   .s3[data-i="3"] .stage .improve-viz { display: block; }
-  /* Capture as before: no person, the live log on the left, the twin large on the right */
-  .s3 .capture-person { display: none !important; }
-  .capture-readings { left: var(--edge) !important; top: 31% !important; transform: none !important; width: min(46%, 640px) !important; }
-  @media (max-width: 800px) { .capture-readings { left: var(--g) !important; right: var(--g); top: auto !important; bottom: 4% !important; width: auto !important; } }
-
   /* ---- How it works, five steps in one pinned section: content left, the twin right ---- */
   .s3 { height: 370vh !important; height: 370svh !important; }
   @media (max-width: 800px) { .s3 { height: 400vh !important; height: 400svh !important; } }
   .s3 .stepnav, .s3 .steps::after { display: none !important; }
   .s3 .st-kick { order: -1; margin: 0 0 12px; font: 500 var(--fs-label)/1.3 var(--mono); letter-spacing: var(--ls-l); text-transform: uppercase; color: var(--blue-text); }
   .s3 .st h3 { max-width: 13em; font: 400 var(--fs-h2)/1.08 var(--serif) !important; letter-spacing: var(--ls-h); text-wrap: balance; }
-  .capture-readings { top: 34% !important; }
+
   .s3[data-i="2"] .analyse-scene { inset: 37% 52% 8% var(--edge) !important; align-content: start !important; }
   /* build */
   .build-scene, .share-scene { display: none; }
@@ -890,24 +816,48 @@
   #twinHero { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: none; }
   #heroStream { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; display: none; }
 
-  /* Capture log: source icons and a single active reading. */
-  .capture-data { table-layout: fixed; width: 100% !important; }
-  .capture-data th:nth-child(1) { width: 10.5ch; }
-  .capture-data th:nth-child(2) { width: 18ch; }
-  .capture-data td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .capture-data .source-icon { width: 15px; height: 15px; vertical-align: -.21em; margin-right: 7px; color: #537786; }
-  .capture-data tr.hot .source-icon { color: var(--blue); }
-  .capture-data [data-feed-icon="ecg"] .source-icon,.capture-data [data-feed-icon="cuff"] .source-icon { color:#a95250; }
-  .capture-data [data-feed-icon="scan"] .source-icon,.capture-data [data-feed-icon="bone"] .source-icon { color:#77618b; }
-  .capture-data [data-feed-icon="lab"] .source-icon,.capture-data [data-feed-icon="drop"] .source-icon { color:#057391; }
-  .capture-data [data-feed-icon="food"] .source-icon,.capture-data [data-feed-icon="activity"] .source-icon { color:#42816e; }
-  .capture-data .capture-region { color: #006e9c; text-align: left; }
-  @media(max-width: 560px) {
-    .capture-data th:nth-child(1) { width: 9ch; }
-    .capture-data th, .capture-data td { padding-right: 5px !important; }
-    .capture-data th:nth-child(2) { width: 13ch; }
-    .capture-data .source-icon { width: 12px; height: 12px; margin-right: 4px; }
+  .capture-readings.capture-intake { position:absolute; z-index:1; left:var(--edge); top:28%; width:min(46%,570px); }
+  .intake-caption { margin:0 0 8px; font:500 10px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:#575c57; }
+  .intake-cards { display:grid; gap:8px; }
+  .intake-card { --intake-accent:#3c7872; display:grid; grid-template-columns:50px minmax(0,1fr);
+    gap:12px; align-items:center; min-width:0; padding:10px 12px; border:1px solid #d4dbd1;
+    border-radius:8px; background:#f8f8f0f2; }
+  .intake-card[data-kind="record"] { --intake-accent:#006b92; background:#eef5f4fa; border-color:#aac7c9; }
+  .intake-card[data-kind="workout"] { --intake-accent:#82653e; }
+  .intake-card[data-kind="photo"] { --intake-accent:#70618d; }
+  .intake-art { width:44px; height:44px; position:relative; display:grid; place-items:center; overflow:hidden;
+    border-radius:6px; border:1px solid currentColor; color:var(--intake-accent); }
+  .intake-art svg { width:27px; height:27px; display:block; }
+  .intake-title { margin:0; color:var(--ink); font:600 clamp(13px,1.15vw,16px)/1.2 var(--sans); }
+  .intake-result { margin:2px 0 0; color:#414b45; font:500 clamp(11px,.9vw,13px)/1.25 var(--sans); }
+  .intake-stages { display:flex; gap:4px 8px; flex-wrap:wrap; margin:5px 0 0; padding:0; list-style:none;
+    font:500 9px/1.2 var(--mono); text-transform:uppercase; color:#59615a; }
+  .intake-stages li+li::before { content:"→"; margin-right:8px; color:#69766e; }
+  .intake-stages [aria-current="step"] { color:var(--intake-accent); font-weight:700; }
+  .intake-card[data-phase="0"] .intake-result { opacity:.7; }
+  .intake-card[data-phase="2"] .intake-art { background:#e0eeea; }
+  .intake-card[data-kind="record"][data-phase="0"] .intake-art::after {
+    content:""; position:absolute; inset:5px 5px auto; height:1px; background:currentColor;
+    animation:intake-scan .9s ease-in-out infinite alternate;
   }
+  .intake-card[data-kind="record"][data-phase="1"] .intake-art svg { animation:intake-extract .55s ease-out; }
+  .intake-card[data-kind="sync"][data-phase="0"] .intake-art svg { animation:intake-sync .8s ease-in-out infinite alternate; }
+  .intake-card[data-kind="photo"][data-phase="1"] .intake-art svg { animation:intake-frame .6s ease-out; }
+  .intake-card[data-kind="workout"][data-phase="1"] .intake-art svg { animation:intake-workout .6s ease-out; transform-origin:50% 85%; }
+  @keyframes intake-scan { to { transform:translateY(31px); } }
+  @keyframes intake-extract { from { transform:translateX(-5px); opacity:.45; } }
+  @keyframes intake-sync { from { opacity:.4; transform:scale(.86); } }
+  @keyframes intake-frame { from { transform:scale(1.16); opacity:.4; } }
+  @keyframes intake-workout { from { transform:scaleY(.45); } }
+  @media(max-width:800px){
+    .capture-readings.capture-intake { left:var(--g); right:var(--g); top:auto; bottom:4%; width:auto; }
+    .intake-cards { gap:5px; }
+    .intake-card { grid-template-columns:38px minmax(0,1fr); gap:8px; padding:6px 8px; }
+    .intake-art { width:33px; height:33px; }
+    .intake-art svg { width:22px; height:22px; }
+    @keyframes intake-scan { to { transform:translateY(21px); } }
+  }
+  @media(prefers-reduced-motion:reduce){ .intake-card .intake-art::after,.intake-card .intake-art svg { animation:none !important; } }
 
   /* ---- full-screen scene: you, and your twin beside you ---- */
   .fs { position: relative; z-index: 1; height: 160vh !important; min-height: 0 !important; overflow: visible !important; background: var(--bg); cursor: auto; }
@@ -1012,7 +962,7 @@
   /* on the cream the line twin sits at a lighter ink, the same as in Connect */
   #body-video:not(.ghost):not(.is-swapped) { opacity: .5; transition: opacity .6s; }
   .s2-line .yh-t, .s2-line .ab { opacity: 1 !important; transform: none !important; }
-  .capture-readings { width: min(40%, 560px) !important; }
+
   /* steps content always ends a clear gap before the twin */
   @media (min-width: 901px) { .s3 .steps { max-width: calc(var(--twin-l, 60vw) - var(--edge, 60px) - 56px) !important; } .s3 .steps .st > * { max-width: 100%; } .s3 .steps svg, .s3 .steps canvas { max-width: 100%; } }
   /* no eyebrows: headings only */
@@ -1283,26 +1233,9 @@
     <div class="stage" id="s3stage">
       <div class="capture-scene">
         <canvas class="capture-streams" aria-hidden="true"></canvas>
-        <img class="capture-person" src="capture-person.webp" width="534" height="800" alt="A man in a green sweater standing beside the data that makes up his digital twin." loading="lazy" decoding="async">
-        <div class="capture-flow capture-flow-in" aria-hidden="true"></div>
-        <div class="capture-flow capture-flow-out" aria-hidden="true"></div>
-        <div class="capture-readings" role="region" aria-label="Sample health data" tabindex="0">
-          <table class="capture-data">
-            <caption>Sample health records and the body systems they inform</caption>
-            <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col">Reading</th></tr></thead>
-            <tbody>
-              <tr style="--reading: 0"><td>09:48:32</td><td>FAMILY HISTORY</td><td>FATHER · HEART ATTACK AT 58</td></tr>
-              <tr style="--reading: 1"><td>09:48:28</td><td>CYCLE APP</td><td>CYCLE DAY 14</td></tr>
-              <tr style="--reading: 2"><td>09:48:28</td><td>MRI · KNEE</td><td>MENISCUS · MILD WEAR</td></tr>
-              <tr style="--reading: 3"><td>09:48:28</td><td>AIR QUALITY</td><td>PM2.5 · 31 µG/M³</td></tr>
-              <tr style="--reading: 4"><td>09:48:28</td><td>FOOD LOG</td><td>ALCOHOL · 2 UNITS</td></tr>
-              <tr style="--reading: 5"><td>09:48:31</td><td>MOOD JOURNAL</td><td>MOOD · GOOD</td></tr>
-              <tr style="--reading: 6"><td>09:48:28</td><td>GP LETTER</td><td>BP RECHECK IN 3 MONTHS</td></tr>
-              <tr style="--reading: 7"><td>09:48:28</td><td>DEXA SCAN</td><td>T-SCORE −2.1</td></tr>
-              <tr style="--reading: 8"><td>09:48:28</td><td>SYMPTOM DIARY</td><td>HEADACHE · MILD</td></tr>
-              <tr style="--reading: 9"><td>09:48:30</td><td>APPLE WATCH</td><td>HRV 68 MS</td></tr>
-            </tbody>
-          </table>
+        <div class="capture-readings capture-intake" role="region" aria-label="Sample health data intake">
+          <p class="intake-caption">Sample data intake</p>
+          <div class="intake-cards"></div>
         </div>
       </div>
       <div class="build-scene">
@@ -2165,58 +2098,20 @@ if (LITE) document.documentElement.classList.add("lite");
 
   // ---- Capture: each sample record sends one signal to a matching area of the model ----
   const capCv = steps.querySelector(".capture-streams"), cg = capCv.getContext("2d");
-  const capRows = [...steps.querySelectorAll(".capture-data tbody tr")];
-  let capOn = false, capRaf = 0, capLast = 0, capNext = 0, capIndex = 0, capRowIndex = 0;
+  const intakeCards = steps.querySelector(".intake-cards");
+  let capOn = false, capRaf = 0, capLast = 0, intakeTime = 0, intakeBatch = 0;
   const captureFlights = [], captureFocus = new Map();
-  const captureRecords = [
-    ["ECG", "SINUS RHYTHM", "heart", "ecg"],
-    ["SYMPTOM LOG", "HEADACHE · MILD", "nerves", "symptom"],
-    ["SPIROMETRY", "FEV1 · 3.9 L", "lungs", "lungs"],
-    ["LAB REPORT", "CREATININE · 119.4 µMOL/L", "kidneys", "lab"],
-    ["CGM", "GLUCOSE · 5.2 MMOL/L", "metabolic", "drop"],
-    ["MRI", "KNEE · MENISCUS", "knee", "scan"],
-    ["LIPID PANEL", "LDL · 2.98 MMOL/L", "heart", "lab"],
-    ["SLEEP TRACKER", "SLEEP · 6 H 40", "nerves", "moon"],
-    ["HOME CUFF", "BP · 132 / 62", "arm", "cuff"],
-    ["FOOD LOG", "FIBRE · 18 G", "gut", "food"],
-    ["LIVER PANEL", "ALT · 22 U/L", "liver", "lab"],
-    ["DXA SCAN", "BODY COMPOSITION", "bones", "bone"],
-    ["FAMILY HISTORY", "CARDIAC HISTORY", "heart", "family"],
-    ["ACTIVITY LOG", "WALK · 42 MIN", "legs", "activity"],
-    ["GENETIC REPORT", "APOE · E3 / E3", "nerves", "dna"],
-    ["PHARMACY", "MEDICATION RECORD", "liver", "pill"],
-    ["AIR QUALITY", "PM2.5 · 31 µG/M³", "lungs", "air"],
-    ["GP LETTER", "FOLLOW-UP · BP", "heart", "note"],
-    ["WEARABLE", "RESTING HR · 53 BPM", "heart", "watch"],
-    ["HYDRATION LOG", "FLUID · 1.8 L", "kidneys", "drop"],
-    ["THYROID PANEL", "TSH · LAB RESULT", "neck", "lab"],
-    ["PHYSIO NOTE", "SHOULDER MOBILITY", "shoulder", "activity"],
-    ["VISION EXAM", "VISUAL ACUITY", "eyes", "eye"],
-    ["GAIT ANALYSIS", "STEP SYMMETRY", "foot", "foot"],
-    ["GRIP TEST", "HAND STRENGTH", "hand", "activity"],
-    ["SMART SCALE", "WEIGHT · 81.9 KG", "torso", "scale"]
+  const captureBatches = [
+    [["record","Lab report · PDF","Lipid panel · LDL 2.98 mmol/L","heart"],["sync","Wearable","Resting heart rate · 53 bpm","heart"],["photo","Meal photo","Lunch photo · stored with meal log","gut"]],
+    [["record","Clinic letter · PDF","Follow-up · blood pressure review","arm"],["record","Imaging report · PDF","MRI · knee meniscus finding","knee"],["workout","Exercise log","Walk · 42 minutes","legs"]],
+    [["record","Lab report · scanned page","Kidney panel · creatinine 119.4 µmol/L","kidneys"],["record","Prescription · PDF","Medication and dose recorded","liver"],["sync","Sleep tracker","Sleep duration · 6 h 40 min","nerves"]],
+    [["record","Spirometry report · PDF","Lung function · FEV1 3.9 L","lungs"],["photo","Meal photo","Breakfast photo · stored with meal log","gut"],["workout","Strength training","Dumbbell session · logged","shoulder"]]
   ];
-  const captureIcons = {
-    ecg:"M2 12h5l3-7 4 14 3-7h5",
-    symptom:"M9 4h6v3h4v13H5V7h4z M12 10v6m-3-3h6",
-    drop:"M12 3c-2 4-6 7-6 11a6 6 0 0 0 12 0c0-4-4-7-6-11Z",
-    cuff:"M6 7h11v10H6z M9 7v10m8-7h3v5h-3",
-    bone:"M7 7a2 2 0 1 0-3-3 2 2 0 0 0 1 4l11 11a2 2 0 1 0 3 1 2 2 0 0 0-1-4L7 7Z",
-    family:"M12 8v5m-7 2v-2h14v2 M9 3h6v5H9z M2 15h6v6H2z M16 15h6v6h-6z",
-    air:"M3 8h13a2 2 0 1 0-2-2M3 12h17M3 16h11a2 2 0 1 1-2 2",
-    watch:"M9 2h6l1 5v10l-1 5H9l-1-5V7z M8 7h8m-8 10h8m-6-5h4",
-    eye:"M2 12c3-5 7-7 10-7s7 2 10 7c-3 5-7 7-10 7s-7-2-10-7Z M15 12a3 3 0 1 0-6 0 3 3 0 0 0 6 0Z",
-    foot:"M9 15c-2 3-1 6 2 6 4 0 6-4 5-7-1-3-4-2-7 1Z M7 11h0m2-4h0m4-2h0m4 1h0m3 3h0",
-    scale:"M4 4h16v16H4z M8 11a4 4 0 0 1 8 0m-4 0 2-2",
-    note:"M6 3h8l4 4v14H6z M9 11h6m-6 4h6",
-    lungs:"M12 3v7m-2-2C6 5 3 11 3 17c0 3 7 3 7 0V8Zm4 0c4-3 7 3 7 9 0 3-7 3-7 0V8Z",
-    lab:"M9 3h6m-5 0v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 15h8",
-    scan:"M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 12h10",
-    moon:"M19 15A8 8 0 0 1 9 5a8 8 0 1 0 10 10Z",
-    food:"M6 3v7m-3-7v4a3 3 0 0 0 6 0V3m-3 7v11M18 3c-3 2-4 6-4 10h4m0-10v18",
-    activity:"M2 13h5l3-7 4 13 3-6h5",
-    dna:"M6 3c0 8 12 10 12 18M18 3c0 8-12 10-12 18M7 5h10M8 19h8M9 9h6m-6 6h6",
-    pill:"M5 19a5 5 0 0 1 0-7l7-7a5 5 0 0 1 7 7l-7 7a5 5 0 0 1-7 0Zm4-10 6 6"
+  const intakeTypes = {
+    record:{input:"Reading the document…",steps:["Parse","Extract","Add"],path:"M6 3h8l4 4v14H6z M14 3v5h4 M9 11h6m-6 4h6m-6 3h4"},
+    sync:{input:"Connecting to the device…",steps:["Connect","Sync","Updated"],path:"M4 9a8 8 0 0 1 14-3l2 3m0-5v5h-5 M20 15a8 8 0 0 1-14 3l-2-3m0 5v-5h5"},
+    photo:{input:"Uploading the image…",steps:["Upload","Store","Saved"],path:"M3 5h18v14H3z M7 15l3-3 3 3 3-5 4 6 M9 9h.01"},
+    workout:{input:"Recording the session…",steps:["Log","Summarise","Added"],path:"M4 19V14h4v5m2 0V10h4v9m2 0V5h4v14M2 21h20"}
   };
   const captureRegions = {
     heart:[[.60,.285,.15,.075]],
@@ -2246,43 +2141,54 @@ if (LITE) document.documentElement.classList.add("lite");
     return {height, width, left: cur.px / 100 * innerWidth - width / 2,
       top: cur.top - .47 * cur.size - .019 * height};
   }
-  function fillCaptureRow(row, record, time) {
-    const [name, value,, icon] = record, [stamp, source, reading] = row.cells;
-    if (time) stamp.textContent = time;
-    row.dataset.feedIcon = icon;
-    source.innerHTML = `<svg class="source-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${captureIcons[icon]}"/></svg>`;
-    source.append(document.createTextNode(name)); reading.textContent = value;
+  function setIntakeBatch(batch, still = false) {
+    intakeCards.innerHTML = captureBatches[batch].map(([kind,title,result]) => {
+      const {steps,path,input} = intakeTypes[kind];
+      const phase = still ? 2 : 0;
+      const labels = steps.map((label,i) => `<li${i===phase?' aria-current="step"':''}>${label}</li>`).join("");
+      return `<article class="intake-card" data-kind="${kind}" data-phase="${phase}"><div class="intake-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg></div><div><h3 class="intake-title">${title}</h3><p class="intake-result">${still ? result : input}</p><ol class="intake-stages">${labels}</ol></div></article>`;
+    }).join("");
   }
-  capRows.forEach((row,i) => fillCaptureRow(row,captureRecords[i]));
-  function capReading(now) {
-    const row = capRows[capRowIndex++ % capRows.length], record = captureRecords[capIndex++ % captureRecords.length];
-    fillCaptureRow(row, record, new Date().toTimeString().slice(0,8));
-    row.classList.add("hot");
-    captureFlights.push({start:now,row,region:record[2],travel:400+(capIndex%4)*55});
+  setIntakeBatch(0,motion.matches);
+  function updateIntake(now, dt) {
+    intakeTime += dt;
+    if (intakeTime>=4.9) {
+      intakeTime=0;
+      intakeBatch=(intakeBatch+1)%captureBatches.length;
+      setIntakeBatch(intakeBatch);
+    }
+    [...intakeCards.children].forEach((row,i) => {
+      const elapsed=intakeTime-i*.48;
+      const phase=elapsed<1.05 ? 0 : elapsed<2.25 ? 1 : 2;
+      if (Number(row.dataset.phase)===phase) return;
+      row.dataset.phase=phase;
+      if (phase===(row.dataset.kind==="photo" ? 2 : 1)) row.querySelector(".intake-result").textContent=captureBatches[intakeBatch][i][2];
+      row.querySelector("[aria-current]").removeAttribute("aria-current");
+      row.querySelectorAll("li")[phase].setAttribute("aria-current","step");
+      if (phase===2) captureFlights.push({start:now,row,region:captureBatches[intakeBatch][i][3],travel:560});
+    });
   }
   function capLoop(now) {
     if (!capOn) {
       capRaf = 0; cg.clearRect(0,0,capCv.width,capCv.height); captureFlights.length = 0; captureFocus.clear();
-      capNext = 0; capRows.forEach(row => row.classList.remove("hot")); return;
+      intakeTime = 0; intakeBatch = 0; setIntakeBatch(0,motion.matches); return;
     }
     const dt = capLast ? Math.min(.05,(now-capLast)/1000) : 0; capLast = now;
     const cr = capCv.getBoundingClientRect(), dpr = Math.min(2,devicePixelRatio || 1);
     const w = Math.round(cr.width*dpr), h = Math.round(cr.height*dpr);
     if (capCv.width !== w || capCv.height !== h) { capCv.width = w; capCv.height = h; }
     cg.setTransform(dpr,0,0,dpr,0,0); cg.clearRect(0,0,cr.width,cr.height);
-    capNext -= dt;
-    if (capNext <= 0) { capNext += .34 + (capIndex % 3) * .065; capReading(now); }
+    updateIntake(now,dt);
     for(let i=captureFlights.length-1; i>=0 && cur; i--) {
       const {start,row,region,travel} = captureFlights[i], body = captureBody();
-      const [u,v] = captureRegions[region][0], reading = row.cells[2].getBoundingClientRect();
+      const [u,v] = captureRegions[region][0], reading = row.getBoundingClientRect();
       const [dx,dy] = captureOffset(region);
       const x1 = body.left + (u + dx) * body.width - cr.left, y1 = body.top + (v + dy) * body.height - cr.top;
-      const x0 = Math.min(reading.right + 4 - cr.left, x1 - 26), y0 = reading.top + reading.height * .28 - cr.top;
+      const x0 = Math.min(reading.right + 4 - cr.left, x1 - 26), y0 = reading.top + reading.height * .5 - cr.top;
       const progress = Math.min(1,(now-start)/travel);
       const position = p => [x0 + (x1-x0)*p, y0 + (y1-y0)*p*p*(3-2*p)];
       if (progress === 1) {
         captureFocus.set(region,now);
-        row.classList.remove("hot");
         captureFlights.splice(i,1);
       } else {
         for (let j = 7; j >= 0; j--) {
