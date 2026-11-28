@@ -1048,6 +1048,11 @@
   .story:not(.is-current) figcaption { opacity: .77; }
   .story figcaption { padding: 17px 0 0; }
   .story-topic { margin: 0; color: var(--blue-text); font: 500 11px/1.35 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+  .story-nameplate { display: grid; place-items: center; background: #e7e2d6; color: #6d6255; }
+  .story-nameplate-oncology { background: #dce9e8; color: #2f6673; }
+  .story-nameplate span { font: 400 clamp(52px, 8vw, 116px)/1 var(--serif); }
+  .story-source { display: inline-block; color: var(--action, #006e9c); margin-top: 8px; font-size: 13px; text-underline-offset: 3px; }
+  .story-source-context { margin: 7px 0 0; font-size: 12px; }
   .story-profile .story-photo { object-position: center 25%; }
   .story-profile h3 { margin: 0; color: var(--ink); font: 400 clamp(23px, 1.9vw, 32px)/1.2 var(--serif); }
   .story-profile .story-example { margin: 8px 0 0; max-width: 52ch; color: var(--ink); font: 400 clamp(15px, 1.15vw, 18px)/1.45 var(--sans); }
@@ -1331,96 +1336,54 @@
     <p class="kick">In practice</p>
     <h2 id="s5h">What people learn from their twin</h2>
   </header>
-  <div class="story-reel" id="story-reel" role="region" aria-label="Illustrative stories" tabindex="0">
+  <div class="story-reel" id="story-reel" role="region" aria-label="Health stories" tabindex="0">
       <figure class="story story-profile is-current">
-        <img class="story-photo" src="twin-hero-portrait-extended.webp" alt="Jasper in a burgundy sweater" loading="lazy" decoding="async">
-        <figcaption><h3>Jasper</h3><p class="story-example">After changing how he ate, Jasper could see that his weight was trending down even when individual weigh-ins bounced around. His recorded weight went from 88.1 to 81.9 kg.</p></figcaption>
+        <img class="story-photo" src="twin-hero-portrait-extended.webp" alt="Jasper Middendorp" loading="lazy" decoding="async">
+        <figcaption>
+          <p class="story-topic">Weight &amp; health optimisation</p>
+          <h3>Jasper</h3>
+          <p class="story-example">Jasper’s logged weight went from 88.1 to 81.9 kg. His twin puts the weigh-ins alongside changes in eating and training, so he can review the longer trend and what he wants to work on next.</p>
+          <a class="story-source" href="examples.html#body">Explore Jasper’s record ↗</a>
+        </figcaption>
       </figure>
       <figure class="story story-profile">
-        <img class="story-photo" src="twin-hero-imageJY-extended.webp" alt="JY in a black shirt" loading="lazy" decoding="async">
-        <figcaption><h3>JY</h3><p class="story-example">Example: Put lab results, scan reports and activity data on one timeline so you can see what changed between checkups.</p></figcaption>
-      </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-plunge.webp" alt="A man sitting in an outdoor ice bath" loading="lazy" decoding="async" style="object-position:30% 40%">
+        <img class="story-photo" src="twin-hero-imageJY-extended.webp" alt="Jean-Yves Sireau" loading="lazy" decoding="async">
         <figcaption>
-          <p class="story-topic">Cold exposure · HRV</p>
-          <blockquote>“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Lorem I., 44</strong><span>Founder · Amsterdam</span></p>
-            <p class="story-metric"><span>HRV</span><strong>+18%</strong></p>
-          </div>
+          <p class="story-topic">Longevity · Draft story</p>
+          <h3>Jean-Yves</h3>
+          <p class="story-example">A longevity view brings lab results, scan reports, and activity data onto one timeline. The goal is to see what changes between checkups and which questions are worth following over time.</p>
         </figcaption>
       </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-beard.webp" alt="" loading="lazy" decoding="async" style="object-position:20% 30%">
+      <figure class="story story-profile">
+        <img class="story-photo" src="testimonials/nick-sireau.webp" alt="Nick Sireau" loading="lazy" decoding="async" style="object-position:center 29%">
         <figcaption>
-          <p class="story-topic">Cholesterol · ApoB</p>
-          <blockquote>“Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Dolor S., 41</strong><span>Engineer · Berlin</span></p>
-            <p class="story-metric"><span>ApoB</span><strong>1.21 → 0.84</strong></p>
-          </div>
+          <p class="story-topic">Understanding research · Published interview</p>
+          <h3>Nick</h3>
+          <blockquote class="story-example">“What was really important was that the group I worked with had a deep understanding of AKU.”</blockquote>
+          <p class="story-source-context">Nick Sireau on developing research for alkaptonuria (AKU).</p>
+          <a class="story-source" href="https://www.technologynetworks.com/drug-discovery/blog/the-future-of-ocd-treatments-with-dr-nick-sireau-407859">Read the interview ↗</a>
         </figcaption>
       </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-vo2.webp" alt="A woman running with a VO2 max testing mask" loading="lazy" decoding="async" style="object-position:45% 30%">
+      <figure class="story story-profile">
+        <div class="story-photo story-nameplate" aria-hidden="true"><span>S</span></div>
         <figcaption>
-          <p class="story-topic">Endurance · VO₂ max</p>
-          <blockquote>“Duis aute irure dolor in reprehenderit in voluptate.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Amet C., 39</strong><span>Physio · Copenhagen</span></p>
-            <p class="story-metric"><span>VO₂ max</span><strong>38 → 44</strong></p>
-          </div>
+          <p class="story-topic">Living with chronic issues · Draft story</p>
+          <h3>Serge</h3>
+          <p class="story-example">For ongoing care, the useful view is a timeline of symptoms, medication changes, and tests. A dated view can help someone review what changed after a medication adjustment and bring specific questions to the next appointment.</p>
         </figcaption>
       </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-tree.webp" alt="" loading="lazy" decoding="async" style="object-position:38% 25%">
+      <figure class="story story-profile">
+        <div class="story-photo story-nameplate story-nameplate-oncology" aria-hidden="true"><span>JD</span></div>
         <figcaption>
-          <p class="story-topic">Sleep · Recovery</p>
-          <blockquote>“Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Consect A., 46</strong><span>Designer · Singapore</span></p>
-            <p class="story-metric"><span>Deep sleep</span><strong>11% → 18%</strong></p>
-          </div>
-        </figcaption>
-      </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-portrait.webp" alt="A woman in a black tank top after a workout" loading="lazy" decoding="async" style="object-position:42% 25%">
-        <figcaption>
-          <p class="story-topic">Strength · Bone density</p>
-          <blockquote>“Sed ut perspiciatis unde omnis iste natus error sit.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Elit S., 42</strong><span>Lawyer · London</span></p>
-            <p class="story-metric"><span>T-score</span><strong>−2.1 → −1.4</strong></p>
-          </div>
-        </figcaption>
-      </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-forest.webp" alt="A man running on a forest path in autumn" loading="lazy" decoding="async" style="object-position:50% 45%">
-        <figcaption>
-          <p class="story-topic">Metabolic health · HbA1c</p>
-          <blockquote>“Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Tempor I., 48</strong><span>Investor · Zürich</span></p>
-            <p class="story-metric"><span>HbA1c</span><strong>5.9% → 5.4%</strong></p>
-          </div>
-        </figcaption>
-      </figure>
-      <figure class="story">
-        <img class="story-photo" src="t-rail.webp" alt="" loading="lazy" decoding="async" style="object-position:40% 25%">
-        <figcaption>
-          <p class="story-topic">Blood pressure</p>
-          <blockquote>“Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.”</blockquote>
-          <div class="story-caption">
-            <p class="story-person"><strong>Magna A., 37</strong><span>Product lead · Shanghai</span></p>
-            <p class="story-metric"><span>Systolic</span><strong>138 → 121</strong></p>
-          </div>
+          <p class="story-topic">Oncology · Illustrative quote</p>
+          <h3>John Doe</h3>
+          <blockquote class="story-example">“I want to see my scans, biopsy findings, and treatment dates together so I can ask my oncology team what changed and what we’re watching next.”</blockquote>
         </figcaption>
       </figure>
   </div>
   <div class="story-navigation" aria-label="Testimonial navigation">
     <div class="story-progress" role="group" aria-label="Choose a story"></div>
-    <span class="story-count">1 / 9</span>
+    <span class="story-count">1 / 5</span>
     <button type="button" class="story-pause" aria-label="Pause story autoplay" aria-pressed="false">Pause</button>
     <button type="button" class="story-prev" aria-label="Previous story" aria-controls="story-reel">←</button>
     <button type="button" class="story-next" aria-label="Next story" aria-controls="story-reel">→</button>
