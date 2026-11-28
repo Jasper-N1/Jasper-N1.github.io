@@ -2623,6 +2623,16 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     g.clearRect(0,0,w,h);
     const selected = buttons.findIndex(button=>button.getAttribute("aria-pressed")==="true");
     const intensity = reducedMotion.matches ? .87 : .83 + Math.sin(t*2.2)*.12;
+    // Cool coverage on the head and neck stays visible beneath the selected focus.
+    for (const [u,z,spread] of [[.50,.105,.25],[.50,.19,.20]]) {
+      const cx=u*w, cy=z*h, radius=w*spread;
+      const cool=g.createRadialGradient(cx,cy,0,cx,cy,radius);
+      cool.addColorStop(0,"rgba(37,157,199,.81)");
+      cool.addColorStop(.58,"rgba(39,181,186,.57)");
+      cool.addColorStop(1,"rgba(39,181,186,0)");
+      g.fillStyle=cool;
+      g.fillRect(cx-radius,cy-radius,2*radius,2*radius);
+    }
     const radius=w*.36;
     thermalRegions[Math.max(0,selected)].forEach(([u,z])=>{
       const cx=u*w, cy=z*h;
