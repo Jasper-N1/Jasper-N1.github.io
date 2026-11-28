@@ -91,16 +91,6 @@
 
 
 
-  /* explore cards */
-  .explore h2 { margin-bottom: clamp(24px, 3vw, 48px); }
-  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(10px, 1.45vw, 24px); }
-  .cards a { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-height: clamp(180px, 15vw, 240px); padding: clamp(19px, 2vw, 32px); border-radius: 8px; background: var(--card); text-decoration: none; transition: background .2s; }
-  .cards a:hover { background: #fff; }
-  .cards a:last-child { background: var(--deep); color: #fffaf0; } .cards a:last-child:hover { background: var(--deep-hover); }
-  .cards p { margin: 8px 0 0; font-size: var(--fs-body); line-height: 1.45; opacity: .78; }
-  .cards .go { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--deep); color: #fff; font-size: 14px; }
-  .cards a:last-child .go { background: #fffaf0; color: var(--deep); }
-
   /* sign-up panel, as on the home page */
   .cta { padding-bottom: var(--space); }
   .panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-radius: 8px; overflow: hidden; background: var(--card); }
@@ -136,7 +126,6 @@
 
   @media (max-width: 1100px) {
     .people { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .foot .top { grid-template-columns: 1fr 1fr; gap: 36px 20px; } .foot .top > :first-child { grid-column: 1 / -1; }
   }
   @media (max-width: 800px) {
@@ -146,7 +135,6 @@
     .mosaic .d img { aspect-ratio: 16 / 10; }
     .quote .card, .how .grid, .team header, .panel { grid-template-columns: minmax(0, 1fr); }
     .people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cards { grid-template-columns: minmax(0, 1fr); }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -237,19 +225,6 @@
         <li><div class="person"><div class="ph"><img src="about/team/shuang-yin.webp" width="500" height="500" alt="Shuang Yin" loading="lazy"></div><b>Shuang Yin</b><span>Team</span></div></li>
         <li><div class="person"><div class="ph"><img src="about/team/zabir.webp" width="500" height="500" alt="Zabir" loading="lazy"></div><b>Zabir</b><span>Team</span></div></li>
       </ul>
-    </div>
-  </section>
-
-  <section class="explore" aria-labelledby="eh">
-    <div class="wrap">
-      <p class="kick">See it in action</p>
-      <h2 id="eh">See what your twin can do</h2>
-      <div class="cards">
-        <a href="index.html#s3"><div><h3>How it works</h3><p>Connect your data, and we build your twin.</p></div><span class="go" aria-hidden="true">↗</span></a>
-        <a href="index.html#fs"><div><h3>A sample twin</h3><p>See one picture of a person’s health.</p></div><span class="go" aria-hidden="true">↗</span></a>
-        <a href="examples.html"><div><h3>Examples</h3><p>See what people learn from their twin.</p></div><span class="go" aria-hidden="true">↗</span></a>
-        <a href="index.html#s7"><div><h3>Questions</h3><p>Privacy, sharing, cost and more.</p></div><span class="go" aria-hidden="true">↗</span></a>
-      </div>
     </div>
   </section>
 
