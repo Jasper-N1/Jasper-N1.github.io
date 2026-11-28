@@ -37,7 +37,7 @@
   :focus-visible { outline: 2px solid var(--deep); outline-offset: 3px; }
 
   /* About opening */
-  .hero { position: relative; isolation: isolate; display: flex; align-items: flex-start; min-height: clamp(440px, 72svh, 760px); padding-top: clamp(55px, 8vw, 120px); overflow: hidden; background: #172421; color: #fff; }
+  .hero { position: relative; isolation: isolate; display: flex; align-items: flex-start; min-height: calc(100vh - var(--bar)); min-height: calc(100svh - var(--bar)); padding-top: clamp(55px, 8vw, 120px); overflow: hidden; background: #172421; color: #fff; }
   .hero .wrap { width: 100%; max-width: 1200px; z-index: 1; }
   .hero h1 { max-width: 15ch; font-size: clamp(46px, 6.8vw, 106px); line-height: .98; letter-spacing: -.045em; }
   .hero .kick { color: #d9eff7; }
@@ -46,9 +46,8 @@
   .hero-media video { opacity: 0; }
   .hero-media video.is-playing { opacity: 1; }
   .hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg,#071712bd 0%,#07171277 44%,transparent 80%); }
-  .hero-playback { position: absolute; z-index: 2; bottom: 20px; right: var(--edge); min-height: 44px; padding: 0 16px; border: 1px solid #fff9; border-radius: 999px; background: #12251fd9; color: #fff; font: 500 14px var(--sans); cursor: pointer; }
   @media (max-width: 640px) {
-    .hero { align-items: flex-end; min-height: 68svh; padding-bottom: 85px; }
+    .hero { align-items: flex-end; padding-bottom: 85px; }
     .hero-media::after { background: linear-gradient(0deg,#071712e6,transparent 85%); }
   }
 
@@ -120,7 +119,7 @@
 
   /* footer, as on the home page */
   .foot { position: relative; overflow: hidden; padding: var(--space) var(--edge) 28px; background: var(--blue); color: #fff; }
-  .foot::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, rgba(255,255,255,.07) 0 1px, transparent 1px 7px); -webkit-mask-image: linear-gradient(transparent, #000 70%); mask-image: linear-gradient(transparent, #000 70%); pointer-events: none; }
+  .foot::before { content: ""; position: absolute; inset: 0; background: url("model-field.svg") center / cover no-repeat; pointer-events: none; }
   .foot .wrap { position: relative; }
   .foot .top { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(4, minmax(0, .5fr)); gap: 40px; padding-bottom: clamp(60px, 7vw, 110px); border-bottom: 1px solid rgba(255,255,255,.22); }
   .foot h2 { max-width: 9em; }
@@ -183,7 +182,6 @@
       <p class="kick">About us</p>
       <h1 id="h1">Built by people who understand the stakes.</h1>
     </div>
-    <button class="hero-playback" id="aboutPlayback" type="button" hidden>Play video</button>
   </section>
 
   <section class="mission" aria-label="Our mission">
@@ -293,7 +291,6 @@
 </footer>
 <script>
   const aboutVideo = document.getElementById("aboutVideo");
-  const aboutPlayback = document.getElementById("aboutPlayback");
   const portraitVideo = matchMedia("(max-width: 640px)");
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -305,17 +302,8 @@
     aboutVideo.play().catch(() => {});
   }
 
-  aboutVideo.addEventListener("playing", () => {
-    aboutVideo.classList.add("is-playing");
-    aboutPlayback.textContent = "Pause video";
-  });
-  aboutVideo.addEventListener("pause", () => { aboutPlayback.textContent = "Play video"; });
-  aboutPlayback.addEventListener("click", () => {
-    if (aboutVideo.paused) playAboutVideo();
-    else aboutVideo.pause();
-  });
+  aboutVideo.addEventListener("playing", () => { aboutVideo.classList.add("is-playing"); });
   reducedMotion.addEventListener("change", event => { if (event.matches) aboutVideo.pause(); });
-  aboutPlayback.hidden = false;
   if (!reducedMotion.matches) playAboutVideo();
 </script>
 <script src="site-menu.js" defer></script>
