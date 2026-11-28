@@ -1086,11 +1086,13 @@
     border-radius: 8px; overflow: hidden; background: #fffcf2; color: var(--ink); }
   .bento-feature h3 { margin: 0; max-width: 24ch; font: 400 clamp(25px, 2.1vw, 37px)/1.03 var(--serif); letter-spacing: -.025em; }
   .bento-feature p { margin: 9px 0 0; max-width: 31ch; font: 400 clamp(14px, 1.1vw, 17px)/1.43 var(--sans); }
-  .bento-feature a, .bento-cta a { display: inline-flex; align-items: center; gap: 9px; align-self: flex-start; min-height: 44px;
+  .bento-feature > a, .bento-cta a { display: inline-flex; align-items: center; gap: 9px; align-self: flex-start; min-height: 44px;
     color: inherit; font: 600 14px var(--sans); text-decoration: none; }
-  .bento-feature a span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #006d91; color: white; }
-  .bento-feature a:hover, .bento-cta a:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .bento-feature a:focus-visible, .bento-cta a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  .bento-heading-link { color:inherit; text-decoration:none; }
+  .bento-heading-link:hover { text-decoration:underline; text-underline-offset:4px; }
+  .bento-feature > a span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #006d91; color: white; }
+  .bento-feature > a:hover, .bento-cta a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .bento-feature > a:focus-visible, .bento-cta a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
   .bento-feature img { position: absolute; z-index: -2; }
   .bento-photo { color: #fffaf0; background: #193643; }
   .bento-photo img { inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -1104,6 +1106,7 @@
     width: 100%; height: 100%; }
   .bento-data-types { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 4px; margin: 18px 0; padding: 0; list-style: none; }
   .bento-data-types li { display: grid; justify-items: center; gap: 5px; text-align: center; color: #3f5960; font: 500 clamp(9px, 1vw, 11px)/1.2 var(--sans); }
+  .bento-data-types a { color:inherit; text-underline-offset:3px; }
   .bento-data-types i { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #86a9af; border-radius: 8px; color: #006d91; background: #eef7f4; }
   .bento-data-types svg { width: 19px; height: 19px; }
   .bento-data-types.is-visible i { animation: data-type-pulse .56s ease-in-out both; animation-delay: calc(var(--order) * 440ms); }
@@ -1118,6 +1121,8 @@
   .bento-details article { position: relative; min-height: 92px; background: #fffcf2; border-radius: 8px; padding: 20px 18px 20px 39px; }
   .bento-details article::before { content: "✓"; position: absolute; left: 16px; top: 22px; color: #006d91; font: 600 14px var(--sans); }
   .bento-details h3 { margin: 0; color: var(--ink); font: 600 clamp(15px, 1.2vw, 18px)/1.25 var(--sans); }
+  .bento-details article a { color:#00688b; text-underline-offset:3px; }
+  .bento-details h3 a::after { content:""; position:absolute; inset:0; }
   .bento-details article p { margin: 7px 0 0; color: #555951; font: 400 14px/1.4 var(--sans); }
   .bento-cta { grid-column: span 2; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
     gap: 8px 15px; padding: 9px clamp(15px, 2vw, 26px); border-radius: 8px; background: #005d7d; color: #fffaf0; }
@@ -1173,6 +1178,7 @@
   <a class="logo" href="#main"><span>digital twin</span><span class="c">.care</span></a>
   <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
   <ul class="primary-links" id="primary-menu">
+    <li><a href="product.html">Product</a></li>
     <li><a href="examples.html">Examples</a></li>
     <li><a href="pricing.html">Pricing</a></li>
     <li><a href="about.html">About</a></li>
@@ -1280,28 +1286,26 @@
   <h2 class="twin-bento-title" id="twin-bento-title">Why get a digital twin?</h2>
   <div class="twin-bento-grid">
     <article class="bento-feature bento-records">
-      <div><h3>All your health data</h3><p>Bring together lab results, scans, doctor’s letters, and wearable data.</p></div>
+      <div><h3><a class="bento-heading-link" href="product.html#parsing">All your health data</a></h3><p>Bring together lab results, scans, doctor’s letters, and wearable data.</p></div>
       <ul class="bento-data-types" aria-label="Health data types">
         <li style="--order:0"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6m-5 0v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 15h8"/></svg></i><span>Labs</span></li>
         <li style="--order:1"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 12h10"/></svg></i><span>Scans</span></li>
         <li style="--order:2"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z M9 11h6m-6 4h6"/></svg></i><span>Letters</span></li>
-        <li style="--order:3"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 5v8l-1 5H9l-1-5V8z M8 8h8m-8 8h8m-6-4h4"/></svg></i><span>Wearables</span></li>
+        <li style="--order:3"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 5v8l-1 5H9l-1-5V8z M8 8h8m-8 8h8m-6-4h4"/></svg></i><a href="product.html#wearables">Wearables</a></li>
         <li style="--order:4"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19a5 5 0 0 1 0-7l7-7a5 5 0 0 1 7 7l-7 7a5 5 0 0 1-7 0Zm4-10 6 6"/></svg></i><span>Medicines</span></li>
         <li style="--order:5"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3c0 8 12 10 12 18M18 3c0 8-12 10-12 18M7 5h10M8 19h8M9 9h6m-6 6h6"/></svg></i><span>Genetics</span></li>
         <li style="--order:6"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z M8 8h8m-8 4h8m-8 4h5"/></svg></i><span>Daily logs</span></li>
         <li style="--order:7"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 18 0M6 12a6 6 0 0 1 12 0M9 12a3 3 0 0 1 6 0m-3 4v4"/></svg></i><span>Home readings</span></li>
       </ul>
-      <a href="#s3">How it works <span aria-hidden="true">↗</span></a>
     </article>
     <article class="bento-feature bento-photo bento-capture">
       <img src="capture-person.webp" alt="" loading="lazy" decoding="async">
       <div><h3>Make sense of it all</h3><p>See how your results, symptoms, and everyday readings fit together.</p></div>
-      <a href="#s3">Explore your twin <span aria-hidden="true">↗</span></a>
+      <a href="examples.html">Explore your twin <span aria-hidden="true">↗</span></a>
     </article>
     <article class="bento-feature bento-model">
       <div class="bento-twin" aria-hidden="true"></div>
       <div><h3>Discover hidden patterns</h3><p>See which readings change together as you add new data.</p></div>
-      <a href="#s2">See the model <span aria-hidden="true">↗</span></a>
     </article>
     <article class="bento-feature bento-photo bento-life">
       <img src="t-forest.webp" alt="" loading="lazy" decoding="async">
@@ -1309,10 +1313,10 @@
       <a href="#s3">See how it works <span aria-hidden="true">↗</span></a>
     </article>
     <div class="bento-details">
-      <article><h3>Lab results</h3><p>Keep past and new readings together.</p></article>
-      <article><h3>Wearables</h3><p>Bring in sleep and activity data.</p></article>
-      <article><h3>Health trends</h3><p>See what changes between check-ins.</p></article>
-      <article><h3>Shareable reports</h3><p>Take a summary to your next appointment.</p></article>
+      <article><h3><a href="product.html#parsing">Parsing</a></h3><p>Turn lab PDFs and medical records into readings you can compare.</p></article>
+      <article><h3><a href="privacy.html">Secure by design</a></h3><p>See how N1 protects your health information and what you control.</p></article>
+      <article><h3><a href="product.html#chat">Chat</a></h3><p>Ask what changed and which records support the answer.</p></article>
+      <article><h3>Shareable reports</h3><p>Take a summary to your next appointment.</p><p><a href="Digital Twin Care Health Assessment - 2026 - Updated.pdf" download>Download Jasper’s example report (PDF)</a></p></article>
       <div class="bento-cta"><p>Start building your digital twin</p><a href="#s6">Get started <span aria-hidden="true">→</span></a></div>
     </div>
   </div>

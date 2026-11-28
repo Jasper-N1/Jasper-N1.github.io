@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="See how digitaltwin.care reads medical records, syncs wearables and helps you explore your health data in chat.">
+<title>Product · digitaltwin.care</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet" href="site-menu.css?v=3">
+<style>
+:root{--bg:#f3f2e9;--ink:#1c1b17;--blue:#0096d6;--action:#006b90;--muted:#4d5751;--paper:#fffcf2;--line:#ccd7ce;--sans:"DM Sans",Arial,sans-serif;--serif:Newsreader,Georgia,serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:400 16px/1.5 var(--sans)}
+a{color:var(--action);text-underline-offset:3px}.bar .logo{color:var(--ink)}
+a:focus-visible{outline:2px solid var(--action);outline-offset:3px}
+.skip{position:fixed;left:12px;top:12px;z-index:20;padding:8px;background:var(--paper);transform:translateY(-150%)}.skip:focus{transform:none}
+.wrap{width:min(1180px,calc(100% - 2 * var(--edge)));margin:auto}
+.hero{padding:clamp(48px,9vw,120px) 0 40px}.hero p:last-child{max-width:58ch}
+h1,h2,h3{margin:0;font:400 34px/1.06 var(--serif);letter-spacing:-.025em}
+h1{font-size:clamp(48px,7vw,94px);max-width:12ch}h1 em{color:var(--action);font-style:normal}
+h2{font-size:clamp(32px,4vw,55px)}h3{font-size:clamp(22px,2.2vw,30px)}
+p{margin:11px 0 0;color:var(--muted)}.kicker,.label{font:500 11px/1.35 var(--mono);letter-spacing:.075em;text-transform:uppercase;color:var(--action)}
+.kicker{margin:0 0 10px}.jumps{display:flex;gap:8px;flex-wrap:wrap;margin-top:23px}
+.jumps a{padding:6px 12px;border:1px solid var(--line);border-radius:99px;text-decoration:none;font-weight:600;font-size:13px}
+.jumps a:hover{background:#dfeee9}.product-section{scroll-margin-top:calc(var(--bar) + 16px);padding:clamp(34px,6vw,76px) 0;border-top:1px solid var(--line)}
+.section-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(20px,6vw,85px);align-items:center}
+.copy p{max-width:44ch}.copy a{display:inline-block;margin-top:13px;font-size:14px}
+.panel{padding:clamp(15px,2.5vw,29px);border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.pipeline{display:grid;gap:9px;list-style:none;margin:0;padding:0}.pipeline li{display:grid;grid-template-columns:94px minmax(0,1fr);gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.pipeline li:last-child{border-bottom:0}.pipeline strong,.signal strong{color:#244e4c}.pipeline small,.signal small{display:block;color:var(--muted)}
+.pipeline .label{background:#e7f0eb;border-radius:4px;padding:6px 7px;width:fit-content}
+.signal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:13px}
+.signal{padding-top:8px;border-top:1px solid var(--line);font-size:13px}.signal small{font-size:11px}.wave{width:100%;height:auto;display:block;margin-top:17px}
+.chat p{margin:0}.chat .question{width:fit-content;margin-left:auto;padding:10px 13px;background:#dbece8;border-radius:9px;color:#234649}
+.chat .answer{margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}.chat .answer p+p{margin-top:10px}.chat .source{font-size:12px}
+footer{border-top:1px solid var(--line);padding:25px 0 45px}footer .wrap{display:flex;flex-wrap:wrap;gap:9px 22px;font-size:13px}
+@media(max-width:760px){.section-grid{grid-template-columns:1fr}.hero{padding-top:38px}.pipeline li{grid-template-columns:75px minmax(0,1fr);gap:8px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="bar" aria-label="Main navigation">
+  <a class="logo" href="./"><span>digital twin</span><span class="c">.care</span></a>
+  <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
+  <ul class="primary-links" id="primary-menu">
+    <li><a href="product.html" aria-current="page">Product</a></li>
+    <li><a href="examples.html">Examples</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="privacy.html">Privacy</a></li>
+  </ul>
+  <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
+</nav>
+<main id="main">
+  <header class="hero wrap">
+    <p class="kicker">Product</p>
+    <h1>From health data to <em>clear answers.</em></h1>
+    <p>See how your twin reads medical records, brings in new measurements, and gives you a place to ask what changed.</p>
+    <nav class="jumps" aria-label="On this page"><a href="#parsing">Parsing</a><a href="#wearables">Wearables</a><a href="#chat">Chat</a></nav>
+  </header>
+  <section class="product-section" id="parsing" aria-labelledby="parsing-title">
+    <div class="wrap section-grid">
+      <div class="copy"><h2 id="parsing-title">Parsing</h2><p>Upload a lab PDF, a scan report or a clinician’s letter. Your twin reads the document, extracts the useful details, and adds them to your record with their source when available.</p><a href="examples.html#labs">Explore Jasper’s lab records →</a></div>
+      <article class="panel">
+        <p class="kicker">Example · lipid panel PDF</p>
+        <ol class="pipeline">
+          <li><span class="label">Parse</span><div><strong>Read the document</strong><small>Recognise the lab panel and locate the results.</small></div></li>
+          <li><span class="label">Extract</span><div><strong>LDL cholesterol · 2.98 mmol/L</strong><small>Capture the value, unit and measurement date.</small></div></li>
+          <li><span class="label">Add</span><div><strong>18 November 2026 · N1 laboratory record</strong><small>Place the result on the timeline so it can be compared with earlier draws.</small></div></li>
+        </ol>
+      </article>
+    </div>
+  </section>
+  <section class="product-section" id="wearables" aria-labelledby="wearables-title">
+    <div class="wrap section-grid">
+      <div class="copy"><h2 id="wearables-title">Wearables</h2><p>Connect a supported device to bring sleep, heart rate and activity into the timeline. Read them alongside other data, such as a meal photo or an exercise log, to see what happened around a change.</p><a href="examples.html#wear">Explore the wearable preview →</a></div>
+      <article class="panel">
+        <p class="kicker">Illustrative device sync</p>
+        <h3>A day in context</h3>
+        <svg class="wave" viewBox="0 0 500 107" role="img" aria-label="Illustrative daily pulse trace">
+          <path d="M0 24H500M0 53H500M0 82H500" fill="none" stroke="#d5dfd9"/>
+          <path d="M0 74L25 77L51 74L78 79L108 75L137 70L159 53L184 62L210 55L237 57L255 66L285 61L310 55L335 40L350 19L366 37L389 29L404 47L433 53L468 62L500 66" fill="none" stroke="#137c94" stroke-width="2.5"/>
+          <circle cx="350" cy="19" r="4.5" fill="#137c94"/>
+        </svg>
+        <div class="signal-grid"><div class="signal"><strong>Sleep</strong><small>Overnight</small></div><div class="signal"><strong>Heart rate</strong><small>Across the day</small></div><div class="signal"><strong>Activity</strong><small>During a session</small></div></div>
+      </article>
+    </div>
+  </section>
+  <section class="product-section" id="chat" aria-labelledby="chat-title">
+    <div class="wrap section-grid">
+      <div class="copy"><h2 id="chat-title">Chat</h2><p>Ask a question about your record. Start with a change you noticed, compare readings over time, or identify what’s missing before your next appointment.</p><a href="examples.html#medical-analysis">Read Jasper’s clinical summary →</a></div>
+      <article class="panel chat">
+        <p class="kicker">Example conversation</p>
+        <p class="question">How has my LDL changed?</p>
+        <div class="answer"><p>It was <strong>3.61 mmol/L</strong> in May 2026 and <strong>2.98 mmol/L</strong> in November. The latest value is lower and remains above the lab’s upper limit of 2.58 mmol/L.</p><p class="source"><a href="examples.html#labs">Source · Jasper’s lab results</a></p></div>
+      </article>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><a href="./">Home</a><a href="examples.html">Examples</a><a href="privacy.html">Privacy and security</a><a href="https://trust.n1.care/">N1 Trust Centre</a></div></footer>
+<script src="site-menu.js" defer></script>
+</body>
+</html>
