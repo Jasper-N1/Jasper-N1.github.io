@@ -3,6 +3,11 @@
     background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); -webkit-font-smoothing: antialiased; }
   .logo { font-weight: 500; font-size: clamp(18px, 1.45vw, 24px); letter-spacing: -.03em; white-space: nowrap; text-decoration: none; }
   .logo .c { color: var(--blue); }
+  /* header logo: the footer wordmark on a small blue chip with the model's wave lines */
+  nav.bar a.logo { display: inline-flex; align-items: center; padding: .38em .62em .42em; border-radius: 6px; line-height: 1; letter-spacing: -.05em;
+    color: #fff; background: #0096D6 url("model-field.svg") center / cover no-repeat; }
+  nav.bar a.logo .c { color: rgba(255,255,255,.62); }
+  nav.bar a.logo:hover { background-color: #0089c4; }
   .bar .sign { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 clamp(18px, 1.5vw, 26px);
     border-radius: 999px; background: #006e9c; color: white; font: 500 15px var(--sans); text-decoration: none; white-space: nowrap; }
   .bar .sign:hover { background: #005a80; }

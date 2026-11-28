@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
-<link rel="stylesheet" href="site-menu.css?v=3">
+<link rel="stylesheet" href="site-menu.css?v=4">
+<link rel="stylesheet" href="site-footer.css?v=1">
 <style>
 :root{--bg:#F3F2E9;--ink:#1C1B17;--blue:#0096D6;--action:#006e9c;--muted:#545b52;--paper:#fffcf2;--line:#1c1b1724;--space:clamp(64px,8vw,120px);--sans:"DM Sans",Arial,sans-serif;--serif:"Newsreader",Georgia,serif;--mono:"DM Mono",monospace}
 *{box-sizing:border-box}
@@ -50,16 +51,13 @@ details:last-of-type{border-bottom:1px solid var(--line)}
 summary{padding:15px 0;cursor:pointer;font-weight:600}
 details p{margin:0 0 16px}
 .contact{padding:clamp(22px,4vw,42px);border-radius:8px;background:#dceef1;margin-bottom:var(--space)}
-footer{border-top:1px solid var(--line);padding:24px 0;font-size:14px;color:var(--muted)}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 22px}
-footer span{margin-right:auto}
 @media(max-width:800px){.wrap{width:calc(100% - 40px)}.controls{grid-template-columns:1fr}}
 @media(max-width:650px){.cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <nav class="bar" aria-label="Main navigation">
-  <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
+  <a class="logo" href="index.html"><span>digitaltwin</span><span class="c">.care</span></a>
   <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
   <ul class="primary-links" id="primary-menu">
     <li><a href="product.html">Product</a></li>
@@ -129,7 +127,7 @@ footer span{margin-right:auto}
     </div>
   </section>
 </main>
-<footer><div class="wrap"><span>© 2026 digitaltwin.care</span><a href="https://n1.care/privacy">Privacy Notice</a><a href="https://trust.n1.care/">Trust Centre</a></div></footer>
+<script src="site-footer.js?v=1"></script>
 <script src="site-menu.js" defer></script>
 </body>
 </html>

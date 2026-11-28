@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
-<link rel="stylesheet" href="site-menu.css?v=3">
+<link rel="stylesheet" href="site-menu.css?v=4">
+<link rel="stylesheet" href="site-footer.css?v=1">
 <style>
   :root {
     --bg: #F3F2E9; --ink: #1C1B17; --muted: #545b52; --card: #fffcf2; --mist: #c8e5eb;
@@ -116,27 +117,9 @@
   .contact .status { margin: 0; min-height: 1.4em; font-size: 14px; }
   .contact .status a { color: inherit; }
 
-  /* footer, as on the home page */
-  .foot { position: relative; overflow: hidden; padding: var(--space) var(--edge) 28px; background: var(--blue); color: #fff; }
-  .foot::before { content: ""; position: absolute; inset: 0; background: url("model-field.svg") center / cover no-repeat; pointer-events: none; }
-  .foot .wrap { position: relative; }
-  .foot .top { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(4, minmax(0, .5fr)); gap: 40px; padding-bottom: clamp(60px, 7vw, 110px); border-bottom: 1px solid rgba(255,255,255,.22); }
-  .foot h2 { max-width: 9em; }
-  .foot h2 em { color: #fff; font-style: italic; }
-  .foot .go { display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; min-height: 48px; padding: 0 22px; border-radius: 999px; background: #fff; color: #005A80; font: 500 16px var(--sans); text-decoration: none; }
-  .foot .go:hover { background: #eaf6fc; }
-  .foot nav h3 { margin: 8px 0 18px; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
-  .foot nav a { display: block; padding: 6px 0; font-size: 16px; text-decoration: none; opacity: .92; }
-  .foot nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
-  .foot :focus-visible { outline-color: #fff; }
-  .foot .mark { margin: clamp(40px, 5vw, 70px) 0 clamp(24px, 3vw, 40px); font: 500 clamp(44px, 12.4vw, 232px)/.85 var(--sans); letter-spacing: -.05em; white-space: nowrap; }
-  .foot .mark span { color: rgba(255,255,255,.45); }
-  .foot .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 40px; font: 400 14px/1.5 var(--sans); }
-  .foot .legal p { margin: 0; max-width: 46em; }
 
   @media (max-width: 1100px) {
     .people { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .foot .top { grid-template-columns: 1fr 1fr; gap: 36px 20px; } .foot .top > :first-child { grid-column: 1 / -1; }
   }
   @media (max-width: 800px) {
     .mosaic { grid-template-columns: 1fr 1fr; }
@@ -155,7 +138,7 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <nav class="bar" aria-label="Main navigation">
-  <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
+  <a class="logo" href="index.html"><span>digitaltwin</span><span class="c">.care</span></a>
   <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
   <ul class="primary-links" id="primary-menu">
     <li><a href="product.html">Product</a></li>
@@ -248,7 +231,7 @@
           <a class="action" href="index.html#s6">Build my free twin <span aria-hidden="true">→</span></a>
         </div>
       </div>
-      <div class="contact">
+      <div class="contact" id="contact">
         <h3 id="contact-h">Questions? Contact us.</h3>
         <form id="contact-form" aria-labelledby="contact-h">
           <label>Name<input name="name" type="text" autocomplete="name" maxlength="200" required></label>
@@ -264,19 +247,7 @@
   </section>
 </main>
 
-<footer class="foot">
-  <div class="wrap">
-    <div class="top">
-      <div><h2>Your health,<br><em>in one living model.</em></h2><a class="go" href="index.html#s6">Build my free twin <span aria-hidden="true">→</span></a></div>
-      <nav aria-label="Product"><h3>Product</h3><a href="index.html#s3">How it works</a><a href="index.html#fs">Your twin</a><a href="index.html#s3">Reports</a><a href="index.html#s3">Sharing</a><a href="pricing.html">Pricing</a></nav>
-      <nav aria-label="Company"><h3>Company</h3><a href="about.html">About us</a><a href="https://n1.care/contact">Contact</a></nav>
-      <nav aria-label="Resources"><h3>Resources</h3><a href="index.html#s7">FAQ</a><a href="https://trust.n1.care/">Trust Centre</a></nav>
-      <nav aria-label="Legal"><h3>Legal</h3><a href="privacy.html">Privacy</a><a href="https://n1.care/terms.html">Terms of use</a></nav>
-    </div>
-    <div class="mark" aria-hidden="true">digitaltwin<span>.care</span></div>
-    <div class="legal"><p>Your twin helps you understand your health. It is not a medical device and does not diagnose or treat any condition. Always talk to a qualified healthcare professional about medical decisions.</p><span>© 2026 digitaltwin.care</span></div>
-  </div>
-</footer>
+<script src="site-footer.js?v=1"></script>
 <script>
   const aboutVideo = document.getElementById("aboutVideo");
   const portraitVideo = matchMedia("(max-width: 640px)");

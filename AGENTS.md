@@ -20,5 +20,6 @@ GitHub Pages builds this repo from `main` (folder `/`). A push to `main` is a de
 
 - Do not make new versioned folders (`digitaltwin-care-10`, `latest-docs/...`). The link above stays the same for every release.
 - Do not edit `latest-docs/digitaltwin-care-9/`. It holds only redirect pages to the live link, so old links keep working.
+- The footer is the same on every page. Its markup is only in `digitaltwin-care/site-footer.js` and its styles are only in `digitaltwin-care/site-footer.css`. Do not write a `<footer>` or footer styles in a page. Every page loads `site-footer.css` in its head and puts `<script src="site-footer.js?v=1"></script>` where the footer goes. Bump `?v=` on all pages when you change either file.
 - The other files at the repo root are not part of the digitaltwin.care website.
 - The repo uses a sparse checkout. If `digitaltwin-care/` is missing, run `git sparse-checkout add digitaltwin-care`.

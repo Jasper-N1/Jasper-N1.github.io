@@ -6,7 +6,8 @@
 <meta name="description" content="See how digitaltwin.care reads medical records, syncs wearables and helps you explore your health data in chat.">
 <title>Product · digitaltwin.care</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
-<link rel="stylesheet" href="site-menu.css?v=3">
+<link rel="stylesheet" href="site-menu.css?v=4">
+<link rel="stylesheet" href="site-footer.css?v=1">
 <style>
 :root{--bg:#f3f2e9;--ink:#1c1b17;--blue:#0096d6;--action:#006b90;--muted:#4d5751;--paper:#fffcf2;--line:#ccd7ce;--sans:"DM Sans",Arial,sans-serif;--serif:Newsreader,Georgia,serif;--mono:"DM Mono",monospace}
 *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:400 16px/1.5 var(--sans)}
@@ -32,14 +33,14 @@ p{margin:11px 0 0;color:var(--muted)}.kicker,.label{font:500 11px/1.35 var(--mon
 .signal{padding-top:8px;border-top:1px solid var(--line);font-size:13px}.signal small{font-size:11px}.wave{width:100%;height:auto;display:block;margin-top:17px}
 .chat p{margin:0}.chat .question{width:fit-content;margin-left:auto;padding:10px 13px;background:#dbece8;border-radius:9px;color:#234649}
 .chat .answer{margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}.chat .answer p+p{margin-top:10px}.chat .source{font-size:12px}
-footer{border-top:1px solid var(--line);padding:25px 0 45px}footer .wrap{display:flex;flex-wrap:wrap;gap:9px 22px;font-size:13px}
+
 @media(max-width:760px){.section-grid{grid-template-columns:1fr}.hero{padding-top:38px}.pipeline li{grid-template-columns:75px minmax(0,1fr);gap:8px}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <nav class="bar" aria-label="Main navigation">
-  <a class="logo" href="./"><span>digital twin</span><span class="c">.care</span></a>
+  <a class="logo" href="./"><span>digitaltwin</span><span class="c">.care</span></a>
   <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
   <ul class="primary-links" id="primary-menu">
     <li><a href="product.html" aria-current="page">Product</a></li>
@@ -96,7 +97,7 @@ footer{border-top:1px solid var(--line);padding:25px 0 45px}footer .wrap{display
     </div>
   </section>
 </main>
-<footer><div class="wrap"><a href="./">Home</a><a href="examples.html">Examples</a><a href="privacy.html">Privacy and security</a><a href="https://trust.n1.care/">N1 Trust Centre</a></div></footer>
+<script src="site-footer.js?v=1"></script>
 <script src="site-menu.js" defer></script>
 </body>
 </html>

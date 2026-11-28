@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
-<link rel="stylesheet" href="site-menu.css?v=3">
+<link rel="stylesheet" href="site-menu.css?v=4">
+<link rel="stylesheet" href="site-footer.css?v=1">
 <script src="health-review.js"></script>
 <style>
 :root{
@@ -393,8 +394,8 @@ body[data-cover-visible]:not([data-example="jy"]) .example-tools{opacity:0;visib
 .provtable td,.provtable th{text-align:left;padding:13px 8px;border-top:var(--hair-soft);vertical-align:top}
 .provtable th{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:400}
 .provtable td:last-child{text-align:right;font-family:var(--mono)}
-footer{padding:60px 0 80px;font-size:13px;color:var(--ink3);line-height:1.6}
-footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.page-note{padding:60px 0 80px;font-size:13px;color:var(--ink3);line-height:1.6}
+.page-note .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
 .endcta{padding:clamp(100px,12vw,180px) 0;text-align:center}
 .endcta h2{max-width:900px;margin:0 auto}
 .endcta .cta{display:inline-block;margin-top:40px;font-size:16px;padding:16px 30px}
@@ -609,7 +610,7 @@ body[data-example="jy"] .example-avatar{display:none}
 #day::backdrop{background:#14232b70}
 #day .sechead{margin-bottom:20px}
 #jyPreview{display:none;min-height:60vh;padding:clamp(96px,12vw,180px) 0}
-body[data-example="jy"] .examples-main > section:not(#jyPreview),body[data-example="jy"] .examples-main > footer,body[data-example="jy"] .example-tools-panel{display:none}
+body[data-example="jy"] .examples-main > section:not(#jyPreview),body[data-example="jy"] .examples-main > .page-note,body[data-example="jy"] .example-tools-panel{display:none}
 body[data-example="jy"] .example-name{border-radius:9px;border-bottom:0}
 body[data-example="jy"] #jyPreview{display:block}
 /* Body systems */
@@ -662,7 +663,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 <body data-cover-visible>
 
 <nav class="bar" aria-label="Main navigation">
-  <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
+  <a class="logo" href="index.html"><span>digitaltwin</span><span class="c">.care</span></a>
   <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
   <ul class="primary-links" id="primary-menu">
     <li><a href="product.html">Product</a></li>
@@ -1224,12 +1225,13 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<footer><div class="wrap">
+<div class="page-note"><div class="wrap">
   <div><span class="logo">digitaltwin<i style="color:var(--blue);font-style:normal">.</i>care</span><br>Example page built from Jasper Middendorp's own N1 record, read on 26 November 2026.</div>
   <div>Labs, weights, body fat, blood pressure, and supplements are real records in N1. Meals, schedule and the training plan come from the health note in N1. Whoop, Apple Watch Ultra, macros, session logs and genetics are simulated for this example and marked as such. This page shows data; it is not medical advice. Nothing in N1 was changed.</div>
-</div></footer>
+</div></div>
 </main>
 </div>
+<script src="site-footer.js?v=1"></script>
 
 <div class="drawer" id="drawer"><div class="dbox"><div class="top"><div><div class="k" id="dg"></div><h3 id="dn"></h3></div><button class="x" id="dx_">×</button></div><svg id="dchart" viewBox="0 0 800 300"></svg><table class="dtable" id="dt"></table></div></div>
 <div class="drawer" id="gd"><div class="dbox gbox"><button class="x gx" id="gdx">×</button><div id="gdb"></div></div></div>

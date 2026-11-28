@@ -1,0 +1,22 @@
+/* The one site footer. Markup lives in site-footer.js; pages never write or style it themselves. */
+footer.foot { position: relative; z-index: 3; overflow: hidden; margin: 0; padding: clamp(72px, 9vw, 150px) clamp(16px, 3.3vw, 64px) 28px; border: 0;
+  background: #0096D6; color: #fff; font: 400 16px/1.5 "DM Sans", "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+footer.foot::before { content: ""; position: absolute; inset: 0; background: url("model-field.svg") center / cover no-repeat; pointer-events: none; }
+footer.foot .foot-in { position: relative; display: block; width: auto; max-width: 1500px; margin: 0 auto; padding: 0; }
+footer.foot a { color: #fff; }
+footer.foot :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+footer.foot .top { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(4, minmax(0, .5fr)); gap: 40px; padding-bottom: clamp(60px, 7vw, 110px); border-bottom: 1px solid rgba(255,255,255,.22); }
+footer.foot h2 { max-width: 9em; margin: 0; color: #fff; font: 400 clamp(36px, 3.9vw, 64px)/1.06 "Newsreader", Georgia, serif; letter-spacing: -.03em; opacity: 1; transform: none; }
+footer.foot h2 em { color: #fff; font-style: italic; }
+footer.foot .go { display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; min-height: 48px; padding: 0 22px; border-radius: 999px; background: #fff; color: #005A80; font: 500 16px "DM Sans", "Helvetica Neue", Arial, sans-serif; text-decoration: none; }
+footer.foot .go:hover { background: #eaf6fc; }
+footer.foot nav { position: static; display: block; height: auto; margin: 0; padding: 0; background: none; }
+footer.foot nav h3 { margin: 8px 0 18px; color: #fff; font: 500 12px "DM Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+footer.foot nav a { display: block; padding: 6px 0; font-size: 16px; text-decoration: none; opacity: .92; }
+footer.foot nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+footer.foot .mark { margin: clamp(40px, 5vw, 70px) 0 clamp(24px, 3vw, 40px); color: #fff; font: 500 clamp(44px, 12.4vw, 232px)/.85 "DM Sans", "Helvetica Neue", Arial, sans-serif; letter-spacing: -.05em; white-space: nowrap; }
+footer.foot .mark span { color: rgba(255,255,255,.45); }
+footer.foot .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 40px; color: #fff; font: 400 14px/1.5 "DM Sans", "Helvetica Neue", Arial, sans-serif; }
+footer.foot .legal p { margin: 0; max-width: 46em; color: #fff; }
+@media (max-width: 1100px) { footer.foot .top { grid-template-columns: 1fr 1fr; gap: 36px 20px; } footer.foot .top > :first-child { grid-column: 1 / -1; } }
+@media (max-width: 800px) { footer.foot { padding: 80px 20px 28px; } footer.foot .mark { margin: 44px 0 28px; } }
