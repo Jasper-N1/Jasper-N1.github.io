@@ -378,7 +378,7 @@
     mask-image:linear-gradient(90deg,#000 0 80%,transparent); }
   .plat .sensing-scan canvas { top:0; height:100%; }
   .sensing-model { pointer-events:none; clip-path:inset(0 47% 0 0);
-    filter:grayscale(1) sepia(1) hue-rotate(158deg) saturate(1.45) contrast(1.15) brightness(1.22); }
+    filter:grayscale(1) sepia(1) hue-rotate(158deg) saturate(1.25) contrast(1.16) brightness(1.14); }
   @media(max-width:800px){
     .sensing-xray { left:auto; right:0; mask-image:linear-gradient(270deg,#000 0 80%,transparent); }
     .sensing-model { clip-path:inset(0 0 0 47%); }
@@ -2586,10 +2586,6 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const sensingColors = ["#2784a3","#398c84","#7863a2","#487da2"];
   const sensingModel = document.querySelector(".sensing-model");
   const sensingContext = sensingModel.getContext("2d");
-  const wireTint = document.createElement("canvas");
-  wireTint.width = 360;
-  wireTint.height = 738;
-  const wireLight = wireTint.getContext("2d");
   const stream = (v, t, dt) => {
     const {g,W,H,st} = v, still = reducedMotion.matches;
     if (!W || !H) return;
@@ -2607,24 +2603,8 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     scan.clearRect(0,0,W,H);
     const box = imagingBox(v);
     if (box.w > 0 && box.h > 0) {
-      scan.save();
       const source = !still && scanColourFrame?.hasAttribute("data-frame") ? scanColourFrame : panelModel;
-      if (source === scanColourFrame || panelModel.naturalWidth) {
-        scan.globalAlpha = .84;
-        drawImagingModel(scan,box,source);
-      }
-      if (box.hasWire) {
-        scan.globalCompositeOperation = "screen";
-        scan.globalAlpha = .8;
-        wireLight.clearRect(0,0,wireTint.width,wireTint.height);
-        wireLight.globalCompositeOperation = "source-over";
-        wireLight.drawImage(scanWire,0,0,wireTint.width,wireTint.height);
-        wireLight.globalCompositeOperation = "source-in";
-        wireLight.fillStyle = "#bfdce8";
-        wireLight.fillRect(0,0,wireTint.width,wireTint.height);
-        scan.drawImage(wireTint,box.x,box.y,box.w,box.h);
-      }
-      scan.restore();
+      if (source === scanColourFrame || panelModel.naturalWidth) drawImagingModel(scan,box,source);
     }
     const narrow=innerWidth<=800;
     const left=narrow ? 13 : W*.56, right=narrow ? W*.44 : W-17, top=H*.24, bottom=H*.76;
@@ -2677,7 +2657,11 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const {bounds,hasWire} = modelBox();
     const card = intervention.getBoundingClientRect();
     const opacity = Math.max(0,Math.min(1,card.bottom/90,(innerHeight-card.top)/90));
-    if (!bounds.width || !bounds.height || !opacity || (!hasWire && !panelModel.naturalWidth)) {
+    const clipTop = Math.max(0,card.top+1-bounds.top);
+    const clipRight = Math.max(0,bounds.right-card.right+1);
+    const clipBottom = Math.max(0,bounds.bottom-card.bottom+1);
+    const clipLeft = Math.max(0,card.left+1-bounds.left);
+    if (clipLeft+clipRight >= bounds.width || clipTop+clipBottom >= bounds.height || !opacity || (!hasWire && !panelModel.naturalWidth)) {
       heatCanvas.hidden = true;
       return;
     }
@@ -2687,6 +2671,7 @@ if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     heatCanvas.style.width = bounds.width+"px";
     heatCanvas.style.height = bounds.height+"px";
     heatCanvas.style.opacity = opacity;
+    heatCanvas.style.clipPath = `inset(${clipTop}px ${clipRight}px ${clipBottom}px ${clipLeft}px)`;
     g.clearRect(0,0,w,h);
     const selected = buttons.findIndex(button=>button.getAttribute("aria-pressed")==="true");
     const intensity = reducedMotion.matches ? .87 : .83 + Math.sin(t*2.2)*.12;
