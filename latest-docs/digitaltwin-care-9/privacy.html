@@ -35,6 +35,7 @@ p{margin:12px 0 0;color:var(--muted)}
 .card{padding:clamp(20px,2.5vw,32px);background:var(--paper);border:1px solid var(--line);border-radius:8px}
 .card:first-child{background:#c8e5eb}
 .card:first-child p{color:#23404a}
+.card h2{font-size:30px}
 .controls{padding-top:var(--space);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(24px,5vw,72px)}
 .rows{margin:0;border-top:1px solid var(--line)}
 .rows div{padding:13px 0;border-bottom:1px solid var(--line)}
@@ -72,7 +73,7 @@ footer span{margin-right:auto}
   <header class="intro">
     <p class="kick">Privacy</p>
     <h1>What happens to <em>your health data?</em></h1>
-    <p class="lead">When you upload a lab report, N1 reads it to build your health record. Your doctor doesn’t automatically get access, and we don’t sell patient data or use it to train general-purpose AI models.</p>
+    <p class="lead">When you upload a lab report, N1 reads it to build your health record. Your doctor doesn’t automatically get access, and we don’t sell patient data or use it to train AI models.</p>
     <div class="hero-links">
       <a class="button" href="https://n1.care/privacy">Read the full Privacy Notice</a>
       <a href="https://trust.n1.care/">Visit the N1 Trust Centre ↗</a>
@@ -80,16 +81,16 @@ footer span{margin-right:auto}
   </header>
   <section class="cards" aria-label="Privacy at a glance">
     <article class="card">
-      <h3>Who can see your records?</h3>
-      <p>People you authorize can see what you share. A limited group of N1 staff may access records for support, maintenance, or security incidents. If your clinic manages the record, it sets the access rules.</p>
+      <h2>Who can see your records?</h2>
+      <p>People you authorize can see what you share. A limited group of N1 staff, including our team in Malaysia, may access records for support, maintenance, or incident response, and only inside N1’s systems. If your clinic manages the record, it sets the access rules.</p>
     </article>
     <article class="card">
-      <h3>What does AI see?</h3>
-      <p>AI providers may receive relevant records or excerpts to answer a question or draft a report. Our providers process that information for us. They can’t use patient data to train general-purpose models.</p>
+      <h2>What does AI see?</h2>
+      <p>Only two AI providers, OpenAI and Google (Vertex AI), receive records or excerpts, to answer a question or draft a report. Both work for N1 under a business associate agreement (BAA). N1 doesn’t keep the text of AI requests in its logs, and doesn’t use patient data to train AI models.</p>
     </article>
     <article class="card">
-      <h3>What happens if you delete?</h3>
-      <p>You can remove individual files or delete your account in Settings. Account deletion stops sign-in access. Deletion from backups can take longer, and legal or security records may be retained where required or permitted.</p>
+      <h2>What happens if you delete?</h2>
+      <p>You can remove individual files or delete your account in Settings. Sign-in stops at once. N1 then deletes your files in every region, your database records, and your sign-in identity. Encrypted backups can take longer, and legal or security records may be kept where required or permitted.</p>
     </article>
   </section>
   <section class="controls" aria-labelledby="controls-title">
@@ -104,16 +105,18 @@ footer span{margin-right:auto}
   <section class="data-use" aria-labelledby="data-use-title">
     <h2 id="data-use-title">From upload to report</h2>
     <dl class="rows">
-      <div><dt>When you upload a file</dt><dd>We read the document to organize information such as results, dates, and units, and connect findings to their source when available. Records are encrypted as they travel and while they’re stored.</dd></div>
-      <div><dt>When you use the app</dt><dd>We collect account, device, sign-in, and activity information to run the service, manage billing, and investigate security problems. We don’t sell patient data, disclose it to data brokers, or use it for targeted ads.</dd></div>
+      <div><dt>When you upload a file</dt><dd>We read the document to organize information such as results, dates, and units, and connect findings to their source when available. Records are encrypted as they travel and while they’re stored, and storage is never publicly accessible.</dd></div>
+      <div><dt>When you use the app</dt><dd>We collect account, device, sign-in, and activity information to run the service, manage billing, and investigate security problems. Health records are treated separately: we don’t sell patient data, use it for targeted ads, or disclose it to data brokers.</dd></div>
       <div><dt>When you share a report</dt><dd>You share the report you choose. For example, you can send a password-protected link that expires after an appointment. Turning the link off stops future access through that link. Anyone who already saved a copy can still have it.</dd></div>
-      <div><dt>Where your information goes</dt><dd>The Trust Centre describes six possible regions for uploaded files and says databases and logs are hosted in the US. File storage, databases, and AI processing can be in different places. <a href="https://trust.n1.care/#regions">See storage regions</a> or contact N1 to confirm what applies to your account.</dd></div>
+      <div><dt>Where your information goes</dt><dd>You choose where your uploaded files are stored when you register: the US, the EU (Frankfurt), the UK (London), Singapore, India (Mumbai), or Australia (Sydney). You can’t change this later. Your database records and logs are stored in the US for every account, and AI providers process requests in their own locations. <a href="https://trust.n1.care/#regions">See storage regions</a></dd></div>
+      <div><dt>Who else handles your data</dt><dd>Google Cloud hosts the platform. OpenAI and Google Vertex AI run the AI features. Cloudflare protects network traffic but doesn’t store its content. Stripe handles billing and receives no health data. <a href="https://trust.n1.care/documents/n1-subprocessor-baa-register.pdf">See the Subprocessor Register</a></dd></div>
     </dl>
   </section>
   <section class="questions" aria-labelledby="privacy-questions">
     <h2 id="privacy-questions">Common privacy questions</h2>
     <details><summary>Does deleting an uploaded file also delete the information extracted from it?</summary><p>Your original upload and the information extracted into your record are separate. Check the deletion options for each, or contact N1 if you want help removing both.</p></details>
     <details><summary>What happens if I connect an outside AI assistant?</summary><p>The assistant can request information within the permissions you grant. Its provider handles what it receives under its own privacy terms. You can disconnect N1 in the assistant’s settings.</p></details>
+    <details><summary>Is my data covered by HIPAA?</summary><p>If your clinic manages your record, N1 works for the clinic under its agreement: a HIPAA business associate agreement (BAA) in the US, or a data processing addendum (DPA) under GDPR in the EU, UK, and Switzerland. If you signed up yourself, N1 follows the FTC Health Breach Notification Rule. If a breach affects your data, we tell you within 60 days of finding it.</p></details>
     <details><summary>How do I get a copy or correct a record?</summary><p>Use the export options in your personal account, or contact N1 for help accessing or correcting your information. If a clinic manages your record, start with that clinic.</p></details>
   </section>
   <section class="contact" aria-labelledby="privacy-contact">
@@ -121,7 +124,7 @@ footer span{margin-right:auto}
     <p>N1 Research, LLC handles privacy questions and requests for personal accounts. You can ask for access, a correction, or deletion. Please keep lab reports and other health records out of ordinary email.</p>
     <div class="hero-links">
       <a class="button" href="https://n1.care/contact">Contact N1</a>
-      <a href="mailto:security@n1.care">security@n1.care</a>
+      <a href="mailto:security@n1.care">Report a security concern: security@n1.care</a>
     </div>
   </section>
 </main>
