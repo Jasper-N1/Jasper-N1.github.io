@@ -1660,7 +1660,7 @@ if (LITE) document.documentElement.classList.add("lite");
     if (index === 0 && slot && slot.height) {
       const initialBlue = blue.top - fsR.top;
       const handoffTop = Math.min(height * .85, initialBlue - height * .12);
-      const distance = height * .65;
+      const distance = height * .9;
       const target = Math.max(0, Math.min(1, (handoffTop - blue.top) / distance));
       const initialCenter = slot.top - fsR.top + slot.height / 2;
       const heroSize = slot.height / .94;
