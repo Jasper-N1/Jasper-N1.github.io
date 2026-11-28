@@ -1,6 +1,6 @@
   :root { --bar: clamp(64px, 6vw, 96px); --edge: clamp(16px, 3.3vw, 64px); }
   .bar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; gap: 16px; height: var(--bar); padding: 0 max(clamp(20px, 3.3vw, 64px), calc((100% - 1200px) / 2));
-    background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); -webkit-font-smoothing: antialiased; }
   .logo { font-weight: 500; font-size: clamp(18px, 1.45vw, 24px); letter-spacing: -.03em; white-space: nowrap; text-decoration: none; }
   .logo .c { color: var(--blue); }
   .bar .sign { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 clamp(18px, 1.5vw, 26px);
