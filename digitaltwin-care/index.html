@@ -809,14 +809,33 @@
 
   .capture-readings.capture-intake { position:absolute; z-index:1; left:var(--edge); top:28%; width:min(46%,570px); }
   .intake-caption { margin:0 0 8px; font:500 10px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:#575c57; }
-  .intake-cards { display:grid; gap:8px; }
-  .intake-card { --intake-accent:#3c7872; display:grid; grid-template-columns:50px minmax(0,1fr);
-    gap:12px; align-items:center; min-width:0; padding:10px 12px; border:1px solid #d4dbd1;
+  .intake-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .intake-card.intake-primary { grid-column:1/-1; display:block; padding:clamp(11px,1.4vw,18px);
+    background:#edf1eb; border-color:#b0c7c0; }
+  .intake-primary .intake-stages { margin:0 0 9px; padding-bottom:7px; border-bottom:1px solid #bed0c9; }
+  .intake-document-flow { display:grid; grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr); gap:8px; align-items:stretch; }
+  .intake-sheet,.intake-extracted { position:relative; min-width:0; padding:clamp(6px,1.2vw,13px); border-radius:5px; }
+  .intake-sheet { overflow:hidden; border:1px solid #c6d2cb; background:#fffdf5; }
+  .intake-extracted { border:1px solid #afc9c2; background:#e3eee8; }
+  .intake-document-flow > span { align-self:center; text-align:center; color:#557d78; }
+  .intake-field { display:block; margin:0 0 5px; font:500 9px/1.2 var(--mono); text-transform:uppercase; color:#41615b; }
+  .intake-sheet .intake-title { overflow-wrap:anywhere; }
+  .intake-sheet .intake-source-line { display:block; width:76%; height:3px; margin-top:6px; border-radius:2px; background:#d7e0d8; }
+  .intake-sheet mark { display:block; width:fit-content; margin-top:6px; padding:2px 4px; background:#dfebe6; color:#334d46; font:500 10px/1.2 var(--mono); }
+  .intake-primary[data-phase="0"] .intake-sheet::after { content:""; position:absolute; inset:8px 4px auto; height:1px;
+    background:#0096ac; box-shadow:0 0 6px #0096ac88; animation:intake-paper-scan .8s ease-in-out infinite alternate; }
+  .intake-primary[data-phase="1"] .intake-sheet mark { background:#c4e4dd; }
+  .intake-primary[data-phase="1"] .intake-extracted .intake-result { animation:intake-extract .5s ease-out; }
+  .intake-primary[data-phase="2"] .intake-extracted { background:#d4e9df; }
+  .intake-primary[data-phase="2"] .intake-label-ready::before { content:"✓ "; }
+  @keyframes intake-paper-scan { to { transform:translateY(43px); } }
+  .intake-card { --intake-accent:#3c7872; display:grid; grid-template-columns:35px minmax(0,1fr);
+    gap:7px; align-items:center; min-width:0; padding:8px 9px; border:1px solid #d4dbd1;
     border-radius:8px; background:#f8f8f0f2; }
   .intake-card[data-kind="record"] { --intake-accent:#006b92; background:#eef5f4fa; border-color:#aac7c9; }
   .intake-card[data-kind="workout"] { --intake-accent:#82653e; }
   .intake-card[data-kind="photo"] { --intake-accent:#70618d; }
-  .intake-art { width:44px; height:44px; position:relative; display:grid; place-items:center; overflow:hidden;
+  .intake-art { width:32px; height:32px; position:relative; display:grid; place-items:center; overflow:hidden;
     border-radius:6px; border:1px solid currentColor; color:var(--intake-accent); }
   .intake-art svg { width:27px; height:27px; display:block; }
   .intake-title { margin:0; color:var(--ink); font:600 clamp(13px,1.15vw,16px)/1.2 var(--sans); }
@@ -843,12 +862,14 @@
   @media(max-width:800px){
     .capture-readings.capture-intake { left:var(--g); right:var(--g); top:auto; bottom:4%; width:auto; }
     .intake-cards { gap:5px; }
-    .intake-card { grid-template-columns:38px minmax(0,1fr); gap:8px; padding:6px 8px; }
-    .intake-art { width:33px; height:33px; }
+    .intake-card:not(.intake-primary) { grid-template-columns:24px minmax(0,1fr); gap:5px; padding:5px; }
+    .intake-card:not(.intake-primary) .intake-stages { gap:1px 3px; font-size:8px; }
+    .intake-card:not(.intake-primary) .intake-stages li+li::before { margin-right:3px; }
+    .intake-art { width:24px; height:24px; }
     .intake-art svg { width:22px; height:22px; }
     @keyframes intake-scan { to { transform:translateY(21px); } }
   }
-  @media(prefers-reduced-motion:reduce){ .intake-card .intake-art::after,.intake-card .intake-art svg { animation:none !important; } }
+  @media(prefers-reduced-motion:reduce){ .intake-card .intake-art::after,.intake-card .intake-art svg,.intake-primary .intake-sheet::after,.intake-primary .intake-extracted .intake-result { animation:none !important; } }
 
   /* ---- full-screen scene: you, and your twin beside you ---- */
   .fs { position: relative; z-index: 1; height: 160vh !important; min-height: 0 !important; overflow: visible !important; background: var(--bg); cursor: auto; }
@@ -2087,10 +2108,10 @@ if (LITE) document.documentElement.classList.add("lite");
   let capOn = false, capRaf = 0, capLast = 0, intakeTime = 0, intakeBatch = 0;
   const captureFlights = [], captureFocus = new Map();
   const captureBatches = [
-    [["record","Lab report · PDF","Lipid panel · LDL 2.98 mmol/L","heart"],["sync","Wearable","Resting heart rate · 53 bpm","heart"],["photo","Meal photo","Lunch photo · stored with meal log","gut"]],
-    [["record","Clinic letter · PDF","Follow-up · blood pressure review","arm"],["record","Imaging report · PDF","MRI · knee meniscus finding","knee"],["workout","Exercise log","Walk · 42 minutes","legs"]],
-    [["record","Lab report · scanned page","Kidney panel · creatinine 119.4 µmol/L","kidneys"],["record","Prescription · PDF","Medication and dose recorded","liver"],["sync","Sleep tracker","Sleep duration · 6 h 40 min","nerves"]],
-    [["record","Spirometry report · PDF","Lung function · FEV1 3.9 L","lungs"],["photo","Meal photo","Breakfast photo · stored with meal log","gut"],["workout","Strength training","Dumbbell session · logged","shoulder"]]
+    [["record","Lab report · PDF","Lipid panel · LDL 2.98 mmol/L","heart","LDL cholesterol","2.98 mmol/L"],["sync","Wearable","Resting heart rate · 53 bpm","heart"],["photo","Meal photo","Lunch photo · stored with meal log","gut"]],
+    [["record","Clinic letter · PDF","Follow-up · blood pressure review","arm","Follow-up topic","Blood pressure review"],["record","Imaging report · PDF","MRI · knee meniscus finding","knee"],["workout","Exercise log","Walk · 42 minutes","legs"]],
+    [["record","Lab report · scanned page","Kidney panel · creatinine 119.4 µmol/L","kidneys","Creatinine","119.4 µmol/L"],["record","Prescription · PDF","Medication and dose recorded","liver"],["sync","Sleep tracker","Sleep duration · 6 h 40 min","nerves"]],
+    [["record","Spirometry report · PDF","Lung function · FEV1 3.9 L","lungs","FEV1","3.9 L"],["photo","Meal photo","Breakfast photo · stored with meal log","gut"],["workout","Strength training","Dumbbell session · logged","shoulder"]]
   ];
   const intakeTypes = {
     record:{input:"Reading the document…",steps:["Parse","Extract","Add"],path:"M6 3h8l4 4v14H6z M14 3v5h4 M9 11h6m-6 4h6m-6 3h4"},
@@ -2127,10 +2148,20 @@ if (LITE) document.documentElement.classList.add("lite");
       top: cur.top - .47 * cur.size - .019 * height};
   }
   function setIntakeBatch(batch, still = false) {
-    intakeCards.innerHTML = captureBatches[batch].map(([kind,title,result]) => {
+    intakeCards.innerHTML = captureBatches[batch].map(([kind,title,result,,field,value],i) => {
       const {steps,path,input} = intakeTypes[kind];
       const phase = still ? 2 : 0;
       const labels = steps.map((label,i) => `<li${i===phase?' aria-current="step"':''}>${label}</li>`).join("");
+      if (i===0) return `<article class="intake-card intake-primary" data-kind="record" data-phase="${phase}">
+        <ol class="intake-stages">${labels}</ol>
+        <div class="intake-document-flow">
+          <div class="intake-sheet"><span class="intake-field">Source document</span><h3 class="intake-title">${title}</h3>
+            <span class="intake-source-line" aria-hidden="true"></span><mark>${field} · ${value}</mark></div>
+          <span aria-hidden="true">→</span>
+          <div class="intake-extracted"><span class="intake-field intake-label-ready">${still ? "Added to the twin" : "Reading the page"}</span>
+            <p class="intake-result">${still ? field+" · "+value : "Locating the result…"}</p></div>
+        </div>
+      </article>`;
       return `<article class="intake-card" data-kind="${kind}" data-phase="${phase}"><div class="intake-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg></div><div><h3 class="intake-title">${title}</h3><p class="intake-result">${still ? result : input}</p><ol class="intake-stages">${labels}</ol></div></article>`;
     }).join("");
   }
@@ -2147,7 +2178,13 @@ if (LITE) document.documentElement.classList.add("lite");
       const phase=elapsed<1.05 ? 0 : elapsed<2.25 ? 1 : 2;
       if (Number(row.dataset.phase)===phase) return;
       row.dataset.phase=phase;
-      if (phase===(row.dataset.kind==="photo" ? 2 : 1)) row.querySelector(".intake-result").textContent=captureBatches[intakeBatch][i][2];
+      const record=captureBatches[intakeBatch][i];
+      if (i===0) {
+        row.querySelector(".intake-label-ready").textContent=phase===1 ? "Extracted reading" : "Added to the twin";
+        row.querySelector(".intake-result").textContent=record[4]+" · "+record[5];
+      } else if (phase===(row.dataset.kind==="photo" ? 2 : 1)) {
+        row.querySelector(".intake-result").textContent=record[2];
+      }
       row.querySelector("[aria-current]").removeAttribute("aria-current");
       row.querySelectorAll("li")[phase].setAttribute("aria-current","step");
       if (phase===2) captureFlights.push({start:now,row,region:captureBatches[intakeBatch][i][3],travel:560});
