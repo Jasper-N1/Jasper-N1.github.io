@@ -100,11 +100,19 @@
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 27px; }
   .action { display: inline-flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 20px; border-radius: 999px; background: var(--deep); color: #fffaf0; font: 600 15px var(--sans); text-decoration: none; }
   .action:hover { background: var(--deep-hover); }
-  .text-link { min-height: 44px; display: inline-flex; align-items: center; text-underline-offset: 4px; font-size: var(--fs-body); }
-  .benefits { margin: 0; padding: clamp(22px, 4.2vw, 68px); list-style: none; background: var(--mist); align-content: center; display: grid; }
-  .benefits li { display: flex; gap: 13px; padding: 12px 0; border-bottom: 1px solid #224d5530; color: #173641; font: 400 clamp(15px, 1.2vw, 19px)/1.35 var(--sans); }
-  .benefits li:last-child { border-bottom: 0; }
-  .benefits li::before { content: "✓"; flex: 0 0 16px; color: var(--deep); font-weight: 700; }
+  .contact { display: grid; align-content: center; gap: 16px; padding: clamp(22px, 4.2vw, 68px); background: var(--mist); color: #173641; }
+  .contact h3 { margin: 0; font: 400 clamp(24px, 2.2vw, 34px)/1.1 var(--serif); letter-spacing: -.02em; }
+  .contact form { display: grid; gap: 14px; }
+  .contact label { display: grid; gap: 6px; font: 500 14px var(--sans); }
+  .contact input, .contact textarea { width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid #224d5540; border-radius: 6px; background: #fffcf2; color: var(--ink); font: 400 16px/1.4 var(--sans); }
+  .contact textarea { min-height: 120px; resize: vertical; }
+  .contact input:focus-visible, .contact textarea:focus-visible { outline: 2px solid var(--deep); outline-offset: 1px; }
+  .contact .note { margin: 0; font-size: 13px; line-height: 1.4; color: #173641b3; }
+  .contact button { justify-self: start; border: 0; cursor: pointer; }
+  .contact button:disabled { opacity: .6; cursor: default; }
+  .contact .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .contact .status { margin: 0; min-height: 1.4em; font-size: 14px; }
+  .contact .status a { color: inherit; }
 
   /* footer, as on the home page */
   .foot { position: relative; overflow: hidden; padding: var(--space) var(--edge) 28px; background: var(--blue); color: #fff; }
@@ -235,15 +243,20 @@
         <h2 id="ch">AI that makes health more human. <em>Start for free.</em></h2>
         <div class="actions">
           <a class="action" href="index.html#s6">Build my free twin <span aria-hidden="true">→</span></a>
-          <a class="text-link" href="https://n1.care/contact">Talk to the team</a>
         </div>
       </div>
-      <ul class="benefits" aria-label="What we stand for">
-        <li>Every finding links back to its source record</li>
-        <li>See how your health changes as you add new data</li>
-        <li>Your data is encrypted and never sold</li>
-        <li>Share only what you choose, with whom you choose</li>
-      </ul>
+      <div class="contact">
+        <h3 id="contact-h">Questions? Contact us.</h3>
+        <form id="contact-form" aria-labelledby="contact-h">
+          <label>Name<input name="name" type="text" autocomplete="name" maxlength="200" required></label>
+          <label>Email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+          <label>Message<textarea name="message" rows="4" maxlength="4000" required></textarea></label>
+          <p class="note">Do not add health records or other medical details.</p>
+          <div class="hp" aria-hidden="true"><label>Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+          <button class="action" type="submit">Send message</button>
+          <p class="status" id="contact-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </div>
   </section>
 </main>
@@ -277,6 +290,37 @@
   aboutVideo.addEventListener("playing", () => { aboutVideo.classList.add("is-playing"); });
   reducedMotion.addEventListener("change", event => { if (event.matches) aboutVideo.pause(); });
   if (!reducedMotion.matches) playAboutVideo();
+</script>
+<script>
+  // Contact form: posts to the N1 contact API, the same endpoint as the n1.care contact page.
+  const contactForm = document.getElementById("contact-form");
+  const contactStatus = document.getElementById("contact-status");
+  contactForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const fields = new FormData(contactForm);
+    const value = name => String(fields.get(name) || "").trim();
+    const button = contactForm.querySelector("button");
+    button.disabled = true;
+    contactStatus.textContent = "Sending your message.";
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    try {
+      const response = await fetch("https://api.n1.care/support/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: value("name"), email: value("email"), type: "individual", message: `Source: digitaltwin.care About page\n\n${value("message")}`, website: value("website") }),
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error(`Contact request failed with ${response.status}`);
+      contactForm.reset();
+      contactStatus.textContent = `Thank you. We will reply to ${value("email")}.`;
+    } catch (_error) {
+      contactStatus.innerHTML = 'We could not send your message. Try again, or email <a href="mailto:longevity@n1.care">longevity@n1.care</a>.';
+    } finally {
+      clearTimeout(timeout);
+      button.disabled = false;
+    }
+  });
 </script>
 <script src="site-menu.js" defer></script>
 </body>
