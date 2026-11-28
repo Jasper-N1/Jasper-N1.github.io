@@ -108,7 +108,8 @@
   .contact textarea { min-height: 120px; resize: vertical; }
   .contact input:focus-visible, .contact textarea:focus-visible { outline: 2px solid var(--deep); outline-offset: 1px; }
   .contact .note { margin: 0; font-size: 13px; line-height: 1.4; color: #173641b3; }
-  .contact button { justify-self: start; border: 0; cursor: pointer; }
+  .contact button { justify-self: end; border: 1.5px solid #173641; background: transparent; color: #173641; cursor: pointer; transition: background .2s, color .2s; }
+  .contact button:hover { background: #173641; color: var(--mist); }
   .contact button:disabled { opacity: .6; cursor: default; }
   .contact .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .contact .status { margin: 0; min-height: 1.4em; font-size: 14px; }
