@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Kevin Wimer · digital twin.care</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz@6..72&display=swap">
+<link rel="stylesheet" href="site-menu.css?v=3">
+<link rel="stylesheet" href="examples-kevin.css">
+<script src="kevin-data/snapshot.js" defer></script>
+<script src="examples-kevin.js" defer></script>
+<script src="site-menu.js" defer></script>
+</head>
+<body>
+<nav class="bar" aria-label="Main navigation">
+  <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
+  <button class="primary-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation">Menu</button>
+  <ul class="primary-links" id="primary-menu">
+    <li><a href="examples.html" aria-current="page">Examples</a></li>
+    <li><a href="pricing.html">Pricing</a></li><li><a href="about.html">About</a></li><li><a href="privacy.html">Privacy</a></li>
+  </ul>
+  <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> →</a>
+</nav>
+<div class="shell">
+  <aside class="rail">
+    <details class="subject">
+      <summary><img src="https://kevinwimer.com/images/kevin-wimer-320.webp" width="34" height="34" alt=""><span>Kevin</span><span aria-hidden="true">⌄</span></summary>
+      <a href="examples.html">Jasper</a>
+      <a href="examples-kevin.html" aria-current="page">Kevin</a>
+      <a href="examples.html#jy">JY</a>
+    </details>
+    <nav aria-label="Kevin’s record">
+      <a href="#overview">Overview</a><a href="#model">Explore the twin</a><a href="#timeline">Care timeline</a><a href="#imaging">Imaging</a><a href="#molecular">Biopsies &amp; molecular findings</a><a href="#labs">Lab markers</a><a href="#sources">Sources &amp; downloads</a>
+    </nav>
+  </aside>
+  <main>
+    <section id="overview">
+      <div class="hero">
+        <div><p class="kicker">Public health record · Kevin Wimer</p><h1>Kevin, <em>in data.</em></h1><p class="lede">A dated view of Kevin’s experience with ALK-positive lung adenocarcinoma, connecting his care timeline with scans, biopsy findings, and lab readings.</p><a href="https://kevinwimer.com/cancer/resources/my-cancer-story/story/">Read Kevin’s account ↗</a></div>
+        <img src="https://kevinwimer.com/images/kevin-wimer-320.webp" width="320" height="320" alt="Kevin Wimer">
+      </div>
+      <dl class="overview-stats"><div><dt>Public lab observations</dt><dd id="lab-count">1,881</dd></div><div><dt>Documented events</dt><dd>36</dd></div><div><dt>CTs with public slices</dt><dd>5</dd></div><div><dt>Published sample summaries</dt><dd>5</dd></div></dl>
+      <article class="panel status">
+        <p class="kicker">Kevin’s status update · 23 November 2026</p>
+        <h2>Where the record stood</h2>
+        <p>Kevin was diagnosed in July 2024 with stage IV ALK-positive lung adenocarcinoma after a left pleural effusion. His 22 September 2026 CT was reported stable compared with August. A further CT was scheduled for 24 November. Its result is outside this snapshot.</p>
+        <a href="https://kevinwimer.com/cancer/resources/my-cancer-story/timeline/">View Kevin’s dated update ↗</a>
+      </article>
+    </section>
+    <section id="model" class="kevin-twin" aria-label="Explore Kevin’s twin">
+      <div class="twin-views" role="group" aria-label="Anatomy view">
+        <button type="button" data-model-view="body" aria-pressed="true">Full body</button>
+        <button type="button" data-model-view="lungs" aria-pressed="false">Lungs &amp; pleura</button>
+      </div>
+      <div class="twin-layout">
+        <div class="twin-stage" data-view="body">
+          <svg id="twin-camera" viewBox="-60 -24 620 1392" role="img" aria-label="Illustrative full-body anatomy">
+            <g class="twin-renders">
+              <image class="twin-render" data-render="body" href="examples-studio/twin-neutral.png" width="500" height="1344"/>
+              <image class="twin-render" data-render="lungs" href="examples-studio/twin-lungs-focus.png" width="500" height="1344"/>
+            </g>
+          </svg>
+        </div>
+        <div aria-live="polite">
+          <article class="panel twin-card" data-panel="body">
+            <p class="kicker">Kevin’s public record</p>
+            <h3>At a glance</h3>
+            <dl><div><dt>Diagnosis recorded</dt><dd>July 2024</dd></div><div><dt>Reported tumor finding</dt><dd>EML4-ALK</dd></div><div><dt>Latest public status update</dt><dd>23 Nov 2026</dd></div></dl>
+            <a href="#timeline">Explore the care timeline ↓</a>
+          </article>
+          <article class="panel twin-card" data-panel="lungs" hidden>
+            <p class="kicker">Chest · Public imaging and biopsy summaries</p>
+            <h3>Lungs &amp; pleura</h3>
+            <dl><div><dt>Initial finding · July 2024</dt><dd>Left pleural effusion</dd></div><div><dt>Tissue site · January 2026</dt><dd>Left lower lung lobe</dd></div><div><dt>Tissue site · July 2026</dt><dd>Left pleural nodule</dd></div><div><dt>CT · 22 September 2026</dt><dd>Reported stable versus August</dd></div></dl>
+            <a href="#imaging">Open Kevin’s CT viewer ↓</a>
+            <a href="#molecular">Compare the samples ↓</a>
+          </article>
+          <p class="fine twin-caption">Illustrative anatomy. Kevin’s own scans are in the imaging section.</p>
+        </div>
+      </div>
+    </section>
+    <section id="timeline">
+      <header><p class="kicker">Care timeline</p><h2>From diagnosis to follow-up</h2><p>Explore all 36 public events, or focus on one kind of activity.</p></header>
+      <div class="milestones">
+        <article class="panel"><small>August 2024</small><h3>Alectinib</h3><p>Kevin’s first ALK-directed treatment.</p></article>
+        <article class="panel"><small>February–March 2026</small><h3>Focused radiation</h3><p>SBRT to an area in the left lower lung, 50 Gy across five sessions.</p></article>
+        <article class="panel"><small>20 July 2026</small><h3>Lorlatinib</h3><p>Kevin reports switching after progression on alectinib.</p></article>
+      </div>
+      <div class="panel">
+        <div class="controls"><label>Event category<select id="event-category"></select></label><label class="check"><input type="checkbox" id="milestones-only"> Turning points only</label><span id="event-count" class="fine" aria-live="polite"></span></div>
+        <ol id="events" class="events"></ol>
+      </div>
+      <details class="panel activity"><summary>MyChart activity totals</summary><dl class="overview-stats"><div><dt>Test-result entries</dt><dd>294</dd></div><div><dt>Visits</dt><dd>115</dd></div><div><dt>CT, MRI and PET studies</dt><dd>23</dd></div><div><dt>Message-folder entries</dt><dd>379</dd></div></dl><p>July 2024 to October 2026. Kevin reports these activity counts separately from the public lab observation export.</p></details>
+    </section>
+    <section id="imaging">
+      <header><p class="kicker">Imaging</p><h2>Follow the scans</h2><p>Explore the published CT slices by study and imaging window. The images are served from Kevin’s site.</p></header>
+      <div class="panel imaging">
+        <div>
+          <div class="controls"><label>Study<select id="study"></select></label><label>Series<select id="series"></select></label></div>
+          <canvas id="scan" width="560" height="400" role="img" aria-label="Selected CT slice"></canvas>
+          <div class="controls slice-controls"><button id="previous-slice" type="button" aria-label="Previous slice">‹</button><label>Slice<input type="range" id="slice" min="1" max="1" value="1"></label><button id="next-slice" type="button" aria-label="Next slice">›</button><output id="slice-number"></output></div>
+        </div>
+        <div><h3 id="study-heading"></h3><p id="study-note"></p><div id="bookmarks" class="controls"></div><p id="scan-error" role="status" hidden></p><a href="https://kevinwimer.com/cancer/resources/my-cancer-story/imaging/">Open original imaging collection ↗</a><p class="fine">The 29 June 2026 PET/CT is also documented in Kevin’s timeline.</p></div>
+      </div>
+    </section>
+    <section id="molecular">
+      <header><p class="kicker">Pathology &amp; molecular findings</p><h2>What each sample could answer</h2><p>Compare the biopsy and blood summaries by date and specimen.</p></header>
+      <div class="findings">
+        <article class="panel"><h3>Recurring ALK finding</h3><p>EML4-ALK was reported in pleural fluid and blood at diagnosis, in January 2026 tumor RNA, and again in July 2026 blood.</p></article>
+        <article class="panel"><h3>July tissue had limits</h3><p>The pleural nodule supported selected protein stains. Tissue was insufficient for broad sequencing or the BRAF stain. MET protein staining and MET gene status are separate findings.</p></article>
+        <article class="panel"><h3>PD-L1 depends on the sample</h3><p>The 2024 pleural-fluid CPS and the later tissue TPS results use different scoring methods. The two tissue samples came from different sites.</p></article>
+      </div>
+      <div id="samples" class="panel"></div>
+      <details class="panel activity"><summary>Reported HLA class I typing</summary><div id="hla"></div></details>
+    </section>
+    <section id="labs">
+      <header><p class="kicker">Kettering Health via Health · snapshot 21 November 2026</p><h2>Lab markers</h2><p>Search the complete published observation export. Charts group exact numeric readings using the same test, code, and reported unit.</p></header>
+      <div class="panel">
+        <div class="controls">
+          <label>Search test or code<input type="search" id="lab-search" placeholder="e.g. creatinine"></label>
+          <label>Test<select id="lab-test"></select></label>
+          <label>Period<select id="lab-period"><option value="">All dates</option><option value="2024-07-01">Since July 2024</option><option value="2026-01-01">2026</option></select></label>
+        </div>
+        <div id="lab-chart" class="chart"></div>
+        <div class="table-scroll" tabindex="0" aria-label="Recorded lab values"><table><thead><tr><th>Date</th><th>Test</th><th>Reported result</th><th>Reported reference range</th><th>Code</th></tr></thead><tbody id="lab-rows"></tbody></table></div>
+        <div class="controls paging"><button id="prev-page" type="button">Previous</button><button id="next-page" type="button">Next</button><output id="lab-page" aria-live="polite"></output></div>
+      </div>
+    </section>
+    <section id="sources">
+      <header><p class="kicker">Provenance</p><h2>Sources &amp; downloads</h2><p>This example uses the material Kevin shared publicly. His original medical reports, correspondence and sequencing files remain private.</p></header>
+      <div class="panel source-links">
+        <a href="kevin-data/labs.json" download>Download all public lab observations · JSON</a>
+        <a href="kevin-data/public-record.json" download>Download the compiled timeline, sample summaries and imaging index · JSON</a>
+        <a href="https://kevinwimer.com/cancer/resources/my-cancer-story/">Kevin’s overview and source register ↗</a>
+        <a href="https://kevinwimer.com/cancer/resources/my-cancer-story/biopsies/">Kevin’s biopsy and blood-test summaries ↗</a>
+        <a href="https://kevinwimer.com/cancer/resources/my-cancer-story/labs/">Original lab explorer and export ↗</a>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

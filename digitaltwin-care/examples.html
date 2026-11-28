@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
 <link rel="stylesheet" href="site-menu.css?v=3">
+<script src="health-review.js"></script>
 <style>
 :root{
   --bg:#F3F2E9; --bg2:#EAE8DB; --ink:#1C1B17; --ink2:#5B594F; --ink3:#8F8C7F; --line:#D8D5C6;
@@ -52,21 +53,36 @@ section{position:relative}
 
 
 /* hero */
-#hero{padding:clamp(30px,5vw,68px) 0 clamp(40px,5vw,72px)}
-.hero-grid{display:grid;gap:clamp(16px,2.2vw,28px)}
-.hero-visual{min-width:0}
-.hero-portrait{display:block;width:100%;height:auto}
-@media(min-width:901px){.hero-visual{width:min(100%,max(560px,calc((100svh - 270px) * 1.28)));justify-self:center}}
-.hero-biomarkers,.tags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.tags{grid-template-columns:repeat(2,minmax(0,1fr));grid-column:span 2}
-.tag{min-width:0;padding:10px 12px;border:var(--hair-soft);border-radius:8px;background:#fffdf8}
-.tag .k{color:var(--ink2);letter-spacing:.04em}
-.tag .v{font:400 clamp(22px,2.1vw,30px)/1.05 var(--serif);margin-top:4px}
-.tag .v small{font:400 11px var(--sans);color:var(--ink2);margin-left:4px}
-.tag .s{font-size:11.5px;color:var(--ink2);margin-top:4px}
-.tag .s.f{color:#a63d29}
-@media(max-width:600px){.hero-biomarkers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.examples-cover{height:calc(100svh - var(--bar));overflow:hidden;background:#ded2c6}
+.hero-portrait{display:block;width:100%;height:100%;object-fit:cover;object-position:54% 14%;transform:scale(1.075)}
+body[data-example="jy"] .examples-cover{display:none}
+.example-tools{transition:opacity .24s ease,visibility .24s}
+body[data-cover-visible]:not([data-example="jy"]) .example-tools{opacity:0;visibility:hidden;pointer-events:none}
+@media(max-width:700px){
+  .examples-cover{height:auto;aspect-ratio:5/4}
+  .hero-portrait{object-position:center}
+}
+@media(prefers-reduced-motion:reduce){.example-tools{transition:none}}
 
+#health-summary{padding-top:14px}
+.health-snapshot{padding-top:7px}
+.health-snapshot h2{font-size:clamp(27px,3.5vw,42px);line-height:1.1;margin:0 0 12px}
+.snapshot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.snapshot-panel{min-width:0;padding:clamp(13px,2vw,22px);border:var(--hair-soft);border-radius:10px;background:var(--paper)}
+.snapshot-panel-head{display:flex;justify-content:space-between;gap:6px 14px;align-items:baseline;flex-wrap:wrap;margin-bottom:9px}
+.snapshot-panel-head h3{margin:0;font-size:clamp(23px,3vw,33px)}
+.snapshot-panel-head a{color:var(--action);font-size:12px;text-underline-offset:3px}
+.snapshot-reading{width:100%;display:grid;grid-template-columns:minmax(75px,1.2fr) minmax(65px,.65fr) minmax(76px,1fr);align-items:center;gap:4px 12px;min-height:70px;padding:9px 0;font:inherit;text-align:left;border:0;border-top:var(--hair-soft);color:var(--ink);background:none;cursor:pointer;text-decoration:none}
+.snapshot-reading:hover strong{text-decoration:underline;text-underline-offset:3px}
+.snapshot-reading:focus-visible{outline:2px solid var(--action);outline-offset:2px}
+.snapshot-reading strong{display:block;font-size:14px;font-weight:600}
+.snapshot-context{display:block;margin-top:2px;color:var(--ink2);font-size:11px}
+.snapshot-context.outside{color:#9d3a27}
+.snapshot-value{display:block;text-align:right;white-space:nowrap;font:400 clamp(23px,3vw,34px)/1 var(--serif)}
+.snapshot-value small{display:block;margin-top:2px;color:var(--ink2);font:11px var(--sans)}
+.snapshot-reading svg{display:block;width:100%;height:auto;max-height:40px}
+@media(max-width:800px){.snapshot-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:410px){.snapshot-reading{grid-template-columns:minmax(75px,1fr) minmax(52px,.55fr) minmax(73px,.8fr);gap:5px}.snapshot-panel-head h3{font-size:23px}}
 
 .day-close{position:sticky;top:0;height:0;z-index:2;display:flex;justify-content:flex-end;padding:0 12px}
 .day-close button{margin-top:12px;width:40px;height:40px;border:var(--hair);border-radius:50%;background:var(--paper);color:var(--ink);font:400 25px/1 var(--sans);cursor:pointer}
@@ -98,6 +114,7 @@ section{position:relative}
 .model-stage{grid-column:2;grid-row:2;min-width:0;min-height:0;overflow:hidden}
 .model-readings{grid-column:3;grid-row:2;align-self:start;max-height:100%;min-width:0;overflow:auto}
 .model-stage svg{display:block;width:100%;height:100%}
+.model-stage:has(.model-frame[data-active]:not(#model-body)) svg{mask-image:linear-gradient(to bottom,#000 calc(100% - 24px),transparent)}
 .model-selectors{grid-column:1/-1;grid-row:1;display:flex;justify-content:safe center;gap:6px;overflow-x:auto;padding:3px}
 .model-selectors button{flex:none;font:inherit;font-size:13px;padding:7px 11px;background:var(--paper);color:var(--ink);border:var(--hair);border-radius:999px;cursor:pointer}
 .model-selectors button[aria-pressed="true"]{background:var(--action);border-color:var(--action);color:#fff}
@@ -138,6 +155,29 @@ section{position:relative}
 }
 @media(prefers-reduced-motion:reduce){.model-frame{transition:none}}
  
+/* comprehensive health review */
+#health-review .sechead{margin-bottom:24px}
+.review-nav,.review-chapters,.review-links{display:flex;flex-wrap:wrap;gap:7px}
+.review-nav{margin-bottom:10px}
+.review-nav button,.review-chapters button{border:var(--hair);background:var(--paper);color:var(--ink);font:inherit;font-size:13px;min-height:36px;padding:6px 10px;border-radius:6px;cursor:pointer;text-align:left}
+.review-nav button[aria-pressed="true"],.review-chapters button[aria-pressed="true"]{background:var(--action);color:white;border-color:var(--action)}
+.review-layout{display:grid;grid-template-columns:minmax(150px,.35fr) minmax(0,1fr);gap:14px;align-items:start}
+.review-chapters{display:grid;gap:5px}
+.review-panel{min-width:0}
+.review-panel h3{font-size:clamp(27px,4vw,45px);line-height:1.05;margin:4px 0 8px}
+.review-question{color:var(--ink2);margin:0 0 15px;font-size:16px}
+.review-evidence{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:7px;margin:10px 0}
+.review-marker{display:block;text-align:left;padding:8px;background:#edf2ed;border:var(--hair-soft);border-radius:6px;color:var(--ink);font:inherit;cursor:pointer}
+.review-marker strong{display:block;color:var(--action);font-size:12px}
+.review-marker span{display:block;font-size:11px;color:var(--ink2)}
+.review-marker svg{display:block;width:100%;height:31px}
+.review-limits{margin-top:15px;border-top:var(--hair-soft);padding-top:10px}
+.review-limits summary{cursor:pointer;color:var(--action);font-size:14px;font-weight:600}
+.review-limits p{font-size:14px;color:var(--ink2);margin:8px 0}
+.review-links a{display:inline-block;color:var(--action);font-size:13px;text-underline-offset:3px}
+#health-review button:focus-visible,#health-review summary:focus-visible{outline:2px solid var(--action);outline-offset:2px}
+@media(max-width:720px){.review-layout{grid-template-columns:minmax(0,1fr)}.review-chapters{display:flex;flex-wrap:nowrap;overflow:auto;padding:3px}.review-chapters button{flex:0 0 auto;max-width:220px}}
+
 /* medical analysis */
 #medical-analysis .sechead{margin-bottom:26px}
  #patient-profile{padding:clamp(24px,4.4vw,62px) 0;border-top:var(--hair-soft);scroll-margin-top:80px}
@@ -619,7 +659,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
 @media(max-width:600px){.report-method ol{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
-<body>
+<body data-cover-visible>
 
 <nav class="bar" aria-label="Main navigation">
   <a class="logo" href="index.html"><span>digital twin</span><span class="c">.care</span></a>
@@ -633,6 +673,10 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   <a class="sign" href="index.html#s6"><span class="l">Build my free twin</span><span class="s">Build my twin</span> <span aria-hidden="true">→</span></a>
 </nav>
 
+<div class="examples-cover" id="examples-cover">
+      <img class="hero-portrait" src="jasper-digital-twin-portrait-neutral.png" width="1419" height="1108" alt="Jasper in a burgundy sweater standing beside his digital twin" fetchpriority="high" decoding="async">
+    </div>
+
 <div class="examples-layout">
 <aside class="example-tools" aria-label="Example navigation">
   <div class="example-choice">
@@ -645,6 +689,7 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
     </button>
     <div class="example-options" id="exampleOptions" role="group" aria-label="Example twins" hidden>
       <button class="example-option" type="button" data-twin="jasper" aria-pressed="true">Jasper <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button>
+      <button class="example-option" type="button" data-twin="kevin" aria-pressed="false">Kevin</button>
       <button class="example-option" type="button" data-twin="jy" aria-pressed="false">JY <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button>
     </div>
   </div>
@@ -655,7 +700,9 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
         <p class="example-tools-label" id="exampleGroup0">Overview</p>
         <ul>
           <li><a href="#patient-profile">Patient profile</a></li>
+          <li><a href="#health-summary">Health at a glance</a></li>
           <li><a href="#model">Explore the twin</a></li>
+          <li><a href="#health-review">Comprehensive health review</a></li>
           <li><a href="#medical-analysis">Medical analysis</a></li>
           <li><a href="#labs">Lab markers</a></li>
           <li><a href="#today">Daily overview</a></li>
@@ -712,18 +759,6 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
   </div>
 </section>
 
-<section id="hero" aria-label="Jasper’s digital twin and biomarkers">
-  <div class="wrap hero-grid">
-    <div class="hero-visual">
-      <img class="hero-portrait" src="jasper-digital-twin-portrait-neutral.png" width="1419" height="1108" alt="Jasper in a burgundy sweater standing beside his digital twin" fetchpriority="high" decoding="async">
-    </div>
-    <div class="hero-biomarkers" role="group" aria-label="Jasper’s biomarkers">
-      <div class="tags tags-left" id="tagsLeft"></div>
-      <div class="tags tags-right" id="tagsRight"></div>
-    </div>
-  </div>
-</section>
-
 <section id="patient-profile" aria-labelledby="patient-profile-title">
   <div class="wrap">
     <div class="profile-lead">
@@ -734,7 +769,9 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
       </div>
       <dl class="profile-facts">
         <div><dt>At assessment</dt><dd>39 years · Male · 190 cm</dd></div>
-        <div><dt>Daily context</dt><dd>Mostly seated work · 6–7 hours of sleep</dd></div>
+        <div><dt>Localisation</dt><dd>Kuala Lumpur area, Malaysia · Malaysia Time (UTC+8)</dd></div>
+        <div><dt>Background</dt><dd>Dutch · Engineering management · Mostly seated work</dd></div>
+        <div><dt>Typical sleep</dt><dd>6–7 hours per night · Self-reported</dd></div>
         <div><dt>Health history</dt><dd>Never smoked or drank alcohol · no regular medication</dd></div>
       </dl>
     </div>
@@ -758,9 +795,29 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
     </div>
 
     <details class="profile-detail">
-      <summary>Background and symptoms</summary>
+      <summary>Health background and daily routine</summary>
       <p>The health note records no known medication or food allergies and no known family history of early heart, metabolic, kidney or bowel disease. Jasper reports occasional calf cramps, low energy in some BJJ sessions and lower-back discomfort after prolonged sitting.</p>
+      <p><strong>Daily routine.</strong> The health note describes a plant-forward, lower-carbohydrate eating pattern and a return to Brazilian jiu-jitsu and Pilates in late August 2026, followed by strength training. Recorded supplement use has its own <a href="#supp">supplement history</a>.</p>
+      <p><strong>Sources.</strong> Background, symptoms and habits are self-reported. Lab results and weigh-ins come from N1. The wearable and glucose-sensor previews are labeled as simulated.</p>
     </details>
+  </div>
+</section>
+
+<section id="health-summary" class="sec" aria-label="Health at a glance">
+  <div class="wrap">
+    <div class="health-snapshot" aria-labelledby="snapshot-title">
+      <h2 id="snapshot-title">Health at a glance</h2>
+      <div class="snapshot-grid">
+        <div class="snapshot-panel">
+          <div class="snapshot-panel-head"><h3>Lab results &amp; weight</h3><a href="#medical-analysis">Medical analysis ↓</a></div>
+          <div id="snapshot-recorded"></div>
+        </div>
+        <div class="snapshot-panel">
+          <div class="snapshot-panel-head"><h3>Wearable signals</h3><a href="#wear">Sleep &amp; recovery ↓</a></div>
+          <div id="snapshot-wearables"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -786,6 +843,21 @@ button.report-source{background:none;border:0;padding:0;text-decoration:underlin
         </div>
         <div class="model-readings"></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="health-review" class="sec" aria-labelledby="health-review-title">
+  <div class="wrap">
+    <div class="sechead">
+      <div><div class="num"><b>00</b> Comprehensive review</div>
+      <h2 id="health-review-title">Inside Jasper’s <em>health record.</em></h2>
+      <p class="lede">Explore organ systems, biological processes and daily life. Each chapter connects to its evidence and explains what further data would clarify.</p></div>
+    </div>
+    <div class="review-nav" role="group" aria-label="Chapter category"></div>
+    <div class="review-layout">
+      <div class="review-chapters" role="group" aria-label="Chapters"></div>
+      <article class="card review-panel" aria-labelledby="review-chapter-title"></article>
     </div>
   </div>
 </section>
@@ -1759,24 +1831,47 @@ document.querySelectorAll(".reveal,.sechead,.card,.tile,.spotc,.gene,.meal,.log,
 
 /* ---------- counters ---------- */
 
-/* hero tags */
-const ldl = byName("LDL Cholesterol"), cre = byName("Creatinine"), ua = byName("Uric Acid"), vd = byName("25-Hydroxyvitamin D");
+/* Profile summary */
 const hrv7 = Math.round(avg(DAY.slice(-7).map(d => d.hrv))), rhr7 = Math.round(avg(DAY.slice(-7).map(d => d.rhr)));
-const TAGS = [
-  { side: "l", k: "Sleep · last night", v: T.sleep, u: "h", s: "Whoop · simulated" },
-  { side: "l", k: "Resting heart rate", v: rhr7, u: "bpm", s: "7-day avg · simulated" },
-  { side: "l", k: "Creatinine", v: cre.v, u: cre.unit, s: "Above " + cre.hi + " · 18 Nov", f: 1 },
-  { side: "l", k: "VO₂ max", v: T.vo2, u: "ml/kg/min", s: "Apple Watch · simulated" },
-  { side: "r", k: "LDL cholesterol", v: ldl.v, u: ldl.unit, s: "Above " + ldl.hi + " · 18 Nov", f: 1 },
-  { side: "r", k: "HRV", v: hrv7, u: "ms", s: "7-day avg · simulated" },
-  { side: "r", k: "Uric acid", v: ua.v, u: ua.unit, s: "Above " + ua.hi + " · 18 Nov", f: 1 },
-  { side: "r", k: "Weight", v: 81.9, u: "kg", s: "−6.2 kg since 1 Sep" }
-];
-TAGS.forEach(t => {
-  const tile = H("div", { class: "tag" }, `<div class="k">${t.k}</div><div class="v">${t.v}<small>${t.u}</small></div><div class="s${t.f ? " f" : ""}">${t.s}</div>`);
-  const column = $(t.side === "l" ? "tagsLeft" : "tagsRight");
-  column.appendChild(tile);
-});
+function snapshotReading(group, label, value, series, context, destination, outside = false) {
+  const item = H(destination.startsWith("#") ? "a" : "button", {class:"snapshot-reading"});
+  if (item.tagName === "A") item.href = destination;
+  else {
+    item.type = "button";
+    item.onclick = () => window.openLab(destination);
+  }
+  item.innerHTML = `<span><strong>${label}</strong><span class="snapshot-context${outside ? " outside" : ""}">${context}</span></span>
+    <svg></svg><span class="snapshot-value">${value}<small>${series.unit}</small></span>`;
+  spark(item.querySelector("svg"),series);
+  $(group).appendChild(item);
+}
+for (const [marker,label] of [["LDL Cholesterol","LDL cholesterol"],["Creatinine","Creatinine"],["Uric Acid","Uric acid"]]) {
+  const m = byName(marker);
+  const status = m.flag === "high" ? "Above " + m.hi : m.flag === "low" ? "Below " + m.lo : "Within lab range";
+  snapshotReading("snapshot-recorded",label,m.v,m,status + " · " + fd(m.date),marker,Boolean(m.flag));
+}
+const [snapshotWeightDate,snapshotWeight] = WEIGHT.at(-1);
+const weightChange = snapshotWeight - WEIGHT[0][1];
+snapshotReading("snapshot-recorded","Weight",snapshotWeight,{unit:"kg",pts:WEIGHT},
+  (weightChange < 0 ? "−" : "+") + fmt(Math.abs(weightChange)) + " kg since " + fd(WEIGHT[0][0]) + " · " + fd(snapshotWeightDate),"#body");
+function wearableSnapshot(label, unit, field, endpoint, link, rolling = false) {
+  const pts = DAY.slice(-14).map((day,index) => {
+    const end = DAY.length - 14 + index;
+    const value = rolling ? Math.round(avg(DAY.slice(end-6,end+1).map(d => d[field]))) : day[field];
+    return [day.d,value];
+  }).filter(([,value]) => Number.isFinite(value));
+  snapshotReading("snapshot-wearables",label,endpoint,{unit,pts},(rolling ? "7-day avg · " : "") + fd(T.d) + " · Simulated",link);
+}
+wearableSnapshot("Sleep · last night","h","sleep",T.sleep,"#wear");
+wearableSnapshot("Resting heart rate","bpm","rhr",rhr7,"#wear",true);
+wearableSnapshot("Heart rate variability","ms","hrv",hrv7,"#wear",true);
+wearableSnapshot("VO₂ max","ml/kg/min","vo2",T.vo2,"#vo2");
+
+const portraitCover = $("examples-cover");
+const coverObserver = new IntersectionObserver(([entry]) => {
+  document.body.toggleAttribute("data-cover-visible", entry.isIntersecting);
+}, {rootMargin: "-" + document.querySelector(".bar").offsetHeight + "px 0px 0px"});
+coverObserver.observe(portraitCover);
 
 const examplePicker = $("examplePicker");
 const exampleOptions = $("exampleOptions");
@@ -1797,6 +1892,7 @@ examplePicker.addEventListener("keydown", event => {
 });
 exampleChoices.forEach(choice => {
   choice.addEventListener("click", () => {
+    if (choice.dataset.twin === "kevin") { location.href = "examples-kevin.html"; return; }
     const changed = choice.getAttribute("aria-pressed") !== "true";
     document.body.dataset.example = choice.dataset.twin;
     const label = choice.textContent.trim();
@@ -1823,6 +1919,7 @@ exampleOptions.addEventListener("keydown", event => {
     : (index + (event.key === "ArrowDown" ? 1 : -1) + exampleChoices.length) % exampleChoices.length;
   exampleChoices[next].focus();
 });
+if (location.hash === "#jy") exampleOptions.querySelector('[data-twin="jy"]').click();
 const exampleChoice = examplePicker.parentElement;
 // Safari can blur a focused button before its click without focusing the clicked option.
 document.addEventListener("focusin", event => {
@@ -2086,6 +2183,57 @@ function openDrawer(m) {
   $("drawer").classList.add("on");
 }
 window.openLab = n => { const m = byName(n); if (m) openDrawer(m); };
+(() => {
+  const review = $("health-review");
+  const categories = review.querySelector(".review-nav");
+  const chapters = review.querySelector(".review-chapters");
+  const panel = review.querySelector(".review-panel");
+  if (!window.healthReview?.length) {
+    panel.textContent = "The health review could not load.";
+    return;
+  }
+  const choose = (container, values, callback) => {
+    const options = values.map(([label], index) => {
+      const button = H("button", {type:"button","aria-pressed":String(index === 0)},label);
+      button.onclick = () => {
+        options.forEach(item => item.setAttribute("aria-pressed",String(item === button)));
+        callback(index);
+      };
+      return button;
+    });
+    container.replaceChildren(...options);
+    callback(0);
+  };
+  const render = (category, chapter) => {
+    const [title,question,evidence,gap,hypothesis,markers,links] = chapter;
+    const name = H("h3",{id:"review-chapter-title"},title);
+    const intro = H("p",{class:"review-question"},question);
+    const observed = H("p",{},evidence);
+    const readings = H("div",{class:"review-evidence","aria-label":"Related measured markers"});
+    markers.forEach(marker => {
+      const m = byName(marker);
+      if (!m) return;
+      const button = H("button",{type:"button",class:"review-marker","aria-label":"Open recorded history for "+m.name},
+        `<strong>${m.name} ↗</strong><span>${m.v} ${m.unit} · ${fd(m.date)}</span><svg></svg>`);
+      button.onclick = () => openDrawer(m);
+      spark(button.querySelector("svg"),m);
+      readings.appendChild(button);
+    });
+    const related = H("div",{class:"review-links"});
+    for (const [label,href] of links) related.appendChild(H("a",{href},label+(href.startsWith("#") ? " ↓" : " ↗")));
+    const context = H("details",{class:"review-limits"});
+    context.append(H("summary",{},"Data gaps &amp; hypotheses"),
+      H("p",{}, "<strong>What’s missing.</strong> "+gap),
+      H("p",{}, "<strong>What could be explored next.</strong> "+hypothesis));
+    panel.replaceChildren(H("p",{class:"k"},category),name,intro,observed,readings,related,context);
+    if (!readings.childElementCount) readings.hidden = true;
+  };
+  choose(categories,window.healthReview,index => {
+    const [label,items] = window.healthReview[index];
+    choose(chapters,items,chapterIndex => render(label,items[chapterIndex]));
+  });
+})();
+
 document.querySelectorAll("[data-assessment-markers]").forEach(panel => {
   const markers = panel.dataset.assessmentMarkers.split("|").map(byName);
   const dates = [...new Set(markers.flatMap(m => m.pts.map(([date]) => date)))].sort();

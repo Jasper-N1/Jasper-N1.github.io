@@ -1,0 +1,497 @@
+{
+  "timeline": [
+    {
+      "id": "event-diagnosis",
+      "date": "2024-07",
+      "end": null,
+      "category": "diagnosis",
+      "milestone": true,
+      "title": "Diagnosed with lung cancer"
+    },
+    {
+      "id": "event-initial-ct",
+      "date": "2024-07-05",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Initial chest CT"
+    },
+    {
+      "id": "event-pleural-fluid",
+      "date": "2024-07-06",
+      "end": null,
+      "category": "test",
+      "milestone": false,
+      "title": "Pleural fluid drained and sampled"
+    },
+    {
+      "id": "event-baseline-ct",
+      "date": "2024-07-26",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-baseline-brain-mri",
+      "date": "2024-07-29",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Baseline brain MRI"
+    },
+    {
+      "id": "event-baseline-pet",
+      "date": "2024-07-29",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "PET/CT"
+    },
+    {
+      "id": "event-pleurx",
+      "date": "2024-07-31",
+      "end": null,
+      "category": "test",
+      "milestone": false,
+      "title": "PleurX catheter placed"
+    },
+    {
+      "id": "event-alectinib",
+      "date": "2024-08",
+      "end": "2026-07-20",
+      "category": "treatment",
+      "milestone": true,
+      "title": "Started alectinib"
+    },
+    {
+      "id": "event-ct-oct-2024",
+      "date": "2024-10-02",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-ct-jan-2025",
+      "date": "2025-01-07",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-ct-mar-2025",
+      "date": "2025-03-28",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-mri-mar-2025",
+      "date": "2025-03-28",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Brain MRI"
+    },
+    {
+      "id": "event-ct-jul-2025",
+      "date": "2025-07-08",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-ct-oct-2025",
+      "date": "2025-10-07",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-mri-oct-2025",
+      "date": "2025-10-07",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Brain MRI"
+    },
+    {
+      "id": "event-ct-jan-2026",
+      "date": "2026-01-06",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-pet-jan-2026",
+      "date": "2026-01-13",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "PET/CT"
+    },
+    {
+      "id": "event-jan-biopsy",
+      "date": "2026-01-21",
+      "end": null,
+      "category": "test",
+      "milestone": true,
+      "title": "Biopsy and tumor sequencing"
+    },
+    {
+      "id": "event-mri-jan-2026",
+      "date": "2026-01-26",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Brain MRI"
+    },
+    {
+      "id": "event-radiation",
+      "date": "2026-02-23",
+      "end": "2026-03-04",
+      "category": "treatment",
+      "milestone": true,
+      "title": "Focused radiation"
+    },
+    {
+      "id": "event-ct-apr-2026",
+      "date": "2026-04-15",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-ct-jun-2026",
+      "date": "2026-06-15",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Chest CT"
+    },
+    {
+      "id": "event-mri-jun-2026",
+      "date": "2026-06-27",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Brain MRI"
+    },
+    {
+      "id": "event-pet-jun-2026",
+      "date": "2026-06-29",
+      "end": null,
+      "category": "scan",
+      "milestone": true,
+      "title": "PET/CT before changing treatment"
+    },
+    {
+      "id": "event-dana-farber-jul",
+      "date": "2026-07",
+      "end": null,
+      "category": "appointment",
+      "milestone": false,
+      "title": "Dana-Farber second opinion"
+    },
+    {
+      "id": "event-guardant-jul",
+      "date": "2026-07",
+      "end": null,
+      "category": "test",
+      "milestone": false,
+      "title": "Guardant blood testing"
+    },
+    {
+      "id": "event-jul-biopsy",
+      "date": "2026-07-09",
+      "end": null,
+      "category": "test",
+      "milestone": true,
+      "title": "Another biopsy, different limits"
+    },
+    {
+      "id": "event-lorlatinib",
+      "date": "2026-07-20",
+      "end": null,
+      "category": "treatment",
+      "milestone": true,
+      "title": "Started lorlatinib"
+    },
+    {
+      "id": "event-ct-aug-2026",
+      "date": "2026-08-18",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of chest, abdomen and pelvis"
+    },
+    {
+      "id": "event-neck-ct-aug-2026",
+      "date": "2026-08-18",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "CT of the neck"
+    },
+    {
+      "id": "event-xray-sep-2026",
+      "date": "2026-09-11",
+      "end": null,
+      "category": "scan",
+      "milestone": false,
+      "title": "Chest X-ray for new pain"
+    },
+    {
+      "id": "event-stable-ct",
+      "date": "2026-09-22",
+      "end": null,
+      "category": "scan",
+      "milestone": true,
+      "title": "A stable CT"
+    },
+    {
+      "id": "event-dana-farber-sep",
+      "date": "2026-09-29",
+      "end": null,
+      "category": "appointment",
+      "milestone": true,
+      "title": "Dana-Farber reviews the plan"
+    },
+    {
+      "id": "event-serova-design",
+      "date": "2026-10-02",
+      "end": null,
+      "category": "research",
+      "milestone": true,
+      "title": "Reviewed a proposed vaccine design"
+    },
+    {
+      "id": "event-local-oncology-oct",
+      "date": "2026-10-05",
+      "end": null,
+      "category": "appointment",
+      "milestone": false,
+      "title": "Local oncology follow-up"
+    },
+    {
+      "id": "event-vaccine-path",
+      "date": "2026-10-21",
+      "end": null,
+      "category": "research",
+      "milestone": false,
+      "title": "Working toward a personalized vaccine"
+    }
+  ],
+  "imaging": [
+    {
+      "title": "July 5, 2024 chest CT",
+      "date": "2024-07-05",
+      "series": [
+        {
+          "name": "Soft tissue",
+          "count": 61,
+          "start": 38,
+          "sheets": [
+            "/media/4c9eac7c-88ae-486c-8eeb-3ae643bc1ec7",
+            "/media/ba91a4b3-d4a5-4f0d-bede-511054d82a70"
+          ],
+          "grid": 6,
+          "bookmarks": [
+            {
+              "frame": 38,
+              "title": "Left pleural effusion",
+              "annotation": {
+                "label": "Left pleural effusion",
+                "x": 0.659,
+                "y": 0.697,
+                "radiusX": 0.116,
+                "radiusY": 0.116
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "January 6, 2026 CT",
+      "date": "2026-01-06",
+      "series": [
+        {
+          "name": "Lung window",
+          "count": 67,
+          "start": 37,
+          "sheets": [
+            "/media/484d1690-ec10-48df-b2a4-ebec0cd3f2c5",
+            "/media/d271301e-1343-4b82-9db7-acf5f614cf29"
+          ],
+          "grid": 6,
+          "bookmarks": []
+        }
+      ]
+    },
+    {
+      "title": "April 15, 2026 CT",
+      "date": "2026-04-15",
+      "series": [
+        {
+          "name": "Lung window",
+          "count": 59,
+          "start": 37,
+          "sheets": [
+            "/media/a766f035-b26c-4458-afc3-df67c40d82b7",
+            "/media/f67b451a-aa0d-4ed3-9d02-7d95318fc627"
+          ],
+          "grid": 6,
+          "bookmarks": []
+        }
+      ]
+    },
+    {
+      "title": "June 15, 2026 chest CT",
+      "date": "2026-06-15",
+      "series": [
+        {
+          "name": "Soft tissue",
+          "count": 63,
+          "start": 42,
+          "sheets": [
+            "/media/36b4a345-94aa-4dd3-8b49-6edcf340b50a",
+            "/media/59f8c709-ad87-4fbe-b066-5955b40bde7c"
+          ],
+          "grid": 6,
+          "bookmarks": [
+            {
+              "frame": 42,
+              "title": "Front and side of the left pleura",
+              "annotation": {
+                "label": "Anterolateral pleura",
+                "x": 0.691,
+                "y": 0.415,
+                "radiusX": 0.044,
+                "radiusY": 0.051
+              }
+            },
+            {
+              "frame": 38,
+              "title": "Side of the left pleura",
+              "annotation": {
+                "label": "Lateral pleura",
+                "x": 0.711,
+                "y": 0.517,
+                "radiusX": 0.037,
+                "radiusY": 0.053
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "September 22, 2026 CT",
+      "date": "2026-09-22",
+      "series": [
+        {
+          "name": "Soft tissue",
+          "count": 137,
+          "start": 27,
+          "sheets": [
+            "/media/b29995f7-0f10-4d8d-8df0-714530b0ba36",
+            "/media/dbeaa140-478e-43f5-a449-350f4da4da3e",
+            "/media/0ef4c527-25ae-44dd-b361-dfe9274fa087",
+            "/media/d4ba721c-c3a5-4a81-9bc5-9f4d7b44bd41"
+          ],
+          "grid": 6,
+          "bookmarks": [
+            {
+              "frame": 27,
+              "title": "Prevascular lymph node",
+              "annotation": {
+                "label": "Prevascular region",
+                "x": 0.55,
+                "y": 0.303,
+                "radiusX": 0.046,
+                "radiusY": 0.041
+              }
+            },
+            {
+              "frame": 44,
+              "title": "Key image"
+            }
+          ]
+        },
+        {
+          "name": "Lung window",
+          "count": 59,
+          "start": 28,
+          "sheets": [
+            "/media/ba69bb5c-2e19-4989-94b2-740ba0801009",
+            "/media/01a67f4b-972d-4ddc-96b4-824c18f01058"
+          ],
+          "grid": 6,
+          "bookmarks": []
+        }
+      ]
+    }
+  ],
+  "samples": [
+    [
+      "2024-07-06",
+      "Left pleural fluid",
+      "EML4-ALK, TP53 R282W and MYC amplification. PD-L1 CPS <1. Microsatellite stable.",
+      "Tumor fraction reported at 10%, near the assay’s detection limit. TMB unavailable."
+    ],
+    [
+      "2024-07-17",
+      "Blood",
+      "Guardant360 reported EML4-ALK at 0.07%. MSI-high was not detected.",
+      "Blood and pleural fluid both reported the fusion."
+    ],
+    [
+      "2026-01-21",
+      "Left lower-lobe lung lesion",
+      "Adenocarcinoma. RNA showed EML4-ALK. DNA showed BRAF V600E, TP53 R282W and an EGFR variant of uncertain significance. TMB 3 mut/Mb, microsatellite stable. PD-L1 TPS 7%.",
+      "ALK 3+ in 100%; MET 2+ in 80%, reported negative; MET amplification not detected; HER2 0. SP142: tumor 0%, immune cells 1%, reported negative. AE1/AE3, CK7 and TTF positive."
+    ],
+    [
+      "2026-07-09",
+      "Left pleural nodule",
+      "Metastatic adenocarcinoma consistent with the lung primary. ALK 3+ in 95%, MET 3+ in 60%, PD-L1 TPS 50%, HER2 0. SP142 tumor and immune staining 0%.",
+      "Insufficient tissue for broad DNA/RNA sequencing or a BRAF stain. MET gene status remained unresolved. The EGFR L858R stain was uninterpretable; the specific exon 19 deletion stain was negative. AE1/AE3, CK7 and TTF positive; Napsin and CK20 negative."
+    ],
+    [
+      "2026-07",
+      "Blood",
+      "Guardant360 reported EML4-ALK at 0.2%, with a separate estimate of 0.3% tumor fraction. MSI-high was not detected.",
+      "BRAF V600E was not listed. TMB was unavailable. This blood result does not resolve BRAF status in the July pleural sample."
+    ]
+  ],
+  "hla": {
+    "A": [
+      "A*01:01",
+      "A*02:01"
+    ],
+    "B": [
+      "B*08:01",
+      "B*44:02"
+    ],
+    "C": [
+      "C*05:01",
+      "C*07:01"
+    ]
+  },
+  "portalActivity": {
+    "start": "2024-07-01",
+    "end": "2026-10-26",
+    "resultEntries": 294,
+    "visitRecords": 115,
+    "imagingStudies": 23,
+    "messages": 379
+  }
+}
